@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div``;
@@ -7,7 +8,7 @@ const Register = ({}) => {
         <Container>
             Register
             <br />
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
         </Container>
     );
 };
