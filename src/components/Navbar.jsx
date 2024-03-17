@@ -13,7 +13,7 @@ const BabyakButton = styled.button.attrs(props => ({
   color: ${props => props.isActive ? '#FE5858' : '#FFF6F6'};
   font-weight: 600;
 `;
-
+ 
 const ButtonDiv = styled.div`
   width: 345px;
   height: 40px;
