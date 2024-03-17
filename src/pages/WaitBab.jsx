@@ -1,10 +1,10 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
+import BabNavbar from '../components/BabNavbar'
 
 function WaitBab() {
   return (
     <div>
-      <Navbar />
+      <BabNavbar />
     </div>
   )
 }

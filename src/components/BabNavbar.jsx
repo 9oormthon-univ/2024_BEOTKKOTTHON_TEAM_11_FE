@@ -25,7 +25,7 @@ const ButtonDiv = styled.div`
   align-items: center;
 `;
 
-function Navbar() {
+function BabNavbar() {
   const [activeButton, setActiveButton] = useState('');
 
   const handleClick = (buttonName) => {
@@ -58,4 +58,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default BabNavbar;
