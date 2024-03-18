@@ -31,6 +31,12 @@ const Sitemap = ({}) => {
                     navigate('/waitbab');
                 }}
             />
+            <BlockButton
+                text="시간표 테스트"
+                onClick={() => {
+                    navigate('/test-timetable');
+                }}
+            />
         </Container>
     );
 };
