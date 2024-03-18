@@ -14,6 +14,7 @@ const TimeGrid = styled.div`
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     gap: 2px 2px;
     background-color: #0000007f;
+    touch-action: none;
 `;
 
 const Item = styled.div`
