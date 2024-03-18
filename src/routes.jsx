@@ -5,11 +5,13 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Sitemap from './pages/Sitemap.jsx';
 import WaitBab from './pages/WaitBab.jsx';
+import TimeTableTest from './pages/TimeTableTest.jsx';
 
 const routes = [
     { path: '/', element: <Sitemap /> },
     { path: '/login', element: <Login /> },
     { path: '/register', element: <Register /> },
+    { path: '/test-timetable', element: <TimeTableTest /> },
     { path: '/waitbab', element: <WaitBab /> },
 ];
 

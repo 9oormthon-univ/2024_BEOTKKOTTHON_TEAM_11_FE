@@ -75,7 +75,7 @@ const Login = ({}) => {
     const [password, setPassword] = useState('');
 
     function onLoginClick() {
-        alert(`id: ${id}\npassword: ${password}`);
+        alert(`id: ${id}\npassword: ${password}\n 비밀번호를 1111로 해보세요`);
 
         if (password !== '1111') {
             setErrorText('비밀번호가 틀렸습니다');
