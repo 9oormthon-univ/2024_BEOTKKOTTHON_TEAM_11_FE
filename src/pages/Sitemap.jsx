@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Container = styled.div`
     padding: 0 31px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 16px 24px;
 `;
 
@@ -23,6 +23,12 @@ const Sitemap = ({}) => {
                 text="회원가입"
                 onClick={() => {
                     navigate('/register');
+                }}
+            />
+            <BlockButton
+                text="밥약 목록"
+                onClick={() => {
+                    navigate('/waitbab');
                 }}
             />
         </Container>
