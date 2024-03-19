@@ -3,10 +3,13 @@ import styled from 'styled-components';
 
 const Item = styled.div`
     position: relative;
-    pointer-events: none;
-    touch-action: none;
+
     opacity: 0;
     transition: opacity 0.1s;
+
+    touch-action: none;
+    user-select: none;
+    pointer-events: none;
 
     background-color: #0fa8665f;
 
