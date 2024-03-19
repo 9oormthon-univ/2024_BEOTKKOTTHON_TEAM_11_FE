@@ -112,6 +112,10 @@ const TimeTableContent = ({ column, row, disabledRanges }) => {
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
+        if (disabledRanges.includes(position[0])) {
+            return;
+        }
+
         setSelectionMode(!data[position[0]].items[position[1]]);
 
         if (disabledRanges.includes(position[0])) {
