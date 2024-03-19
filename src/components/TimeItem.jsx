@@ -6,7 +6,6 @@ const Item = styled.div`
     border: 1px solid #0000001f;
     display: flex;
     background-color: #ffffff;
-    user-select: none;
 
     border-top: 1px dashed #0000001f;
     border-bottom: 1px dashed #0000001f;
@@ -17,6 +16,9 @@ const Item = styled.div`
     align-items: center;
     justify-content: center;
     color: #0000006f;
+
+    touch-action: none;
+    user-select: none;
 
     cursor: default;
 
@@ -29,29 +31,11 @@ const Item = styled.div`
     }
 `;
 
-const TimeItem = ({
-    active,
-    text,
-    onTouchStart,
-    onTouchEnd,
-    onTouchMove,
-    onMouseMove,
-    onMouseDown,
-    onMouseUp,
-    style,
-}) => {
+const TimeItem = ({ active, text, style }) => {
     return (
         <Item
             style={style}
             className={classNames({ active })}
-            {...{
-                onTouchStart,
-                onTouchEnd,
-                onTouchMove,
-                onMouseMove,
-                onMouseDown,
-                onMouseUp,
-            }}
             draggable={false}
         >
             {text}

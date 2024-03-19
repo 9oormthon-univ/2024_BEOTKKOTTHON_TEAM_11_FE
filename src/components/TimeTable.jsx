@@ -9,7 +9,9 @@ const Container = styled.div`
     margin: 32px 0;
     display: grid;
     grid-template-columns: repeat(${(props) => props.$column}, 1fr);
+
     touch-action: none;
+    user-select: none;
 `;
 
 const COLUMN = 5;
@@ -62,8 +64,8 @@ const TimeTable = ({}) => {
     }, [ref, selectionMode, startPosition, endPosition]);
 
     const onItemMouseDown = (event) => {
-        const itemX = event.pageX;
-        const itemY = event.pageY;
+        const itemX = event.clientX;
+        const itemY = event.clientY;
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
@@ -89,17 +91,19 @@ const TimeTable = ({}) => {
             return;
         }
 
-        const itemX = event.pageX;
-        const itemY = event.pageY;
+        const itemX = event.clientX;
+        const itemY = event.clientY;
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
         setEndPosition(position);
+
+        event.preventDefault();
     };
 
     const onItemTouchStart = (event) => {
-        const itemX = event.changedTouches[0].pageX;
-        const itemY = event.changedTouches[0].pageY;
+        const itemX = event.changedTouches[0].clientX;
+        const itemY = event.changedTouches[0].clientY;
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
@@ -119,8 +123,8 @@ const TimeTable = ({}) => {
     };
 
     const onItemTouchMove = (event) => {
-        const itemX = event.changedTouches[0].pageX;
-        const itemY = event.changedTouches[0].pageY;
+        const itemX = event.changedTouches[0].clientX;
+        const itemY = event.changedTouches[0].clientY;
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
@@ -172,19 +176,22 @@ const TimeTable = ({}) => {
                     text={text}
                     style={{ gridColumn: i + 1, gridRow: j + 1 }}
                     active={data[i].items[j]}
-                    onMouseDown={onItemMouseDown}
-                    onMouseUp={onItemMouseUp}
-                    onMouseMove={onItemMouseMove}
-                    onTouchStart={onItemTouchStart}
-                    onTouchEnd={onItemTouchEnd}
-                    onTouchMove={onItemTouchMove}
                 />
             );
         }
     }
 
     return (
-        <Container ref={ref} $column={COLUMN}>
+        <Container
+            ref={ref}
+            $column={COLUMN}
+            onMouseDown={onItemMouseDown}
+            onMouseUp={onItemMouseUp}
+            onMouseMove={onItemMouseMove}
+            onTouchStart={onItemTouchStart}
+            onTouchEnd={onItemTouchEnd}
+            onTouchMove={onItemTouchMove}
+        >
             <TimeSelection
                 position1={startPosition}
                 position2={endPosition}
