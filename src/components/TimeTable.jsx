@@ -176,19 +176,22 @@ const TimeTable = ({}) => {
                     text={text}
                     style={{ gridColumn: i + 1, gridRow: j + 1 }}
                     active={data[i].items[j]}
-                    onMouseDown={onItemMouseDown}
-                    onMouseUp={onItemMouseUp}
-                    onMouseMove={onItemMouseMove}
-                    onTouchStart={onItemTouchStart}
-                    onTouchEnd={onItemTouchEnd}
-                    onTouchMove={onItemTouchMove}
                 />
             );
         }
     }
 
     return (
-        <Container ref={ref} $column={COLUMN}>
+        <Container
+            ref={ref}
+            $column={COLUMN}
+            onMouseDown={onItemMouseDown}
+            onMouseUp={onItemMouseUp}
+            onMouseMove={onItemMouseMove}
+            onTouchStart={onItemTouchStart}
+            onTouchEnd={onItemTouchEnd}
+            onTouchMove={onItemTouchMove}
+        >
             <TimeSelection
                 position1={startPosition}
                 position2={endPosition}

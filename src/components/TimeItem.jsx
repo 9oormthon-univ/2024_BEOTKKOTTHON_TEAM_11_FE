@@ -31,29 +31,11 @@ const Item = styled.div`
     }
 `;
 
-const TimeItem = ({
-    active,
-    text,
-    onTouchStart,
-    onTouchEnd,
-    onTouchMove,
-    onMouseMove,
-    onMouseDown,
-    onMouseUp,
-    style,
-}) => {
+const TimeItem = ({ active, text, style }) => {
     return (
         <Item
             style={style}
             className={classNames({ active })}
-            {...{
-                onTouchStart,
-                onTouchEnd,
-                onTouchMove,
-                onMouseMove,
-                onMouseDown,
-                onMouseUp,
-            }}
             draggable={false}
         >
             {text}
