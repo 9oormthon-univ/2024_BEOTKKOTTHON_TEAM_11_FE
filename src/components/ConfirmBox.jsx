@@ -11,6 +11,7 @@ const BabDiv = styled.div`
     background-color: #FFF6F6;
     margin: 34px auto;
     padding: 12px 19px 0 19px;
+    box-shadow: 0px 4px 4px rgba(214, 73, 73, 0.15);
 `;
 //디데이+이름, 마크
 const DNMContainer = styled.div`
