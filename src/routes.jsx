@@ -8,15 +8,29 @@ import WaitBab from './pages/WaitBab.jsx';
 import TimeTableTest from './pages/TimeTableTest.jsx';
 
 const routes = [
-    { path: '/', element: <Sitemap /> },
-    { path: '/login', element: <Login /> },
-    { path: '/register', element: <Register /> },
-    { path: '/test-timetable', element: <TimeTableTest /> },
-    { path: '/waitbab', element: <WaitBab /> },
+    {
+        path: '/',
+        element: <Sitemap />,
+        previous: false,
+    },
+    {
+        path: '/login',
+        element: <Login />,
+        logo: false,
+    },
+    {
+        path: '/register',
+        element: <Register />,
+    },
+    {
+        path: '/test-timetable',
+        element: <TimeTableTest />,
+    },
+    {
+        path: '/waitbab',
+        element: <WaitBab />,
+        footer: true,
+    },
 ];
 
-const elements = routes.map((item, index) => (
-    <Route key={index} path={item.path} element={item.element} />
-));
-
-export default elements;
+export default routes;

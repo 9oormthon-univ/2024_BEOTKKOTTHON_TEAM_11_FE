@@ -1,196 +1,221 @@
 import { useEffect, useRef, useState } from 'react';
-import TimeItem from './TimeItem.jsx';
 import styled from 'styled-components';
-import TimeSelection from './TimeSelection.jsx';
-import { useImmer } from 'use-immer';
+import TimeTableContent from './TimeTableContent.jsx';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import classNames from 'classnames';
 
 const Container = styled.div`
-    width: 100%;
-    margin: 32px 0;
-    display: grid;
-    grid-template-columns: repeat(${(props) => props.$column}, 1fr);
-    touch-action: none;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: rgba(255, 246, 246, 1);
 `;
 
-const COLUMN = 5;
-const ROW = 48;
+const Header = styled.div`
+    padding: 12px 0;
+    padding-top: 0px;
+    border-bottom: 2px solid rgba(254, 88, 88, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgba(254, 88, 88, 1);
+    font-size: 18px;
+    font-weight: 700;
+`;
 
-function clampNumber(num, a, b) {
-    return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
-}
+const Button = styled.button`
+    padding: 4px;
+    background: none;
+    border: none;
+    border-radius: 50%;
 
-function convertPositionToGrid(table, itemX, itemY) {
-    const { x, y, width, height } = table.current.getBoundingClientRect();
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    const innerX = itemX - x;
-    const innerY = itemY - y;
+    cursor: pointer;
 
-    const itemWidth = width / COLUMN;
-    const itemHeight = height / ROW;
-
-    const gridX = parseInt(innerX / itemWidth);
-    const gridY = parseInt(innerY / itemHeight);
-
-    return [clampNumber(gridX, 0, COLUMN - 1), clampNumber(gridY, 0, ROW - 1)];
-}
-
-const TimeTable = ({}) => {
-    const ref = useRef(null);
-    const [data, setData] = useImmer(
-        Array(COLUMN)
-            .fill(null)
-            .map((item, index) => ({
-                date: index,
-                items: Array(ROW).fill(false),
-            }))
-    );
-
-    const [selectionMode, setSelectionMode] = useState(null);
-    const [startPosition, setStartPosition] = useState([0, 0]);
-    const [endPosition, setEndPosition] = useState([0, 0]);
-
-    useEffect(() => {
-        if (ref && ref.current) {
-            document.addEventListener('mousemove', onItemMouseMove);
-            document.addEventListener('mouseup', onItemMouseUp);
-        }
-
-        return () => {
-            document.removeEventListener('mousemove', onItemMouseMove);
-            document.removeEventListener('mouseup', onItemMouseUp);
-        };
-    }, [ref, selectionMode, startPosition, endPosition]);
-
-    const onItemMouseDown = (event) => {
-        const itemX = event.pageX;
-        const itemY = event.pageY;
-
-        const position = convertPositionToGrid(ref, itemX, itemY);
-
-        setStartPosition(position);
-        setEndPosition(position);
-
-        setSelectionMode(!data[position[0]].items[position[1]]);
-
-        event.preventDefault();
-    };
-
-    const onItemMouseUp = (event) => {
-        if (selectionMode === null) {
-            return;
-        }
-
-        setSelectionMode(null);
-        selectItems();
-    };
-
-    const onItemMouseMove = (event) => {
-        if (selectionMode === null) {
-            return;
-        }
-
-        const itemX = event.pageX;
-        const itemY = event.pageY;
-
-        const position = convertPositionToGrid(ref, itemX, itemY);
-
-        setEndPosition(position);
-    };
-
-    const onItemTouchStart = (event) => {
-        const itemX = event.changedTouches[0].pageX;
-        const itemY = event.changedTouches[0].pageY;
-
-        const position = convertPositionToGrid(ref, itemX, itemY);
-
-        setStartPosition(position);
-        setEndPosition(position);
-
-        setSelectionMode(!data[position[0]].items[position[1]]);
-    };
-
-    const onItemTouchEnd = (event) => {
-        if (selectionMode === null) {
-            return;
-        }
-
-        setSelectionMode(null);
-        selectItems();
-    };
-
-    const onItemTouchMove = (event) => {
-        const itemX = event.changedTouches[0].pageX;
-        const itemY = event.changedTouches[0].pageY;
-
-        const position = convertPositionToGrid(ref, itemX, itemY);
-
-        setEndPosition(position);
-    };
-
-    const selectItems = () => {
-        const startX =
-            startPosition[0] < endPosition[0]
-                ? startPosition[0]
-                : endPosition[0];
-        const startY =
-            startPosition[1] < endPosition[1]
-                ? startPosition[1]
-                : endPosition[1];
-        const endX =
-            startPosition[0] > endPosition[0]
-                ? startPosition[0]
-                : endPosition[0];
-        const endY =
-            startPosition[1] > endPosition[1]
-                ? startPosition[1]
-                : endPosition[1];
-
-        setData((state) => {
-            for (let date = startX; date <= endX; date++) {
-                for (let item = startY; item <= endY; item++) {
-                    state[date].items[item] = selectionMode;
-                }
-            }
-        });
-    };
-
-    const elements = [];
-
-    for (let i = 0; i < COLUMN; i++) {
-        for (let j = 0; j < ROW; j++) {
-            let text = '';
-
-            if (i == 0) {
-                const hour = parseInt(j / 2);
-                const minute = j % 2 === 1 ? '30' : '00';
-                text = `${hour.toString().padStart(2, '0')}:${minute}`;
-            }
-
-            elements.push(
-                <TimeItem
-                    key={j * COLUMN + i}
-                    text={text}
-                    style={{ gridColumn: i + 1, gridRow: j + 1 }}
-                    active={data[i].items[j]}
-                    onMouseDown={onItemMouseDown}
-                    onMouseUp={onItemMouseUp}
-                    onMouseMove={onItemMouseMove}
-                    onTouchStart={onItemTouchStart}
-                    onTouchEnd={onItemTouchEnd}
-                    onTouchMove={onItemTouchMove}
-                />
-            );
-        }
+    &:hover {
+        background-color: #0000001f;
     }
 
+    & > svg {
+        width: 24px;
+        height: 24px;
+    }
+`;
+
+const DateContainer = styled.div`
+    margin: 8px 0;
+    padding-left: 56px;
+    padding-right: 12px;
+
+    & > div > div {
+        display: flex;
+        align-items: center;
+    }
+`;
+
+const DateItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+
+    color: rgba(254, 88, 88, 1);
+
+    & > p:nth-child(1) {
+        font-weight: 500;
+        font-size: 12px;
+    }
+
+    & > p:nth-child(2) {
+        font-weight: 500;
+        font-size: 16px;
+    }
+`;
+
+const Content = styled.div`
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    background-color: rgba(255, 255, 255, 1);
+`;
+
+const SideBar = styled.div`
+    display: grid;
+    gap: 1px;
+    grid-template-rows: repeat(${(props) => props.$row}, 1fr);
+    color: rgba(254, 88, 88, 1);
+    font-weight: 600;
+`;
+
+const SideBarItem = styled.div`
+    width: 40px;
+    height: 29px;
+    margin: 1px 0;
+    padding: 0 4px;
+    border-right: 1.5px solid rgba(254, 88, 88, 1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    font-size: 10px;
+`;
+
+const InnerWrapper = styled.div`
+    width: auto;
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+
+    & > div {
+        width: 100%;
+        position: relative;
+
+        transition: margin 0.3s ease;
+    }
+
+    &.next {
+        & > div:nth-child(1) {
+            margin-left: -100%;
+        }
+    }
+`;
+
+const COLUMN = 4;
+const ROW = 24;
+
+const TimeTable = ({}) => {
+    const [isNextPage, setNextPage] = useState(false);
+
+    const items = [];
+
+    for (let i = 0; i < ROW / 2; i++) {
+        items.push(<SideBarItem key={i}>{11 + i}:00</SideBarItem>);
+    }
+
+    // startDate
+
+    // block -> 24개 블록
+
+    //
+
+    const onPrevButtonClick = (event) => {
+        setNextPage(false);
+    };
+
+    const onNextButtonClick = (event) => {
+        setNextPage(true);
+    };
+
     return (
-        <Container ref={ref} $column={COLUMN}>
-            <TimeSelection
-                position1={startPosition}
-                position2={endPosition}
-                selectionMode={selectionMode}
-            />
-            {elements}
+        <Container>
+            <Header>
+                <Button onClick={onPrevButtonClick}>
+                    <IoIosArrowBack />
+                </Button>
+                <p>2024.03</p>
+                <Button onClick={onNextButtonClick}>
+                    <IoIosArrowForward />
+                </Button>
+            </Header>
+            <DateContainer>
+                <InnerWrapper className={classNames({ next: isNextPage })}>
+                    <div>
+                        <DateItem>
+                            <p>월</p>
+                            <p>18</p>
+                        </DateItem>
+                        <DateItem>
+                            <p>화</p>
+                            <p>19</p>
+                        </DateItem>
+                        <DateItem>
+                            <p>수</p>
+                            <p>20</p>
+                        </DateItem>
+                        <DateItem>
+                            <p>목</p>
+                            <p>21</p>
+                        </DateItem>
+                    </div>
+                    <div>
+                        <DateItem>
+                            <p>금</p>
+                            <p>22</p>
+                        </DateItem>
+                        <DateItem>
+                            <p>토</p>
+                            <p>23</p>
+                        </DateItem>
+                        <DateItem>
+                            <p>일</p>
+                            <p>24</p>
+                        </DateItem>
+                        <DateItem>
+                            <p>월</p>
+                            <p>25</p>
+                        </DateItem>
+                    </div>
+                </InnerWrapper>
+            </DateContainer>
+            <Content>
+                <SideBar $row={ROW / 2}>{items}</SideBar>
+                <InnerWrapper className={classNames({ next: isNextPage })}>
+                    <TimeTableContent
+                        column={COLUMN}
+                        row={ROW}
+                        disabledRanges={[1]}
+                    />
+                    <TimeTableContent
+                        column={COLUMN}
+                        row={ROW}
+                        disabledRanges={[2, 3]}
+                    />
+                </InnerWrapper>
+            </Content>
         </Container>
     );
 };
