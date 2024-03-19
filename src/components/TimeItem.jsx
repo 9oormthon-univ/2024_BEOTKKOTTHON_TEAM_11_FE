@@ -2,13 +2,19 @@ import classNames from 'classnames';
 import styled from 'styled-components';
 
 const Item = styled.div`
-    height: 18px;
-    border: 1px solid #0000001f;
+    height: 15px;
+    border-radius: 2px;
     display: flex;
-    background-color: #ffffff;
 
-    border-top: 1px dashed #0000001f;
-    border-bottom: 1px dashed #0000001f;
+    background-color: rgba(
+        ${(props) => {
+            if (props.$value === 0) {
+                return '245, 223, 223, 1';
+            } else {
+                return `255, 88, 88, ${props.$value}`;
+            }
+        }}
+    );
 
     transition: background-color 0.1s;
 
@@ -22,21 +28,18 @@ const Item = styled.div`
 
     cursor: default;
 
-    &.active {
-        background-color: #0fa866;
-    }
-
-    &:nth-child(2n) {
-        border-top: 1px solid #0000006f;
+    &.disabled {
+        background-color: rgba(255, 246, 246, 1);
     }
 `;
 
-const TimeItem = ({ active, text, style }) => {
+const TimeItem = ({ value, text, style, disabled }) => {
     return (
         <Item
             style={style}
-            className={classNames({ active })}
+            $value={value}
             draggable={false}
+            className={classNames({ disabled })}
         >
             {text}
         </Item>
