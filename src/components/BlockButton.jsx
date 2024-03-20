@@ -45,9 +45,9 @@ const Icon = styled.p`
     }
 `;
 
-const BlockButton = ({ text, leftArrow, rightArrow, onClick }) => {
+const BlockButton = ({ text, leftArrow, rightArrow, onClick, ...props }) => {
     return (
-        <Button onClick={onClick}>
+        <Button onClick={onClick} {...props}>
             <Icon className={classNames({ visible: leftArrow })}>
                 <IoIosArrowBack />
             </Icon>
