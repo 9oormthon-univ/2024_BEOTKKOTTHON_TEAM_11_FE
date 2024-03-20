@@ -141,7 +141,7 @@ const InnerWrapper = styled.div`
 const COLUMN = 4;
 const ROW = 24;
 
-const TimeTable = ({ startDate, disabledRanges }) => {
+const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
     const [isNextPage, setNextPage] = useState(false);
 
     const isSinglePage = [4, 5, 6, 7].every((item) =>
@@ -214,6 +214,7 @@ const TimeTable = ({ startDate, disabledRanges }) => {
                     <TimeTableContent
                         column={COLUMN}
                         row={ROW}
+                        readOnly={readOnly}
                         disabledRanges={disabledRanges.filter(
                             (item) => item >= 0 && item < 4
                         )}
@@ -221,6 +222,7 @@ const TimeTable = ({ startDate, disabledRanges }) => {
                     <TimeTableContent
                         column={COLUMN}
                         row={ROW}
+                        readOnly={readOnly}
                         disabledRanges={disabledRanges
                             .filter((item) => item >= 4 && item < 8)
                             .map((item) => item - 4)}

@@ -26,6 +26,7 @@ const TimeTableTest = ({}) => {
             <TimeTable
                 startDate={dayjs('2024-03-28')}
                 disabledRanges={[2, 5, 6, 7]}
+                readOnly={false}
             />
         </Container>
     );
