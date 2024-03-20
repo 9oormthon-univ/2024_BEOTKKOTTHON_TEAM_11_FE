@@ -18,14 +18,14 @@ function clampNumber(num, a, b) {
     return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 }
 
-const TimeTableContent = ({ column, row, disabledRanges }) => {
+const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
     const ref = useRef(null);
     const [data, setData] = useImmer(
         Array(column)
             .fill(null)
             .map((item, index) => ({
                 date: index,
-                items: Array(row).fill(false),
+                items: Array(row).fill(0),
             }))
     );
     const [selectionMode, setSelectionMode] = useState(null);
@@ -67,6 +67,10 @@ const TimeTableContent = ({ column, row, disabledRanges }) => {
     const onItemMouseDown = (event) => {
         event.preventDefault();
 
+        if (readOnly) {
+            return;
+        }
+
         const itemX = event.clientX;
         const itemY = event.clientY;
 
@@ -107,6 +111,10 @@ const TimeTableContent = ({ column, row, disabledRanges }) => {
     };
 
     const onItemTouchStart = (event) => {
+        if (readOnly) {
+            return;
+        }
+
         const itemX = event.changedTouches[0].clientX;
         const itemY = event.changedTouches[0].clientY;
 
@@ -168,7 +176,7 @@ const TimeTableContent = ({ column, row, disabledRanges }) => {
                     continue;
                 }
                 for (let item = startY; item <= endY; item++) {
-                    state[date].items[item] = selectionMode;
+                    state[date].items[item] = selectionMode ? 1 : 0;
                 }
             }
         });
@@ -182,7 +190,7 @@ const TimeTableContent = ({ column, row, disabledRanges }) => {
                 <TimeItem
                     key={j * column + i}
                     style={{ gridColumn: i + 1, gridRow: j + 1 }}
-                    value={data[i].items[j] ? 1.0 : 0.0}
+                    value={data[i].items[j]}
                     disabled={disabledRanges.includes(i)}
                 />
             );
