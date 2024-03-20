@@ -37,6 +37,12 @@ const Sitemap = ({}) => {
                     navigate('/test-timetable');
                 }}
             />
+            <BlockButton
+                text="날짜 선택 테스트"
+                onClick={() => {
+                    navigate('/test-datepicker');
+                }}
+            />
         </Container>
     );
 };
