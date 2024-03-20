@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import TextInput from '../components/TextInput.jsx';
@@ -7,15 +7,20 @@ import BlockButton from '../components/BlockButton.jsx';
 import PasswordEyeButton from '../components/PasswordEyeButton.jsx';
 import InputErrorText from '../components/InputErrorText.jsx';
 import classNames from 'classnames';
+import {
+    postEmailConfirmation,
+    postEmailVerification,
+    postRegister,
+} from '../api/user.js';
 
 const Container = styled.div`
     padding: 0 31px;
-
     overflow: hidden;
 `;
 
 const PageHeader = styled.div`
-    margin-top: 281px;
+    height: 280px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -53,13 +58,13 @@ const Dot = styled.div`
 const FormContainer = styled.div`
     width: 100%;
     height: 176px;
-    margin-top: 23px;
     margin-bottom: 56px;
     overflow: hidden;
 `;
 
 const Form = styled.div`
     width: 100%;
+    height: 140px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -77,7 +82,7 @@ const LeftForm = styled(Form)`
 `;
 
 const RightForm = styled(Form)`
-    top: -100%;
+    top: -140px;
     transform: translateX(390px);
 
     &.visible {
@@ -87,6 +92,7 @@ const RightForm = styled(Form)`
 
 const Register = ({}) => {
     const navigate = useNavigate();
+
     const [fieldAHidden, setFieldAHidden] = useState(true);
     const [fieldBHidden, setFieldBHidden] = useState(true);
 
@@ -95,19 +101,124 @@ const Register = ({}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [emailCode, setEmailCode] = useState('');
+    const [emailSent, setEmailSent] = useState(false);
+    const [emailVerified, setEmailVerified] = useState(false);
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
 
     const [passwordErrorText, setPasswordErrorText] = useState('');
     const [passwordCheckErrorText, setPasswordCheckErrorText] = useState('');
 
-    const onNextPageClick = (event) => {
-        if (isNextPage) {
+    const firstFormCheck = () => {
+        if (name === '') {
+            alert('이름을 입력하세요.');
+            return false;
+        }
+
+        if (!email) {
+            alert('이메일을 입력하세요.');
+            return false;
+        }
+
+        if (!emailVerified) {
+            alert('이메일을 인증하세요.');
+            return false;
+        }
+
+        return true;
+    };
+
+    const secondFormCheck = async () => {
+        if (password === '') {
+            alert('비밀번호를 입력하세요.');
+            return false;
+        }
+
+        if (passwordCheck === '') {
+            alert('비밀번호 확인을 입력하세요.');
+            return false;
+        }
+
+        if (password !== passwordCheck) {
+            alert('비밀번호 확인을 틀리게 입력하셨습니다.');
+            return false;
+        }
+
+        let response;
+
+        try {
+            response = await postRegister({
+                name,
+                email,
+                emailCode,
+                password,
+            });
+        } catch (e) {
+            alert('회원 가입 도중 오류가 발생했습니다.');
+            return;
+        }
+
+        alert(
+            `name: ${name}\neamil: ${email}\nemail code:${emailCode}\npassword:${password}\npassword check: ${passwordCheck}`
+        );
+
+        alert(`축하드립니다!! 회원가입이 완료되었어요.`);
+        navigate('/');
+    };
+
+    const onEmailVerifyButtonClick = async (event) => {
+        if (email === '') {
+            alert('이메일을 입력하세요.');
+            return;
+        }
+
+        let response;
+
+        try {
+            await postEmailVerification({ email });
+        } catch (e) {
+            alert('인증 메일 전송에 실패했습니다.');
+            return;
+        }
+
+        setEmailSent(true);
+
+        alert(
+            '인증 메일을 전송했습니다. 이메일로 전송된 인증 번호를 입력하세요.\n(인증 코드: 1111)'
+        );
+    };
+
+    const onEmailConfirmButtonClick = async (event) => {
+        if (!emailSent) {
+            alert('인증 메일을 먼저 전송하세요.');
+            return;
+        }
+
+        if (emailCode === '') {
             alert(
-                `name: ${name}\neamil: ${email}\nemail code:${emailCode}\npassword:${password}\npassword check: ${passwordCheck}`
+                `인증 코드를 입력하세요. 인증 코드는 ${email}로 전송되었습니다.`
             );
-            navigate('/');
-        } else {
+            return;
+        }
+
+        let response;
+
+        try {
+            await postEmailConfirmation({ email, code: emailCode });
+        } catch (e) {
+            alert('인증 코드가 틀렸습니다.');
+            return;
+        }
+
+        setEmailVerified(true);
+
+        alert(`${email}의 이메일 인증에 성공했습니다.`);
+    };
+
+    const onNextPageClick = async (event) => {
+        if (isNextPage) {
+            await secondFormCheck();
+        } else if (firstFormCheck()) {
             setNextPage(true);
         }
     };
@@ -156,15 +267,29 @@ const Register = ({}) => {
                     />
                     <TextInput
                         value={email}
-                        onInput={(event) => setEmail(event.target.value)}
+                        onInput={(event) => {
+                            setEmail(event.target.value);
+                            setEmailSent(false); // 이메일 주소를 바꾸면 인증 메일을 무효화
+                            setEmailVerified(false); // 이메일 주소를 바꾸면 인증을 무효화
+                        }}
                         placeholder="이메일을 작성해주세요"
-                        additionalItem={<MiniButton text="인증" />}
+                        additionalItem={
+                            <MiniButton
+                                text="인증"
+                                onClick={onEmailVerifyButtonClick}
+                            />
+                        }
                     />
                     <TextInput
                         value={emailCode}
                         onInput={(event) => setEmailCode(event.target.value)}
                         placeholder="이메일 인증 번호를 입력해주세요"
-                        additionalItem={<MiniButton text="확인" />}
+                        additionalItem={
+                            <MiniButton
+                                text="확인"
+                                onClick={onEmailConfirmButtonClick}
+                            />
+                        }
                     />
                 </LeftForm>
                 <RightForm className={classNames({ visible: isNextPage })}>

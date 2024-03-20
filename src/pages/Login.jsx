@@ -1,21 +1,31 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/userSlice.js';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import RiceBalloonNoTailImage from '../assets/images/rice_balloon_no_tail.svg';
 import TextInput from '../components/TextInput.jsx';
 import BlockButton from '../components/BlockButton.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PasswordEyeButton from '../components/PasswordEyeButton.jsx';
 import InputErrorText from '../components/InputErrorText.jsx';
+import { postLogin } from '../api/user.js';
 
 const Container = styled.div`
     padding: 0 31px;
 `;
 
+const PageHeader = styled.div`
+    height: 280px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+`;
+
 const RiceBalloon = styled.img`
-    left: -80px;
+    top: 40px;
+    left: -100px;
     height: 269px;
     position: relative;
 `;
@@ -38,14 +48,13 @@ const Title = styled.p`
 `;
 
 const Form = styled.div`
-    margin-top: 23px;
     display: flex;
     flex-direction: column;
     gap: 13px;
 `;
 
 const ButtonContainer = styled.div`
-    margin-top: 91px;
+    margin: 48px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -67,21 +76,37 @@ const RegisterText = styled.p`
 `;
 
 const Login = ({}) => {
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [fieldHidden, setFieldHidden] = useState(true);
     const [errorText, setErrorText] = useState('');
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
-    function onLoginClick() {
-        alert(`id: ${id}\npassword: ${password}\n 비밀번호를 1111로 해보세요`);
-
-        if (password !== '1111') {
-            setErrorText('비밀번호가 틀렸습니다');
-        } else {
-            setErrorText('');
+    async function onLoginClick() {
+        if (id === '') {
+            alert('아이디를 입력하세요.');
+            return;
         }
+
+        if (password === '') {
+            alert('비밀번호를 입력하세요.');
+            return;
+        }
+
+        let response;
+
+        try {
+            response = await postLogin({ id, password });
+        } catch (e) {
+            alert('비밀번호나 아이디가 틀립니다\nid: admin pw: 1111');
+            setErrorText('비밀번호가 틀렸습니다');
+            return;
+        }
+
+        alert(`${id}님 환영합니다!`);
+        setErrorText('');
+        navigate('/');
 
         // dispatch(
         //     login({
@@ -94,11 +119,13 @@ const Login = ({}) => {
 
     return (
         <Container>
-            <RiceBalloon src={RiceBalloonNoTailImage} />
-            <TextContainer>
-                <Subtitle>지금 무슨시간?</Subtitle>
-                <Title>잇츠타임!!</Title>
-            </TextContainer>
+            <PageHeader>
+                <RiceBalloon src={RiceBalloonNoTailImage} />
+                <TextContainer>
+                    <Subtitle>지금 무슨시간?</Subtitle>
+                    <Title>잇츠타임!!</Title>
+                </TextContainer>
+            </PageHeader>
             <Form>
                 <TextInput
                     value={id}

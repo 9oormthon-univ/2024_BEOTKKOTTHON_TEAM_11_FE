@@ -11,6 +11,8 @@ const Container = styled.div`
     align-items: center;
     gap: 8px;
 
+    color: #d64949;
+
     background-color: #fff6f6;
 `;
 

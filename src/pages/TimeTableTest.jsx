@@ -5,6 +5,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import TimeItem from '../components/TimeItem.jsx';
 import TimeTable from '../components/TimeTable.jsx';
+import dayjs from 'dayjs';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -22,7 +23,11 @@ const TimeTableTest = ({}) => {
     return (
         <Container>
             <Text>시간을 드래그해보세요.</Text>
-            <TimeTable />
+            <TimeTable
+                startDate={dayjs('2024-03-28')}
+                disabledRanges={[2, 5, 6, 7]}
+                readOnly={false}
+            />
         </Container>
     );
 };

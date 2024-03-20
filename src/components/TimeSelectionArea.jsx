@@ -3,23 +3,26 @@ import styled from 'styled-components';
 
 const Item = styled.div`
     position: relative;
-    pointer-events: none;
-    touch-action: none;
+
     opacity: 0;
     transition: opacity 0.1s;
 
-    background-color: #0fa8665f;
+    touch-action: none;
+    user-select: none;
+    pointer-events: none;
+
+    background-color: #f32a145f;
 
     &.visible {
         opacity: 1;
     }
 
     &.remove {
-        background-color: #ff171780;
+        background-color: #12121280;
     }
 `;
 
-const TimeSelection = ({ selectionMode, position1, position2 }) => {
+const TimeSelectionArea = ({ selectionMode, position1, position2 }) => {
     const startRow = position1[1] < position2[1] ? position1[1] : position2[1];
     const startColumn =
         position1[0] < position2[0] ? position1[0] : position2[0];
@@ -42,4 +45,4 @@ const TimeSelection = ({ selectionMode, position1, position2 }) => {
     );
 };
 
-export default TimeSelection;
+export default TimeSelectionArea;
