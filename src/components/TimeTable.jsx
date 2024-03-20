@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TimeTableContent from './TimeTableContent.jsx';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 
 const Container = styled.div`
     padding: 16px;
@@ -42,6 +43,15 @@ const Button = styled.button`
         width: 24px;
         height: 24px;
     }
+
+    &.disabled {
+        color: rgba(245, 223, 223, 1);
+        pointer-events: none;
+    }
+
+    &.hidden {
+        visibility: hidden;
+    }
 `;
 
 const DateContainer = styled.div`
@@ -71,6 +81,10 @@ const DateItem = styled.div`
     & > p:nth-child(2) {
         font-weight: 500;
         font-size: 16px;
+    }
+
+    &.disabled {
+        color: rgba(255, 212, 212, 1);
     }
 `;
 
@@ -127,20 +141,35 @@ const InnerWrapper = styled.div`
 const COLUMN = 4;
 const ROW = 24;
 
-const TimeTable = ({}) => {
+const TimeTable = ({ startDate, disabledRanges }) => {
     const [isNextPage, setNextPage] = useState(false);
 
-    const items = [];
+    const isSinglePage = [4, 5, 6, 7].every((item) =>
+        disabledRanges.includes(item)
+    );
 
+    const items = [];
     for (let i = 0; i < ROW / 2; i++) {
         items.push(<SideBarItem key={i}>{11 + i}:00</SideBarItem>);
     }
 
-    // startDate
+    const dates = [];
+    for (let i = 0; i < 8; i++) {
+        const date = startDate.add(i, 'd');
 
-    // block -> 24개 블록
+        dates.push(
+            <DateItem
+                className={classNames({ disabled: disabledRanges.includes(i) })}
+            >
+                <p>{date.format('ddd')}</p>
+                <p>{date.format('D')}</p>
+            </DateItem>
+        );
+    }
 
-    //
+    const headerDate = (isNextPage ? startDate.add(4, 'd') : startDate).format(
+        'YYYY. MM'
+    );
 
     const onPrevButtonClick = (event) => {
         setNextPage(false);
@@ -153,52 +182,30 @@ const TimeTable = ({}) => {
     return (
         <Container>
             <Header>
-                <Button onClick={onPrevButtonClick}>
+                <Button
+                    onClick={onPrevButtonClick}
+                    className={classNames({
+                        disabled: !isNextPage,
+                        hidden: isSinglePage,
+                    })}
+                >
                     <IoIosArrowBack />
                 </Button>
-                <p>2024.03</p>
-                <Button onClick={onNextButtonClick}>
+                <p>{headerDate}</p>
+                <Button
+                    onClick={onNextButtonClick}
+                    className={classNames({
+                        disabled: isNextPage,
+                        hidden: isSinglePage,
+                    })}
+                >
                     <IoIosArrowForward />
                 </Button>
             </Header>
             <DateContainer>
                 <InnerWrapper className={classNames({ next: isNextPage })}>
-                    <div>
-                        <DateItem>
-                            <p>월</p>
-                            <p>18</p>
-                        </DateItem>
-                        <DateItem>
-                            <p>화</p>
-                            <p>19</p>
-                        </DateItem>
-                        <DateItem>
-                            <p>수</p>
-                            <p>20</p>
-                        </DateItem>
-                        <DateItem>
-                            <p>목</p>
-                            <p>21</p>
-                        </DateItem>
-                    </div>
-                    <div>
-                        <DateItem>
-                            <p>금</p>
-                            <p>22</p>
-                        </DateItem>
-                        <DateItem>
-                            <p>토</p>
-                            <p>23</p>
-                        </DateItem>
-                        <DateItem>
-                            <p>일</p>
-                            <p>24</p>
-                        </DateItem>
-                        <DateItem>
-                            <p>월</p>
-                            <p>25</p>
-                        </DateItem>
-                    </div>
+                    <div>{dates.slice(0, 4)}</div>
+                    <div>{dates.slice(4, 8)}</div>
                 </InnerWrapper>
             </DateContainer>
             <Content>
@@ -207,12 +214,16 @@ const TimeTable = ({}) => {
                     <TimeTableContent
                         column={COLUMN}
                         row={ROW}
-                        disabledRanges={[1]}
+                        disabledRanges={disabledRanges.filter(
+                            (item) => item >= 0 && item < 4
+                        )}
                     />
                     <TimeTableContent
                         column={COLUMN}
                         row={ROW}
-                        disabledRanges={[2, 3]}
+                        disabledRanges={disabledRanges
+                            .filter((item) => item >= 4 && item < 8)
+                            .map((item) => item - 4)}
                     />
                 </InnerWrapper>
             </Content>
