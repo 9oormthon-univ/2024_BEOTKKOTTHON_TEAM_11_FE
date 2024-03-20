@@ -6,6 +6,7 @@ import Register from './pages/Register.jsx';
 import Sitemap from './pages/Sitemap.jsx';
 import WaitBab from './pages/WaitBab.jsx';
 import TimeTableTest from './pages/TimeTableTest.jsx';
+import DatePickerTest from './pages/DatePickerTest.jsx';
 
 const routes = [
     {
@@ -25,6 +26,10 @@ const routes = [
     {
         path: '/test-timetable',
         element: <TimeTableTest />,
+    },
+    {
+        path: '/test-datepicker',
+        element: <DatePickerTest />,
     },
     {
         path: '/waitbab',
