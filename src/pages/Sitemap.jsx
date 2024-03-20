@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import BlockButton from '../components/BlockButton.jsx';
 import { useNavigate } from 'react-router-dom';
+import routes from '../routes.jsx';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -11,40 +12,19 @@ const Container = styled.div`
 
 const Sitemap = ({}) => {
     const navigate = useNavigate();
-    return (
-        <Container>
+
+    const elements = routes
+        .filter((route) => route.name)
+        .map((route) => (
             <BlockButton
-                text="로그인"
+                text={route.name}
                 onClick={() => {
-                    navigate('/login');
+                    navigate(route.path);
                 }}
             />
-            <BlockButton
-                text="회원가입"
-                onClick={() => {
-                    navigate('/register');
-                }}
-            />
-            <BlockButton
-                text="밥약 목록"
-                onClick={() => {
-                    navigate('/waitbab');
-                }}
-            />
-            <BlockButton
-                text="시간표 테스트"
-                onClick={() => {
-                    navigate('/test-timetable');
-                }}
-            />
-            <BlockButton
-                text="날짜 선택 테스트"
-                onClick={() => {
-                    navigate('/test-datepicker');
-                }}
-            />
-        </Container>
-    );
+        ));
+
+    return <Container>{elements}</Container>;
 };
 
 export default Sitemap;
