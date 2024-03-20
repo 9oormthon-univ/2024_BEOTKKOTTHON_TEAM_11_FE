@@ -1,9 +1,10 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import routes from './routes.jsx';
 import { IoIosArrowBack } from 'react-icons/io';
 
 import ServiceLogoImage from './assets/images/service_logo.svg';
+import RiceBalloonButton from './assets/images/rice_balloon_button.svg';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 
@@ -72,14 +73,37 @@ const Footer = styled.div`
     height: 62px;
     bottom: 0;
     left: 50%;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
     transform: translateX(-50%);
-    background-color: #54bd6b3f;
-    box-shadow: 0px -15px 25px #0000000a;
+    background-color: rgba(255, 255, 255, 1);
+
+    font-weight: 400;
+    font-size: 18px;
+    box-shadow: 0px -15px 25px 0px rgba(0, 0, 0, 0.04);
 
     &.hidden {
         display: none;
     }
 `;
+
+const FooterButton = styled(Link)`
+    flex-basis: 0;
+    flex-grow: 1;
+
+    text-align: center;
+    color: rgba(149, 109, 109, 1);
+    text-decoration: none;
+`;
+
+const FooterRiceButton = styled(Link)`
+    padding-bottom: 64px;
+`;
+
+const ButtonImage = styled.img``;
 
 const LOGO_DEFAULT = true;
 const FOOTER_DEFAULT = false;
@@ -133,7 +157,11 @@ const MobileWrapper = ({}) => {
                 <Outlet />
             </Content>
             <Footer className={classNames({ hidden: !showFooter })}>
-                하단 Footer -- 버튼 들어갈 곳
+                <FooterButton to="/">이츠밥약</FooterButton>
+                <FooterRiceButton to="/">
+                    <ButtonImage src={RiceBalloonButton} />
+                </FooterRiceButton>
+                <FooterButton to="/">마이페이지</FooterButton>
             </Footer>
         </Container>
     );
