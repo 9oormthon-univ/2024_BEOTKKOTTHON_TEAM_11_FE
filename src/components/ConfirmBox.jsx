@@ -122,11 +122,15 @@ function ConfirmBox(props) {
     // D-Day 계산
     const calculateDDay = (eventDate) => {
         const today = new Date();
+        today.setHours(0, 0, 0, 0); // 오늘 날짜를 자정으로 설정
+    
         const eventDay = new Date(eventDate);
+        eventDay.setHours(0, 0, 0, 0); // 이벤트 날짜를 자정으로 설정
+    
         const timeDiff = eventDay - today;
         const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
-
-        return Math.floor(dayDiff);
+    
+        return Math.ceil(dayDiff); // 오늘을 포함하려면 올림을 사용
     };
 
     const dDay = calculateDDay(date);
@@ -141,9 +145,9 @@ function ConfirmBox(props) {
             
             <MarkContainer>
                 {userRole === 'host' ? (
-                    <BsFillBookmarkStarFill />
+                    <BsFillBookmarkStarFill size={24}/>
                     ) : (
-                    <BsFillBookmarkPlusFill />
+                    <BsFillBookmarkPlusFill size={24}/>
                 )}
             </MarkContainer>
         </DNMContainer>
