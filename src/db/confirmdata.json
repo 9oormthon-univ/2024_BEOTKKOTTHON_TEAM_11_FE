@@ -14,7 +14,7 @@
         "박지환",
         "유지희"
       ],
-      "userRole": "participant"
+      "userRole": "host"
     },
     {
       "id": 2,
@@ -28,7 +28,7 @@
         "김경재",
         "유지희"
       ],
-      "userRole": "host"
+      "userRole": "participant"
     },
     {
       "id": 3,
@@ -52,13 +52,14 @@
         "date": "2024-04-15",
         "time": "09:30",
         "place": "외대식당",
-        "host": "유지희",
+        "host": "김경재",
         "participants": [
+          "유지희",
           "김현아",
           "문성욱",
           "박지환"
         ],
-        "userRole": "participant"
+        "userRole": "host"
       }
   ]
   
