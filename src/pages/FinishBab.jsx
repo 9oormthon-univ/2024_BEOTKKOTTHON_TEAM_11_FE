@@ -2,14 +2,14 @@ import React from 'react'
 import BabNavbar from '../components/BabNavbar'
 
 
-function WaitBab() {
+function FinishBab() {
   return (
     <div>
         <BabNavbar />
-        <div>대기중 밥약</div>
+        <div>종료된 밥약</div>
         
     </div>
   )
 }
 
-export default WaitBab
+export default FinishBab

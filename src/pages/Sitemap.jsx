@@ -28,7 +28,7 @@ const Sitemap = ({}) => {
             <BlockButton
                 text="밥약 목록"
                 onClick={() => {
-                    navigate('/waitbab');
+                    navigate('/confirmbab');
                 }}
             />
             <BlockButton

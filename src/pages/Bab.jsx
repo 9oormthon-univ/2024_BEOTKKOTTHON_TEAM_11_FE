@@ -5,7 +5,7 @@ function WaitBab() {
   return (
     <Container>
             <p>{getLoginText()}</p>
-            <Link to="/waitbab">Waitbab</Link>
+            <Link to="/confirmbab">Confirmbab</Link>
         </Container>
   )
 }

@@ -4,8 +4,10 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Sitemap from './pages/Sitemap.jsx';
-import WaitBab from './pages/WaitBab.jsx';
+import ConfirmBab from './pages/ConfirmBab.jsx';
 import TimeTableTest from './pages/TimeTableTest.jsx';
+import WaitBab from './pages/WaitBab.jsx';
+import FinishBab from './pages/FinishBab.jsx';
 
 const routes = [
     {
@@ -27,8 +29,18 @@ const routes = [
         element: <TimeTableTest />,
     },
     {
+        path: '/confirmbab',
+        element: <ConfirmBab />,
+        footer: true,
+    },
+    {
         path: '/waitbab',
         element: <WaitBab />,
+        footer: true,
+    },
+    {
+        path: '/finishbab',
+        element: <FinishBab />,
         footer: true,
     },
 ];
