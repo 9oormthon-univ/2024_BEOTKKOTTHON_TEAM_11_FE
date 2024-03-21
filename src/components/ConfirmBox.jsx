@@ -39,7 +39,7 @@ const DDday = styled.p`
     margin-right: 10px;
 `;
 
-//밥약 이름, 파티장인지 파티원인지 구분마크
+//파티장인지 파티원인지 구분마크, 밥약 이름
 const MarkContainer = styled.div`
     color: #FE5858;
     width: 24px;
