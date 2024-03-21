@@ -4,6 +4,8 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Sitemap from './pages/Sitemap.jsx';
+import FinishBab from './pages/FinishBab.jsx';
+import ConfirmBab from './pages/ConfirmBab.jsx';
 import WaitBab from './pages/WaitBab.jsx';
 import PendingParty from './pages/PendingParty.jsx';
 import CreateParty from './pages/CreateParty.jsx';
@@ -38,10 +40,22 @@ const routes = [
         name: '밥약 생성하기',
     },
     {
+        path: '/confirmbab',
+        element: <ConfirmBab />,
+        footer: true,
+        name: '확정된 밥약 목록',
+    },
+    {
         path: '/waitbab',
         element: <WaitBab />,
         footer: true,
         name: '대기중인 밥약 목록',
+    },
+    {
+        path: '/finishbab',
+        element: <FinishBab />,
+        footer: true,
+        name: '종료된 밥약 목록',
     },
 ];
 
