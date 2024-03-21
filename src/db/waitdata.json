@@ -1,0 +1,35 @@
+[
+    
+    {
+        "id": 1,
+        "name": "이츠타임 회식",
+        "isLeader": true,
+        "dateStatus": false,
+        "date": null,
+        "place": "판교 리파인",
+        "confirmedPeopleCount": 2,
+        "allResponded": true
+    },
+    {
+        "id": 2,
+        "name": "프로젝트 마감 파티",
+        "isLeader": false,
+        "dateStatus": true,
+        "date": "2024-03-25",
+        "place": "강남 스타트업 허브",
+        "confirmedPeopleCount": 5,
+        "allResponded": false
+    },
+    {
+        "id": 3,
+        "name": "졸업 축하 모임",
+        "isLeader": true,
+        "dateStatus": false,
+        "date": null,
+        "place": "홍대 입구",
+        "confirmedPeopleCount": 4,
+        "allResponded": false
+    }
+    
+]
+  
