@@ -21,9 +21,9 @@ const StyledButton = styled.button`
     `}
 `;
 
-function CustomButton({ name, variant }) {
+function CustomButton({ name, variant, onClick  }) {
   return (
-    <StyledButton variant={variant}>
+    <StyledButton variant={variant} onClick={onClick}>
       {name}
     </StyledButton>
   );

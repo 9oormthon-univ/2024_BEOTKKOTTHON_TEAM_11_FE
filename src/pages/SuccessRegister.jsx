@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import riceBalloon from '../assets/images/riceBalloon_notail.png'
 import styled from 'styled-components'
 import TextboxMini from '../components/TextboxMini.jsx';
@@ -31,11 +32,12 @@ const ButtonDiv = styled.div`
     margin-right: auto;
 `;
 
-
 const TextDiv = styled.div`
-margin-top: 48px;
+    margin-top: 48px;
 `;
+
 function SuccessRegister() {
+    const navigate = useNavigate(); // useNavigate 훅 사용
   return (
     <>
         <LogoDiv>
@@ -48,8 +50,8 @@ function SuccessRegister() {
             <TextboxMini text="편하고 행복한 밥약 만들러 가볼까요?"></TextboxMini>
         </TextDiv>
         <ButtonDiv>
-            <CustomButton name="홈으로 이동" variant="home"></CustomButton>
-            <CustomButton name="로그인" variant="login"></CustomButton>
+            <CustomButton name="홈으로 이동" variant="home" onClick={() => navigate('/')}></CustomButton>
+            <CustomButton name="로그인" variant="login" onClick={() => navigate('/login')}></CustomButton>
         </ButtonDiv>
         
         
