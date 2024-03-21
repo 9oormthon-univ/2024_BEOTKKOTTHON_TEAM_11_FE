@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // useEffect를 추가로 import합니다.
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom'; // useLocation을 추가로 import합니다.
 
 const BabyakButton = styled.button`
   width: 105px;
@@ -25,9 +26,24 @@ const ButtonDiv = styled.div`
 
 function BabNavbar() {
   const [activeButton, setActiveButton] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation(); // 현재 위치(경로)를 가져옵니다.
 
-  const handleClick = (buttonName) => {
-    setActiveButton(current => current === buttonName ? '' : buttonName);
+  useEffect(() => {
+    // location.pathname을 확인하여 상태를 업데이트합니다.
+    if (location.pathname.includes('waitbab')) {
+      setActiveButton('waiting');
+    } else if (location.pathname.includes('confirmbab')) {
+      setActiveButton('confirmed');
+    } else if (location.pathname.includes('finishbab')) {
+      setActiveButton('ended');
+    } else {
+      setActiveButton(''); // 경로가 일치하지 않는 경우 활성화된 버튼이 없도록 합니다.
+    }
+  }, [location]); // location이 변경될 때마다 이 effect를 다시 실행합니다.
+
+  const handleClick = (buttonName, path) => {
+    navigate(path);
   };
 
   return (
@@ -35,19 +51,19 @@ function BabNavbar() {
       <ButtonDiv>
         <BabyakButton
           $isActive={activeButton === 'waiting'}
-          onClick={() => handleClick('waiting')}
+          onClick={() => handleClick('waiting', '/waitbab')}
         >
           대기중 밥약
         </BabyakButton>
         <BabyakButton
           $isActive={activeButton === 'confirmed'}
-          onClick={() => handleClick('confirmed')}
+          onClick={() => handleClick('confirmed', '/confirmbab')}
         >
           확정된 밥약
         </BabyakButton>
         <BabyakButton
           $isActive={activeButton === 'ended'}
-          onClick={() => handleClick('ended')}
+          onClick={() => handleClick('ended', '/finishbab')}
         >
           종료된 밥약
         </BabyakButton>
