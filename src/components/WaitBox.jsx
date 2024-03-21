@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components';
-import { IoIosCalendar, IoMdPin, IoMdPeople } from "react-icons/io";
+import { IoIosCalendar, IoMdPin, IoMdPeople, IoIosArrowForward } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
 
 //...애니메이션
