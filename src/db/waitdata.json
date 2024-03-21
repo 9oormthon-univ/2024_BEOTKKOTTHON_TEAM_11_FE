@@ -14,8 +14,8 @@
         "id": 2,
         "name": "프로젝트 마감 파티",
         "isLeader": false,
-        "dateStatus": true,
-        "date": "2024-03-25",
+        "dateStatus": false,
+        "date": null,
         "place": "강남 스타트업 허브",
         "confirmedPeopleCount": 5,
         "allResponded": false
@@ -32,4 +32,3 @@
     }
     
 ]
-  

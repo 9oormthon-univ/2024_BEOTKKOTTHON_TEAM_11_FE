@@ -1,7 +1,34 @@
 import React from 'react'
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { IoIosCalendar, IoMdPin, IoMdPeople } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
+
+//...애니메이션
+const dotsAnimation = keyframes`
+  0%, 20% {
+    content: '';
+  }
+  25%, 45% {
+    content: '.';
+  }
+  50%, 70% {
+    content: '..';
+  }
+  75%, 95% {
+    content: '...';
+  }
+`;
+
+const WaitDate = styled.span`
+  font-weight: 600;
+  font-size: 16px;
+  color: #FE5858;
+  &:after {
+    content: ''; /* 기본 내용은 비워둠 */
+    animation: ${dotsAnimation} 2s infinite; /* 애니메이션 적용 */
+  }
+`;
+
 
 const BabDiv = styled.div`
     width: 345px;
@@ -45,11 +72,11 @@ const StyledCalendarIcon = styled(IoIosCalendar)`
     height: 24px;
     margin-right: 8px; // 아이콘과 날짜 사이의 간격 조정
 `;
-const WaitDate = styled.p`
+/* const WaitDate = styled.p`
     font-weight: 600;
     font-size: 16px;
     color: #FE5858;
-`;
+`; */
 
 //장소
 const PlaceContainer = styled.div`
@@ -104,7 +131,7 @@ function WaitBox(props) {
           <DateContainer>
               <StyledCalendarIcon />
               <WaitDate>
-                {dateStatus ? `${date}` : "약속 정하는 중..."}
+                {dateStatus ? `${date}` : "약속 정하는 중"}
               </WaitDate>
           </DateContainer>
   
