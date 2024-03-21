@@ -18,10 +18,12 @@ const TextDiv = styled.div`
 `;
 
 const LinkContainer = styled.div`
-margin-top: 40px;
+    margin-top: 40px;
 `;
 
 function ShareBab() {
+    const shareLink = "https://www.youtube.com/wa"; // 이 부분에 원하는 링크를 넣어주세요.
+
   return (
     <>
         <LogoDiv>
@@ -32,7 +34,7 @@ function ShareBab() {
             <TextboxMini text="하단의 링크를 통해 공유해보아요!!"></TextboxMini>
         </TextDiv>
         <LinkContainer>
-            <LinkBox icon={BsFillShareFill} text="밥약 공유 링크" placeholder="https://www.youtube.com/wa"></LinkBox>
+            <LinkBox icon={BsFillShareFill} text="밥약 공유 링크" link={shareLink}></LinkBox>
         </LinkContainer>
         
     </>
