@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { BsCheckLg } from 'react-icons/bs';
 import styled from 'styled-components';
 
 const Item = styled.div`
@@ -31,9 +32,13 @@ const Item = styled.div`
     &.disabled {
         background-color: rgba(255, 246, 246, 1);
     }
+
+    & > svg {
+        color: #ffffff;
+    }
 `;
 
-const TimeItem = ({ value, text, style, disabled }) => {
+const TimeItem = ({ value, style, readOnly, disabled }) => {
     return (
         <Item
             style={style}
@@ -41,7 +46,7 @@ const TimeItem = ({ value, text, style, disabled }) => {
             draggable={false}
             className={classNames({ disabled })}
         >
-            {text}
+            {readOnly && value >= 1 ? <BsCheckLg /> : null}
         </Item>
     );
 };

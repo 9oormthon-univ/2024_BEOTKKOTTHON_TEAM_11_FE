@@ -192,6 +192,7 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
                     style={{ gridColumn: i + 1, gridRow: j + 1 }}
                     value={data[i].items[j]}
                     disabled={disabledRanges.includes(i)}
+                    readOnly={readOnly}
                 />
             );
         }

@@ -12,6 +12,7 @@ import CreateParty from './pages/CreateParty.jsx';
 import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
 import Payment from './pages/Payment.jsx';
+import ScheduledEvent from './pages/ScheduledEvent.jsx';
 
 const routes = [
     {
@@ -35,6 +36,12 @@ const routes = [
         element: <PendingParty />,
         footer: true,
         name: '대기중인 밥약',
+    },
+    {
+        path: '/party/scheduled',
+        element: <ScheduledEvent />,
+        footer: true,
+        name: '확정된 밥약',
     },
     {
         path: '/party/create',
