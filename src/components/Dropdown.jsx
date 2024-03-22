@@ -47,13 +47,7 @@ const Wrapper = styled.div`
     font-weight: 500;
     font-size: 16px;
 
-    &.transition {
-        transition: max-height 0.3s;
-    }
-
-    &.active {
-        max-height: ${(props) => props.$height}px;
-    }
+    transition: max-height 0.3s;
 `;
 
 const EmptyText = styled.p`
@@ -90,7 +84,6 @@ const Item = styled.div`
 
 const Dropdown = ({ text, items, onSelect, value, ...props }) => {
     const [isOpen, setOpen] = useState(false);
-    const [isTransition, setIsTransition] = useState(false);
     const [height, setHeight] = useState(0);
 
     const ref = useRef(null);
@@ -100,33 +93,16 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
             return;
         }
 
-        const observer = new ResizeObserver((entries) => {
-            if (isTransition) return;
-            setHeight(entries[0].target.scrollHeight);
-        });
-
-        observer.observe(ref.current);
-
         setHeight(ref.current.scrollHeight);
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [ref, isTransition]);
+    }, [ref]);
 
     const onClick = (event) => {
-        if (!ref) return;
-
-        setIsTransition(true);
         setOpen((state) => !state);
-    };
-
-    const onTransitionEnd = (event) => {
-        setIsTransition(false);
     };
 
     const onItemClick = (event, value) => {
         onSelect(value);
+        setOpen((state) => !state);
     };
 
     const elements = items.map((item, index) => {
@@ -151,12 +127,9 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
             </Container>
             <Wrapper
                 ref={ref}
-                className={classNames({
-                    active: isOpen,
-                    transition: isTransition,
-                })}
-                $height={height}
-                onTransitionEnd={onTransitionEnd}
+                style={{
+                    maxHeight: isOpen ? height : 0,
+                }}
             >
                 {elements.length === 0 ? (
                     <EmptyText>아직 참여한 사람이 없습니다.</EmptyText>
