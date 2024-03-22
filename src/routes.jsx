@@ -10,6 +10,7 @@ import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
 import Payment from './pages/Payment.jsx';
 import ScheduledEvent from './pages/ScheduledEvent.jsx';
+import Logout from './pages/Logout.jsx';
 
 const routes = [
     {
@@ -22,6 +23,13 @@ const routes = [
         element: <Login />,
         logo: false,
         name: '로그인',
+    },
+    {
+        path: '/logout',
+        element: <Logout />,
+        logo: false,
+        previous: false,
+        name: '로그아웃',
     },
     {
         path: '/register',

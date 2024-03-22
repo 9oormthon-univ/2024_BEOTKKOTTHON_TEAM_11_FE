@@ -77,6 +77,7 @@ const RegisterText = styled.p`
 
 const Login = ({}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [fieldHidden, setFieldHidden] = useState(true);
     const [errorText, setErrorText] = useState('');
 
@@ -99,22 +100,19 @@ const Login = ({}) => {
         try {
             response = await postLogin({ id, password });
         } catch (e) {
-            alert('비밀번호나 아이디가 틀립니다\nid: admin pw: 1111');
             setErrorText('비밀번호가 틀렸습니다');
             return;
         }
 
-        alert(`${id}님 환영합니다!`);
-        setErrorText('');
-        navigate('/');
+        dispatch(
+            login({
+                accessToken: response.accessToken,
+                id,
+            })
+        );
 
-        // dispatch(
-        //     login({
-        //         access_token: 'token111',
-        //         refresh_token: 'token222',
-        //         name: '이츠타임',
-        //     })
-        // );
+        alert(`${id}님 환영합니다!`);
+        navigate('/');
     }
 
     return (
@@ -134,7 +132,10 @@ const Login = ({}) => {
                 />
                 <TextInput
                     value={password}
-                    onInput={(event) => setPassword(event.target.value)}
+                    onInput={(event) => {
+                        setPassword(event.target.value);
+                        setErrorText('');
+                    }}
                     placeholder="비밀번호를 입력해주세요"
                     additionalItem={
                         <PasswordEyeButton

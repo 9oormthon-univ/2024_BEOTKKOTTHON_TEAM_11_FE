@@ -177,11 +177,11 @@ const MobileWrapper = ({}) => {
                 <Outlet />
             </Content>
             <Footer className={classNames({ hidden: !showFooter })}>
-                <FooterButton to="/">이츠밥약</FooterButton>
+                <FooterButton to="/">이츠타임?</FooterButton>
                 <FooterRiceButton to="/">
                     <ButtonImage src={RiceBalloonButton} />
                 </FooterRiceButton>
-                <FooterButton to="/">마이페이지</FooterButton>
+                <FooterButton to="/logout">로그아웃</FooterButton>
             </Footer>
         </Container>
     );
