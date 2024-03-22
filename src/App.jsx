@@ -21,8 +21,6 @@ function App() {
         const accessToken = Cookies.get('accessToken');
         const id = Cookies.get('id');
 
-        console.log(accessToken);
-
         if (accessToken && id) {
             store.dispatch(login({ accessToken, id }));
         }

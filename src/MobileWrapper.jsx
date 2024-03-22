@@ -151,7 +151,6 @@ const MobileWrapper = ({}) => {
     }, [location]);
 
     const onBackButtonClick = (event) => {
-        console.log(backwardUrl);
         navigate(backwardUrl);
     };
 

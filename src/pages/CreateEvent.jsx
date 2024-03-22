@@ -88,7 +88,6 @@ const CreateEvent = ({}) => {
                         startDate={startDate}
                         endDate={endDate}
                         onChange={(startDate, endDate) => {
-                            console.log(1);
                             setStartDate(startDate);
                             setEndDate(endDate);
                         }}
