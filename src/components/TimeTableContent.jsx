@@ -184,14 +184,14 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
 
     const elements = [];
 
-    for (let i = 0; i < column; i++) {
-        for (let j = 0; j < row; j++) {
+    for (let i = 0; i < row; i++) {
+        for (let j = 0; j < column; j++) {
             elements.push(
                 <TimeItem
-                    key={j * column + i}
-                    style={{ gridColumn: i + 1, gridRow: j + 1 }}
-                    value={data[i].items[j]}
-                    disabled={disabledRanges.includes(i)}
+                    key={i * column + j}
+                    style={{ gridColumn: j + 1, gridRow: i + 1 }}
+                    value={data[j].items[i]}
+                    disabled={disabledRanges.includes(j)}
                     readOnly={readOnly}
                 />
             );

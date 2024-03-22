@@ -159,6 +159,7 @@ const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
 
         dates.push(
             <DateItem
+                key={i}
                 className={classNames({ disabled: disabledRanges.includes(i) })}
             >
                 <p>{date.format('ddd')}</p>

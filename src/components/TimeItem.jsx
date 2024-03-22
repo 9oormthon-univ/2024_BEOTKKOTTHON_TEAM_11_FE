@@ -40,12 +40,7 @@ const Item = styled.div`
 
 const TimeItem = ({ value, style, readOnly, disabled }) => {
     return (
-        <Item
-            style={style}
-            $value={value}
-            draggable={false}
-            className={classNames({ disabled })}
-        >
+        <Item style={style} $value={value} className={classNames({ disabled })}>
             {readOnly && value >= 1 ? <BsCheckLg /> : null}
         </Item>
     );
