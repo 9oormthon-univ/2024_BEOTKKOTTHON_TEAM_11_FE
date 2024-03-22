@@ -69,7 +69,7 @@ export async function postEmailConfirmation(request) {
     // const bodyData = {
     //     email: request.email,
     //     univName: request.organization,
-    //     code: request.code,
+    //     code: Number(request.code),
     // };
 
     // const response = await axios.post('/api/v1/verificationCode', bodyData);
