@@ -99,7 +99,6 @@ const PeopleContainer = styled.div`
 `;
 const StyledPeopleIcon = styled(IoMdPeople)`
 ${({ hover }) => iconStyle(hover)}
-    margin-right: 8px;
 `;
 
 const ConfirmPerson = styled.p`
