@@ -49,10 +49,6 @@ const Wrapper = styled.div`
     &.transition {
         transition: max-height 0.3s;
     }
-
-    &.active {
-        max-height: ${(props) => props.$height}px;
-    }
 `;
 
 const Accordion = ({ icon, text, element, ...props }) => {
@@ -68,12 +64,11 @@ const Accordion = ({ icon, text, element, ...props }) => {
         }
 
         const observer = new ResizeObserver((entries) => {
-            if (isTransition) return;
+            if (!isOpen || isTransition) return;
             setHeight(entries[0].target.scrollHeight);
         });
 
         observer.observe(ref.current);
-
         setHeight(ref.current.scrollHeight);
 
         return () => {
@@ -104,10 +99,11 @@ const Accordion = ({ icon, text, element, ...props }) => {
             <Wrapper
                 ref={ref}
                 className={classNames({
-                    active: isOpen,
                     transition: isTransition,
                 })}
-                $height={height}
+                style={{
+                    maxHeight: isOpen ? height : 0,
+                }}
                 onTransitionEnd={onTransitionEnd}
             >
                 {element}

@@ -42,18 +42,11 @@ const Toggle = styled.div`
 const Wrapper = styled.div`
     margin-bottom: 24px;
     overflow: hidden;
-    max-height: 0px;
     color: #d64949;
     font-weight: 500;
     font-size: 16px;
 
-    &.transition {
-        transition: max-height 0.3s;
-    }
-
-    &.active {
-        max-height: ${(props) => props.$height}px;
-    }
+    transition: max-height 0.3s;
 `;
 
 const EmptyText = styled.p`
@@ -90,7 +83,6 @@ const Item = styled.div`
 
 const Dropdown = ({ text, items, onSelect, value, ...props }) => {
     const [isOpen, setOpen] = useState(false);
-    const [isTransition, setIsTransition] = useState(false);
     const [height, setHeight] = useState(0);
 
     const ref = useRef(null);
@@ -100,33 +92,17 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
             return;
         }
 
-        const observer = new ResizeObserver((entries) => {
-            if (isTransition) return;
-            setHeight(entries[0].target.scrollHeight);
-        });
-
-        observer.observe(ref.current);
-
         setHeight(ref.current.scrollHeight);
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [ref, isTransition]);
+    }, [ref]);
 
     const onClick = (event) => {
-        if (!ref) return;
-
-        setIsTransition(true);
+        setHeight(ref.current.scrollHeight);
         setOpen((state) => !state);
-    };
-
-    const onTransitionEnd = (event) => {
-        setIsTransition(false);
     };
 
     const onItemClick = (event, value) => {
         onSelect(value);
+        setOpen((state) => !state);
     };
 
     const elements = items.map((item, index) => {
@@ -142,8 +118,8 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
     });
 
     return (
-        <>
-            <Container onClick={onClick} {...props}>
+        <div {...props}>
+            <Container onClick={onClick}>
                 <Text>{text}</Text>
                 <Toggle>
                     {isOpen ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
@@ -151,12 +127,9 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
             </Container>
             <Wrapper
                 ref={ref}
-                className={classNames({
-                    active: isOpen,
-                    transition: isTransition,
-                })}
-                $height={height}
-                onTransitionEnd={onTransitionEnd}
+                style={{
+                    maxHeight: isOpen ? height : 0,
+                }}
             >
                 {elements.length === 0 ? (
                     <EmptyText>아직 참여한 사람이 없습니다.</EmptyText>
@@ -164,7 +137,7 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
                     elements
                 )}
             </Wrapper>
-        </>
+        </div>
     );
 };
 

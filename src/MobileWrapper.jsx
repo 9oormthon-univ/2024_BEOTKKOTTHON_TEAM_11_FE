@@ -77,6 +77,7 @@ const Logo = styled.img`
 const Footer = styled.div`
     position: fixed;
     max-width: 390px;
+    min-width: 360px;
     width: 100%;
     height: 62px;
     bottom: 0;
@@ -92,6 +93,11 @@ const Footer = styled.div`
     font-weight: 400;
     font-size: 18px;
     box-shadow: 0px -15px 25px 0px rgba(0, 0, 0, 0.04);
+
+    @media screen and (max-width: 360px) {
+        left: 0;
+        transform: none;
+    }
 
     &.hidden {
         display: none;
@@ -145,7 +151,6 @@ const MobileWrapper = ({}) => {
     }, [location]);
 
     const onBackButtonClick = (event) => {
-        console.log(backwardUrl);
         navigate(backwardUrl);
     };
 

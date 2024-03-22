@@ -51,13 +51,7 @@ const Wrapper = styled.div`
     overflow: hidden;
     max-height: 0px;
 
-    &.transition {
-        transition: max-height 0.3s;
-    }
-
-    &.active {
-        max-height: ${(props) => props.$height}px;
-    }
+    transition: max-height 0.3s;
 `;
 
 const Input = styled.div`
@@ -97,7 +91,6 @@ const PaymentAccordion = ({
     hidden,
     ...props
 }) => {
-    const [isTransition, setIsTransition] = useState(false);
     const [height, setHeight] = useState(0);
 
     const ref = useRef(null);
@@ -106,30 +99,13 @@ const PaymentAccordion = ({
         if (!ref || !ref.current) {
             return;
         }
-
-        const observer = new ResizeObserver((entries) => {
-            if (isTransition) return;
-            setHeight(entries[0].target.scrollHeight);
-        });
-
-        observer.observe(ref.current);
-
         setHeight(ref.current.scrollHeight);
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [ref, isTransition]);
+    }, [ref]);
 
     const onClick = (event) => {
         if (!ref) return;
 
-        setIsTransition(true);
         onChange(!value);
-    };
-
-    const onTransitionEnd = (event) => {
-        setIsTransition(false);
     };
 
     return (
@@ -147,12 +123,9 @@ const PaymentAccordion = ({
             </Container>
             <Wrapper
                 ref={ref}
-                className={classNames({
-                    active: value,
-                    transition: isTransition,
-                })}
-                $height={height}
-                onTransitionEnd={onTransitionEnd}
+                style={{
+                    maxHeight: value ? height : 0,
+                }}
             >
                 {children}
             </Wrapper>

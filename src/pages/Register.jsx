@@ -57,7 +57,8 @@ const Dot = styled.div`
 
 const FormContainer = styled.div`
     width: 100%;
-    height: 176px;
+    /* height: 176px; */
+    height: 246px;
     margin-bottom: 56px;
     overflow: hidden;
 `;
@@ -99,6 +100,7 @@ const Register = ({}) => {
     const [isNextPage, setNextPage] = useState(false);
 
     const [name, setName] = useState('');
+    const [organization, setOrganization] = useState('');
     const [email, setEmail] = useState('');
     const [emailCode, setEmailCode] = useState('');
     const [emailSent, setEmailSent] = useState(false);
@@ -167,6 +169,11 @@ const Register = ({}) => {
     };
 
     const onEmailVerifyButtonClick = async (event) => {
+        if (organization === '') {
+            alert('대학교를 입력하세요.');
+            return false;
+        }
+
         if (email === '') {
             alert('이메일을 입력하세요.');
             return;
@@ -175,7 +182,7 @@ const Register = ({}) => {
         let response;
 
         try {
-            await postEmailVerification({ email });
+            await postEmailVerification({ email, organization });
         } catch (e) {
             alert('인증 메일 전송에 실패했습니다.');
             return;
@@ -204,7 +211,11 @@ const Register = ({}) => {
         let response;
 
         try {
-            await postEmailConfirmation({ email, code: emailCode });
+            response = await postEmailConfirmation({
+                email,
+                organization,
+                code: emailCode,
+            });
         } catch (e) {
             alert('인증 코드가 틀렸습니다.');
             return;
@@ -212,7 +223,7 @@ const Register = ({}) => {
 
         setEmailVerified(true);
 
-        alert(`${email}의 이메일 인증에 성공했습니다.`);
+        alert(`${response.email}의 이메일 인증에 성공했습니다.`);
     };
 
     const onNextPageClick = async (event) => {
@@ -264,6 +275,15 @@ const Register = ({}) => {
                         value={name}
                         onInput={(event) => setName(event.target.value)}
                         placeholder="이름을 입력해주세요"
+                    />
+                    <TextInput
+                        value={organization}
+                        onInput={(event) => {
+                            setOrganization(event.target.value);
+                            setEmailSent(false); // 대학 이름을 바꾸면 인증 메일을 무효화
+                            setEmailVerified(false); // 대학 이름을 바꾸면 인증을 무효화
+                        }}
+                        placeholder="대학교를 입력해주세요"
                     />
                     <TextInput
                         value={email}

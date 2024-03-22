@@ -7,15 +7,7 @@ const Item = styled.div`
     border-radius: 2px;
     display: flex;
 
-    background-color: rgba(
-        ${(props) => {
-            if (props.$value === 0) {
-                return '245, 223, 223, 1';
-            } else {
-                return `255, 88, 88, ${props.$value}`;
-            }
-        }}
-    );
+    background-color: rgba(255, 88, 88, ${(props) => 0.2 + 0.8 * props.$value});
 
     transition: background-color 0.1s;
 
@@ -34,19 +26,15 @@ const Item = styled.div`
     }
 
     & > svg {
+        stroke-width: 0.5px;
         color: #ffffff;
     }
 `;
 
-const TimeItem = ({ value, style, readOnly, disabled }) => {
+const TimeItem = ({ value, style, showCheck, disabled }) => {
     return (
-        <Item
-            style={style}
-            $value={value}
-            draggable={false}
-            className={classNames({ disabled })}
-        >
-            {readOnly && value >= 1 ? <BsCheckLg /> : null}
+        <Item style={style} $value={value} className={classNames({ disabled })}>
+            {showCheck && value >= 1 ? <BsCheckLg /> : null}
         </Item>
     );
 };

@@ -4,7 +4,7 @@ import Sitemap from './pages/Sitemap.jsx';
 import FinishBab from './pages/FinishBab.jsx';
 import ConfirmBab from './pages/ConfirmBab.jsx';
 import WaitBab from './pages/WaitBab.jsx';
-import PendingParty from './pages/PendingParty.jsx';
+import PendingEvent from './pages/PendingEvent.jsx';
 import CreateEvent from './pages/CreateEvent.jsx';
 import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
@@ -44,7 +44,7 @@ const routes = [
     },
     {
         path: '/party/pending',
-        element: <PendingParty />,
+        element: <PendingEvent />,
         footer: true,
         name: '대기중인 밥약',
         title: '대기중인 밥약',

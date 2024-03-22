@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 export async function createEvent(request) {
     // const axios = getAxiosInstance();
 
@@ -7,6 +5,7 @@ export async function createEvent(request) {
     //     ownerId: request.userId,
     //     title: request.name,
     //     startDate: request.startDate,
+    //     endDate: request.endDate, // 이 부분 빠져있음
     //     locName: request.location,
     //     locAddress: request.address,
     //     memo: request.memo,
@@ -29,6 +28,7 @@ export async function getEvent(request) {
     //     id: response.data.id,
     //     name: response.data.eventName,
     //     startDate: response.data.prefer_starttime,
+    //     endDate: response.data.prefer_endtime,  // 이 부분 빠져있음
     //     remainingDays: response.data.dDay,
     //     confirmDate:
     //         response.data.date && response.data.time
@@ -36,7 +36,10 @@ export async function getEvent(request) {
     //             : null,
     //     location: response.data.place,
     //     ownerId: response.data.host,
-    //     participants: response.data.participants,
+    //     participants: response.data.participants.map((item) => ({
+    //         name: item.memberName,
+    //         id: item.memberId,
+    //     })),
     //     userRole: response.data.userRole,
     // };
 
@@ -47,7 +50,9 @@ export async function getEvent(request) {
     return {
         id: 101,
         name: '테스트 밥약',
-        startDate: '2024-03-22',
+        startDate: '2024-03-28',
+        endDate: '2024-04-03',
+        responseCount: 4,
         remainingDays: '3',
         confirmDate: '2024-03-25 12:00',
         location: '서울시 강남구',
@@ -70,32 +75,28 @@ export async function getEvent(request) {
                 name: '문성욱',
                 id: 4,
             },
-            {
-                name: '박지환',
-                id: 5,
-            },
-            {
-                name: '유지희',
-                id: 6,
-            },
-            {
-                name: '아무이름',
-                id: 7,
-            },
-            {
-                name: '아무이름',
-                id: 8,
-            },
-            {
-                name: '아무이름',
-                id: 9,
-            },
-            {
-                name: '아무이름',
-                id: 10,
-            },
         ],
         userRole: 'owner',
+    };
+}
+
+export async function postConfirmEvent(request) {
+    // const axios = getAxiosInstance(request.token);
+
+    // const bodyData = {
+    //     confirmedDate: request.date,
+    //     confirmedTime: request.time,
+    // };
+
+    // const response = await axios.post(
+    //     `/api/v1/promises/${request.eventId}/confirmation`,
+    //     bodyData
+    // );
+
+    // return response.data;
+
+    return {
+        status: 200,
     };
 }
 
@@ -109,7 +110,7 @@ export async function postFinishEvent(request) {
     // };
 
     // const response = await axios.post(
-    //     `/api/v1/promises/${request.id}/termination`,
+    //     `/api/v1/promises/${request.eventId}/termination`,
     //     bodyData
     // );
 

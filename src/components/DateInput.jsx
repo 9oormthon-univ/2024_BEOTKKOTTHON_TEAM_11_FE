@@ -27,9 +27,9 @@ const Input = styled.input`
     }
 `;
 
-const DateInput = ({ placeholder, onInput, value }) => {
+const DateInput = ({ placeholder, onInput, value, ...props }) => {
     return (
-        <Container>
+        <Container {...props}>
             <Input
                 type="datetime-local"
                 placeholder={placeholder}

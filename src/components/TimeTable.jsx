@@ -138,28 +138,42 @@ const InnerWrapper = styled.div`
     }
 `;
 
-const COLUMN = 4;
-const ROW = 24;
+const column = 4;
+const row = 24;
 
-const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
+const startTime = dayjs().hour(11).minute(0).second(0).millisecond(0);
+
+const TimeTable = ({
+    column,
+    row,
+    startDate,
+    endDate,
+    readOnly,
+    showCheck,
+    value,
+    onChange,
+}) => {
     const [isNextPage, setNextPage] = useState(false);
 
-    const isSinglePage = [4, 5, 6, 7].every((item) =>
-        disabledRanges.includes(item)
-    );
+    const dateLength = endDate.diff(startDate, 'd') + 1;
 
-    const items = [];
-    for (let i = 0; i < ROW / 2; i++) {
-        items.push(<SideBarItem key={i}>{11 + i}:00</SideBarItem>);
+    const sidebarItems = [];
+    for (let i = 0; i < row / 2; i++) {
+        sidebarItems.push(
+            <SideBarItem key={i}>
+                {startTime.add(i, 'hour').format('HH:mm')}
+            </SideBarItem>
+        );
     }
 
     const dates = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < column * 2; i++) {
         const date = startDate.add(i, 'd');
 
         dates.push(
             <DateItem
-                className={classNames({ disabled: disabledRanges.includes(i) })}
+                key={i}
+                className={classNames({ disabled: i >= dateLength })}
             >
                 <p>{date.format('ddd')}</p>
                 <p>{date.format('D')}</p>
@@ -179,6 +193,31 @@ const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
         setNextPage(true);
     };
 
+    const leftValue = value.filter((item) => item.date < column);
+    const rightValue = value
+        .filter((item) => item.date >= column)
+        .map((item) => ({ ...item, date: item.date - column }));
+
+    const onLeftValueChange = (value) => {
+        onChange([
+            ...value,
+            ...rightValue.map((item) => ({
+                date: item.date + column,
+                items: item.items,
+            })),
+        ]);
+    };
+
+    const onRightValueChange = (value) => {
+        onChange([
+            ...leftValue,
+            ...value.map((item) => ({
+                date: item.date + column,
+                items: item.items,
+            })),
+        ]);
+    };
+
     return (
         <Container>
             <Header>
@@ -186,7 +225,7 @@ const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
                     onClick={onPrevButtonClick}
                     className={classNames({
                         disabled: !isNextPage,
-                        hidden: isSinglePage,
+                        hidden: dateLength <= column,
                     })}
                 >
                     <IoIosArrowBack />
@@ -196,7 +235,7 @@ const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
                     onClick={onNextButtonClick}
                     className={classNames({
                         disabled: isNextPage,
-                        hidden: isSinglePage,
+                        hidden: dateLength <= column,
                     })}
                 >
                     <IoIosArrowForward />
@@ -204,28 +243,30 @@ const TimeTable = ({ startDate, disabledRanges, readOnly }) => {
             </Header>
             <DateContainer>
                 <InnerWrapper className={classNames({ next: isNextPage })}>
-                    <div>{dates.slice(0, 4)}</div>
-                    <div>{dates.slice(4, 8)}</div>
+                    <div>{dates.slice(0, column)}</div>
+                    <div>{dates.slice(column, column * 2)}</div>
                 </InnerWrapper>
             </DateContainer>
             <Content>
-                <SideBar $row={ROW / 2}>{items}</SideBar>
+                <SideBar $row={row / 2}>{sidebarItems}</SideBar>
                 <InnerWrapper className={classNames({ next: isNextPage })}>
                     <TimeTableContent
-                        column={COLUMN}
-                        row={ROW}
+                        column={column}
+                        row={row}
                         readOnly={readOnly}
-                        disabledRanges={disabledRanges.filter(
-                            (item) => item >= 0 && item < 4
-                        )}
+                        showCheck={showCheck}
+                        maxIndex={dateLength}
+                        value={leftValue}
+                        onChange={onLeftValueChange}
                     />
                     <TimeTableContent
-                        column={COLUMN}
-                        row={ROW}
+                        column={column}
+                        row={row}
                         readOnly={readOnly}
-                        disabledRanges={disabledRanges
-                            .filter((item) => item >= 4 && item < 8)
-                            .map((item) => item - 4)}
+                        showCheck={showCheck}
+                        maxIndex={dateLength - 4}
+                        value={rightValue}
+                        onChange={onRightValueChange}
                     />
                 </InnerWrapper>
             </Content>

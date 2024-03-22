@@ -191,6 +191,14 @@ const ScheduledEvent = ({}) => {
             return;
         }
 
+        const confirm = window.confirm(
+            '정말로 밥약을 종료하시겠어요? 밥약을 종료하면 참여 인원들은 더 이상 밥약 정보를 볼 수 없어요!'
+        );
+
+        if (!confirm) {
+            return;
+        }
+
         let response;
 
         try {
@@ -206,7 +214,7 @@ const ScheduledEvent = ({}) => {
             return;
         }
 
-        alert('밥약이 종료된 밥약으로 이동되었습니다.');
+        alert('밥약이 종료되었습니다.');
 
         navigate('/');
     };
