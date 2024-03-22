@@ -8,7 +8,7 @@ import FinishBab from './pages/FinishBab.jsx';
 import ConfirmBab from './pages/ConfirmBab.jsx';
 import WaitBab from './pages/WaitBab.jsx';
 import PendingParty from './pages/PendingParty.jsx';
-import CreateParty from './pages/CreateParty.jsx';
+import CreateEvent from './pages/CreateEvent.jsx';
 import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
 import Payment from './pages/Payment.jsx';
@@ -47,7 +47,7 @@ const routes = [
     },
     {
         path: '/party/create',
-        element: <CreateParty />,
+        element: <CreateEvent />,
         footer: true,
         name: '밥약 생성하기',
         title: '밥약 만들기',
