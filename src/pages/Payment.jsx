@@ -4,6 +4,19 @@ import TextboxMini from '../components/TextboxMini.jsx';
 import LinkBox from '../components/LinkBox.jsx';
 import { useNavigate } from 'react-router-dom'; 
 import { BsTagsFill, BsCreditCard2BackFill, BsInfoCircleFill, BsHeartFill } from "react-icons/bs";
+import { BiSmile, BiSolidBowlRice } from "react-icons/bi";
+
+const Container = styled.div`
+    overflow-y: auto; // 세로 방향으로 스크롤 가능
+    height: 100vh; // 뷰포트 높이의 100%로 설정
+`;
+
+const SmileIcon = styled.div`
+    color:#FE5858;
+    display: flex; // Flexbox 레이아웃 활성화
+    justify-content: center; // 자식 요소(아이콘)를 가로 방향으로 중앙 정렬
+
+`;
 
 const TextDiv = styled.div`
     margin-top: 30px;
@@ -51,6 +64,7 @@ margin-top: 30px;
 border-radius: 8px;
 margin-left: auto;
 margin-right: auto;
+margin-bottom: 130px;
 background-color: #FE5858;
 color: #FFFFFF;
 font-size: 24px;
@@ -78,28 +92,34 @@ function Payment() {
     const memo1 = "남기님은 만원, 현아님은 오천원 보내주시면 됩니다!"
   return (
     <>
-        <TextDiv>
-            <TextboxMini text="즐거운 밥약을 보내셨나요?"></TextboxMini>
-            <TextboxMini text="링크를 통해 파티장에게 오늘의 비용을 송금하고,"></TextboxMini>
-            <TextboxMini text="보은하기를 통해 새로운 밥약을 만들어봐요!!"></TextboxMini>
-        </TextDiv>
-        <TitleContainer>
-            <BsTagsFill size="24px" />
-            <Title>송금 메모</Title>
-        </TitleContainer>
-        <Memo>
-            {memo1}
-        </Memo>
-        <LinkContainer>
-            <LinkBox icon={BsCreditCard2BackFill} text="송금 링크" link={"https://www.youtube.com/wa"}></LinkBox>
-        </LinkContainer>
-        <LinkContainer>
-            <LinkBox icon={BsInfoCircleFill} text="계좌 번호" link={"국민 29160204260628 유지희"}></LinkBox>
-        </LinkContainer>
-        <RepaymentButton onClick={() => navigate('/party/create')}>
-            <BsHeartFill size="24px" />
-            보은하기
-        </RepaymentButton>
+        <Container>
+            <SmileIcon>
+                <BiSmile size="135px"/>
+            </SmileIcon>
+            <TextDiv>
+                <TextboxMini text="즐거운 밥약을 보내셨나요?"></TextboxMini>
+                <TextboxMini text="링크를 통해 파티장에게 오늘의 비용을 송금하고,"></TextboxMini>
+                <TextboxMini text="보은하기를 통해 새로운 밥약을 만들어봐요!!"></TextboxMini>
+            </TextDiv>
+            <TitleContainer>
+                <BsTagsFill size="24px" />
+                <Title>송금 메모</Title>
+            </TitleContainer>
+            <Memo>
+                {memo1}
+            </Memo>
+            <LinkContainer>
+                <LinkBox icon={BsCreditCard2BackFill} text="송금 링크" link={"https://www.youtube.com/wa"}></LinkBox>
+            </LinkContainer>
+            <LinkContainer>
+                <LinkBox icon={BsInfoCircleFill} text="계좌 번호" link={"국민 29160204260628 유지희"}></LinkBox>
+            </LinkContainer>
+            <RepaymentButton onClick={() => navigate('/party/create')}>
+                <BiSolidBowlRice size="30px" />
+                보은하기
+            </RepaymentButton>
+        </Container>
+        
     </>
   )
 }
