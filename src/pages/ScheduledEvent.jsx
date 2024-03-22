@@ -7,10 +7,14 @@ import {
     BsFillBookmarkPlusFill,
     BsFillBookmarkStarFill,
     BsJournalText,
+    BsQuestionCircleFill,
 } from 'react-icons/bs';
 import BlockButton from '../components/BlockButton.jsx';
 import _TextInput from '../components/TextInput.jsx';
 import { IoMdPeople, IoMdPin } from 'react-icons/io';
+import CheckBox from '../components/CheckBox.jsx';
+import Accordion from '../components/Accordion.jsx';
+import PaymentAccordion from '../components/PaymentAccordion.jsx';
 
 const Container = styled.div`
     padding: 0 24px;
@@ -138,6 +142,7 @@ const TextInput = styled(_TextInput)`
 
 const ScheduledEvent = ({}) => {
     const [selected, setSelected] = useState(1);
+    const [isShowPayment, setShowPayment] = useState(false);
 
     return (
         <Container>
@@ -183,22 +188,25 @@ const ScheduledEvent = ({}) => {
                     <ItemLine />
                     <ItemContent>밥약 관련한 메모를 작성해주세요</ItemContent>
                 </Item>
-                <ContentHeader icon={<BsJournalText />} text="송금 메모" />
-                <Item>
-                    <ItemLine />
-                    <ItemContent>송금 관련한 메모를 작성해주세요</ItemContent>
-                </Item>
-
-                <ContentHeader
-                    icon={<BsCreditCard2BackFill />}
-                    text="송금 링크"
-                />
-                <TextInput placeholder="https://qr.kakaopay.com/000000" />
-                <ContentHeader
-                    icon={<BsCreditCard2BackFill />}
-                    text="계좌 번호"
-                />
-                <TextInput placeholder="국민은행 000-000000-000000" />
+                <PaymentAccordion
+                    icon={<BsQuestionCircleFill />}
+                    text="송금 정보를 제공할까요?"
+                    value={isShowPayment}
+                    onChange={(value) => setShowPayment(value)}
+                >
+                    <ContentHeader icon={<BsJournalText />} text="송금 메모" />
+                    <TextInput placeholder="송금 관련한 메모를 작성해주세요" />
+                    <ContentHeader
+                        icon={<BsCreditCard2BackFill />}
+                        text="송금 링크 (선택)"
+                    />
+                    <TextInput placeholder="https://qr.kakaopay.com/000000" />
+                    <ContentHeader
+                        icon={<BsCreditCard2BackFill />}
+                        text="계좌 번호 (선택)"
+                    />
+                    <TextInput placeholder="국민은행 000-000000-000000" />
+                </PaymentAccordion>
                 <Button text="밥약 종료" />
             </Wrapper>
         </Container>
