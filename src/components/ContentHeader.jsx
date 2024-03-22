@@ -21,9 +21,9 @@ const Text = styled.p`
     font-weight: 700;
 `;
 
-const ContentHeader = ({ icon, text }) => {
+const ContentHeader = ({ icon, text, ...props }) => {
     return (
-        <Container>
+        <Container {...props}>
             <Icon>{icon}</Icon>
             <Text>{text}</Text>
         </Container>
