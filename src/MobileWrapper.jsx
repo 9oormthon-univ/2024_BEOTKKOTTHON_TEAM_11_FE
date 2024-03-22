@@ -4,6 +4,7 @@ import routes from './routes.jsx';
 import { IoIosArrowBack } from 'react-icons/io';
 
 import ServiceLogoImage from './assets/images/service_logo.svg';
+import ServiceLogoCompactImage from './assets/images/rice_balloon_no_tail.svg';
 import RiceBalloonButton from './assets/images/rice_balloon_button.svg';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
@@ -57,6 +58,13 @@ const BackButton = styled.button`
     }
 `;
 
+const Title = styled.p`
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #fe5858;
+`;
+
 const Logo = styled.img`
     height: 40px;
     cursor: pointer;
@@ -107,6 +115,7 @@ const ButtonImage = styled.img``;
 
 const LOGO_DEFAULT = true;
 const FOOTER_DEFAULT = false;
+const HEADER_TITLE_DEFAULT = null;
 const BACKWARD_DEFAULT = '/';
 
 const MobileWrapper = ({}) => {
@@ -114,6 +123,7 @@ const MobileWrapper = ({}) => {
 
     const [showLogo, setLogo] = useState(LOGO_DEFAULT);
     const [showFooter, setFooter] = useState(FOOTER_DEFAULT);
+    const [headerTitle, setHeaderTitle] = useState(HEADER_TITLE_DEFAULT);
     const [backwardUrl, setBackwardUrl] = useState(BACKWARD_DEFAULT);
 
     const location = useLocation();
@@ -124,10 +134,12 @@ const MobileWrapper = ({}) => {
         if (find) {
             setLogo(find.logo ?? LOGO_DEFAULT);
             setFooter(find.footer ?? FOOTER_DEFAULT);
+            setHeaderTitle(find.title ?? HEADER_TITLE_DEFAULT);
             setBackwardUrl(find.previous ?? BACKWARD_DEFAULT);
         } else {
             setLogo(LOGO_DEFAULT);
             setFooter(FOOTER_DEFAULT);
+            setHeaderTitle(HEADER_TITLE_DEFAULT);
             setBackwardUrl(BACKWARD_DEFAULT);
         }
     }, [location]);
@@ -149,9 +161,17 @@ const MobileWrapper = ({}) => {
                     >
                         <IoIosArrowBack />
                     </BackButton>
+                    <Title>{headerTitle}</Title>
                     <Logo
-                        src={ServiceLogoImage}
-                        className={classNames({ hidden: !showLogo })}
+                        src={
+                            headerTitle === null
+                                ? ServiceLogoImage
+                                : ServiceLogoCompactImage
+                        }
+                        className={classNames({
+                            hidden: !showLogo,
+                            compact: headerTitle !== null,
+                        })}
                     />
                 </Header>
                 <Outlet />

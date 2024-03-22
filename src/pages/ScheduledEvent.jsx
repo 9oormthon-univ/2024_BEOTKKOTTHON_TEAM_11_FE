@@ -8,6 +8,7 @@ import {
     BsFillBookmarkStarFill,
     BsJournalText,
     BsQuestionCircleFill,
+    BsTagsFill,
 } from 'react-icons/bs';
 import BlockButton from '../components/BlockButton.jsx';
 import _TextInput from '../components/TextInput.jsx';
@@ -192,7 +193,7 @@ const ScheduledEvent = ({}) => {
                     value={isShowPayment}
                     onChange={(value) => setShowPayment(value)}
                 >
-                    <ContentHeader icon={<BsJournalText />} text="송금 메모" />
+                    <ContentHeader icon={<BsTagsFill />} text="송금 메모" />
                     <TextInput placeholder="송금 관련한 메모를 작성해주세요" />
                     <ContentHeader
                         icon={<BsCreditCard2BackFill />}
