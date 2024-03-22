@@ -62,6 +62,14 @@ const CopyButton = styled.button`
     color: #FFFFFF; /* 버튼 색상 조정 */
     font-size: 12px; /* 텍스트 크기 조정 */
     font-weight: 600;
+
+    transition: background-color 0.1s;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #cf3d3d;
+    }
 `;
 
 
