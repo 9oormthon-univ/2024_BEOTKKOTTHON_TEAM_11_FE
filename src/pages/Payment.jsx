@@ -56,7 +56,14 @@ color: #FFFFFF;
 font-size: 24px;
 font-weight: 700;
 border: none; // 버튼의 기본 테두리 제거
-cursor: pointer; // 마우스 호버 시 커서 변경
+
+transition: background-color 0.1s;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #cf3d3d;
+    }
 
 display: flex; // Flexbox 레이아웃 활성화
 justify-content: center; // 자식 요소를 가로 방향으로 중앙 정렬
