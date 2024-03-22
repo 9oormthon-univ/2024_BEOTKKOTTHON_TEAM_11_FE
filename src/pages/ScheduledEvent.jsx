@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ContentHeader from '../components/ContentHeader.jsx';
 import {
@@ -14,6 +14,9 @@ import BlockButton from '../components/BlockButton.jsx';
 import _TextInput from '../components/TextInput.jsx';
 import { IoMdPeople, IoMdPin } from 'react-icons/io';
 import PaymentAccordion from '../components/PaymentAccordion.jsx';
+import { getEvent, postFinishEvent } from '../api/event.js';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     padding: 0 24px;
@@ -87,6 +90,8 @@ const ItemContent = styled.div`
     flex-grow: 1;
     flex-shrink: 1;
 
+    word-break: break-all;
+    white-space: pre-wrap;
     overflow: auto;
 `;
 
@@ -121,12 +126,6 @@ const MemberContainer = styled.div`
     }
 `;
 
-const ButtonContent = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 16px;
-`;
-
 const Button = styled(BlockButton)`
     margin-top: 24px;
 `;
@@ -140,29 +139,112 @@ const TextInput = styled(_TextInput)`
 `;
 
 const ScheduledEvent = ({}) => {
-    const [selected, setSelected] = useState(1);
-    const [isShowPayment, setShowPayment] = useState(false);
+    const [name, setName] = useState('');
+    const [remainingDays, setRemainingDays] = useState('');
+    const [confirmDate, setConfirmDate] = useState(null);
+    const [location, setLocation] = useState('');
+    const [memo, setMemo] = useState('');
+    const [participants, setParticipants] = useState([]);
+    const [userRole, setUserRole] = useState('member');
+    const [ownerId, setOwnerId] = useState(0);
+
+    const [showPayment, setShowPayment] = useState(false);
+    const [paymentMemo, setPaymentMemo] = useState('');
+    const [paymentLink, setPaymentLink] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            let response;
+
+            try {
+                response = await getEvent({ token: '', id: 1 });
+            } catch (e) {
+                alert('밥약 정보를 불러오는데 실패했습니다.');
+                return;
+            }
+
+            setName(response.name);
+            setRemainingDays(response.remainingDays);
+            setConfirmDate(response.confirmDate);
+            setLocation(response.location);
+            setMemo(response.memo);
+            setParticipants(response.participants);
+            setUserRole(response.userRole);
+            setOwnerId(response.ownerId);
+        })();
+    }, []);
+
+    const onInput = (dispatch) => (event) => dispatch(event.target.value);
+    const onSubmit = async (event) => {
+        if (showPayment && paymentMemo === '') {
+            alert(
+                '송금 정보에서 송금 메모는 필수 사항입니다. 송금 메모를 입력하거나 송금 정보를 체크 해제해주세요.'
+            );
+            return;
+        }
+
+        let response;
+
+        try {
+            response = await postFinishEvent({
+                id: '',
+                token: '',
+                paymentMemo,
+                paymentLink,
+                accountNumber,
+            });
+        } catch (e) {
+            alert('밥약 종료에 실패했습니다.');
+            return;
+        }
+
+        alert('밥약이 종료된 밥약으로 이동되었습니다.');
+
+        navigate('/');
+    };
+
+    const BadgeIcon =
+        userRole === 'member' ? BsFillBookmarkPlusFill : BsFillBookmarkStarFill;
+    const badgeText = userRole === 'member' ? '파티원' : '파티장';
+
+    const ownerName = participants.find((item) => item.id === ownerId)?.name;
+    const participantNames = participants
+        .filter((item) => item.id !== ownerId)
+        .map((item) => item.name)
+        .join(' ');
 
     return (
         <Container>
             <Wrapper>
-                <Header>이츠타임 회식</Header>
+                <Header>{name}</Header>
                 <BadgeContainer>
-                    <Badge>D - 00</Badge>
+                    <Badge>D - {remainingDays}</Badge>
                     <Badge>
-                        <BsFillBookmarkStarFill />
-                        파티장
+                        <BadgeIcon /> {badgeText}
                     </Badge>
                 </BadgeContainer>
                 <ContentHeader icon={<BsCalendarPlusFill />} text="밥약 일정" />
                 <Item>
                     <ItemLine />
-                    <ItemContent>2024년 03월 23일 토요일 14:00</ItemContent>
+                    <ItemContent
+                        style={{ fontSize: '24px', fontWeight: '600' }}
+                    >
+                        {dayjs(confirmDate).format(
+                            'YYYY년 MM월 DD일\ndddd hh:mm'
+                        )}
+                    </ItemContent>
                 </Item>
                 <ContentHeader icon={<IoMdPin />} text="밥약 장소" />
                 <Item>
                     <ItemLine />
-                    <ItemContent>분당 리파인</ItemContent>
+                    <ItemContent
+                        style={{ fontSize: '20px', fontWeight: '600' }}
+                    >
+                        {location}
+                    </ItemContent>
                 </Item>
                 <ContentHeader icon={<IoMdPeople />} text="참여 인원" />
                 <Item>
@@ -171,13 +253,13 @@ const ScheduledEvent = ({}) => {
                         <MemberContainer>
                             <BsFillBookmarkStarFill />
                             <p>파티장</p>
-                            <p style={{ fontSize: '18px' }}>홍길동</p>
+                            <p style={{ fontSize: '18px' }}>{ownerName}</p>
                         </MemberContainer>
                         <MemberContainer>
                             <BsFillBookmarkPlusFill />
                             <p>파티원</p>
-                            <p>
-                                홍길동 홍길동 홍길동 홍길동 홍길동 홍길동 홍길동
+                            <p style={{ wordBreak: 'keep-all' }}>
+                                {participantNames}
                             </p>
                         </MemberContainer>
                     </ItemContent>
@@ -185,28 +267,40 @@ const ScheduledEvent = ({}) => {
                 <ContentHeader icon={<BsJournalText />} text="밥약 메모" />
                 <Item>
                     <ItemLine />
-                    <ItemContent>밥약 관련한 메모를 작성해주세요</ItemContent>
+                    <ItemContent>{memo}</ItemContent>
                 </Item>
                 <PaymentAccordion
                     icon={<BsQuestionCircleFill />}
                     text="송금 정보를 제공할까요?"
-                    value={isShowPayment}
+                    value={showPayment}
                     onChange={(value) => setShowPayment(value)}
                 >
                     <ContentHeader icon={<BsTagsFill />} text="송금 메모" />
-                    <TextInput placeholder="송금 관련한 메모를 작성해주세요" />
+                    <TextInput
+                        placeholder="송금 관련한 메모를 작성해주세요"
+                        value={paymentMemo}
+                        onInput={onInput(setPaymentMemo)}
+                    />
                     <ContentHeader
                         icon={<BsCreditCard2BackFill />}
                         text="송금 링크 (선택)"
                     />
-                    <TextInput placeholder="https://qr.kakaopay.com/000000" />
+                    <TextInput
+                        placeholder="https://qr.kakaopay.com/000000"
+                        value={paymentLink}
+                        onInput={onInput(setPaymentLink)}
+                    />
                     <ContentHeader
                         icon={<BsCreditCard2BackFill />}
                         text="계좌 번호 (선택)"
                     />
-                    <TextInput placeholder="국민은행 000-000000-000000" />
+                    <TextInput
+                        placeholder="국민은행 000-000000-000000"
+                        value={accountNumber}
+                        onInput={onInput(setAccountNumber)}
+                    />
                 </PaymentAccordion>
-                <Button text="밥약 종료" />
+                <Button text="밥약 종료" onClick={onSubmit} />
             </Wrapper>
         </Container>
     );

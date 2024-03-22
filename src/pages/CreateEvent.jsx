@@ -9,7 +9,7 @@ import { IoMdCreate, IoMdPin } from 'react-icons/io';
 import TextInput from '../components/TextInput.jsx';
 import BlockButton from '../components/BlockButton.jsx';
 import dayjs from 'dayjs';
-import { createParty } from '../api/event.js';
+import { createEvent } from '../api/event.js';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -56,7 +56,7 @@ const CreateEvent = ({}) => {
         let response;
 
         try {
-            response = await createParty({
+            response = await createEvent({
                 // userId: 1, // TODO -> 이 부분 redux에서 받아올 것
                 name,
                 startDate: startDate.format('YYYY-MM-DD'),
