@@ -42,7 +42,6 @@ const Toggle = styled.div`
 const Wrapper = styled.div`
     margin-bottom: 24px;
     overflow: hidden;
-    max-height: 0px;
     color: #d64949;
     font-weight: 500;
     font-size: 16px;
@@ -97,6 +96,7 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
     }, [ref]);
 
     const onClick = (event) => {
+        setHeight(ref.current.scrollHeight);
         setOpen((state) => !state);
     };
 
@@ -118,8 +118,8 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
     });
 
     return (
-        <>
-            <Container onClick={onClick} {...props}>
+        <div {...props}>
+            <Container onClick={onClick}>
                 <Text>{text}</Text>
                 <Toggle>
                     {isOpen ? <IoMdArrowDropup /> : <IoMdArrowDropdown />}
@@ -137,7 +137,7 @@ const Dropdown = ({ text, items, onSelect, value, ...props }) => {
                     elements
                 )}
             </Wrapper>
-        </>
+        </div>
     );
 };
 
