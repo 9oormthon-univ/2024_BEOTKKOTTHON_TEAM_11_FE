@@ -50,16 +50,9 @@ const MAX_DATE = dayjs().add(60, 'days');
 
 const RANGE = 6;
 
-const DatePicker = () => {
+const DatePicker = ({ startDate, endDate, onChange }) => {
     const [minDate, setMinDate] = useState(MIN_DATE);
     const [maxDate, setMaxDate] = useState(MAX_DATE);
-    const [state, setState] = useState([
-        {
-            startDate: dayjs().add(1, 'd').toDate(),
-            endDate: dayjs().add(1, 'd').toDate(),
-            key: 'selection',
-        },
-    ]);
 
     // 상단 날짜 선택기 렌더링을 이츠타임의 디자인에 맞게 다시 정의합니다.
     const navigatorRenderer = (focusedDate, changeShownDate, props) => {
@@ -94,13 +87,13 @@ const DatePicker = () => {
         );
     };
 
-    const onChange = (ranges) => {
+    const _onChange = (ranges) => {
         if (ranges === undefined) return;
 
         const startDate = dayjs(ranges.selection.startDate);
         const endDate = dayjs(ranges.selection.endDate);
 
-        setState([ranges.selection]);
+        onChange(startDate, endDate);
 
         if (startDate.isSame(endDate)) {
             // 범위 입력을 시작하는 경우, 범위를 RANGE로 제한합니다.
@@ -121,9 +114,15 @@ const DatePicker = () => {
         <DateRange
             showMonthAndYearPickers={false}
             showDateDisplay={false}
-            onChange={onChange}
+            onChange={_onChange}
             dragSelectionEnabled={false}
-            ranges={state}
+            ranges={[
+                {
+                    startDate: startDate.toDate(),
+                    endDate: endDate.toDate(),
+                    key: 'selection',
+                },
+            ]}
             minDate={minDate.toDate()}
             maxDate={maxDate.toDate()}
             locale={ko.ko}
