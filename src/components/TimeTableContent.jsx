@@ -18,16 +18,16 @@ function clampNumber(num, a, b) {
     return Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 }
 
-const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
+const TimeTableContent = ({
+    column,
+    row,
+    maxIndex,
+    readOnly,
+    showCheck,
+    onChange,
+    value,
+}) => {
     const ref = useRef(null);
-    const [data, setData] = useImmer(
-        Array(column)
-            .fill(null)
-            .map((item, index) => ({
-                date: index,
-                items: Array(row).fill(0),
-            }))
-    );
     const [selectionMode, setSelectionMode] = useState(null);
     const [startPosition, setStartPosition] = useState([0, 0]);
     const [endPosition, setEndPosition] = useState([0, 0]);
@@ -76,14 +76,14 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
-        if (disabledRanges.includes(position[0])) {
+        if (position[0] >= maxIndex) {
             return;
         }
 
         setStartPosition(position);
         setEndPosition(position);
 
-        setSelectionMode(!data[position[0]].items[position[1]]);
+        setSelectionMode(!value[position[0]].items[position[1]]);
     };
 
     const onItemMouseUp = (event) => {
@@ -120,13 +120,13 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
 
         const position = convertPositionToGrid(ref, itemX, itemY);
 
-        if (disabledRanges.includes(position[0])) {
+        if (position[0] >= maxIndex) {
             return;
         }
 
-        setSelectionMode(!data[position[0]].items[position[1]]);
+        setSelectionMode(!value[position[0]].items[position[1]]);
 
-        if (disabledRanges.includes(position[0])) {
+        if (position[0] >= maxIndex) {
             return;
         }
 
@@ -170,16 +170,17 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
                 ? startPosition[1]
                 : endPosition[1];
 
-        setData((state) => {
-            for (let date = startX; date <= endX; date++) {
-                if (disabledRanges.includes(date)) {
-                    continue;
-                }
-                for (let item = startY; item <= endY; item++) {
-                    state[date].items[item] = selectionMode ? 1 : 0;
-                }
+        for (let date = startX; date <= endX; date++) {
+            if (date >= maxIndex) {
+                break;
             }
-        });
+
+            for (let item = startY; item <= endY; item++) {
+                value[date].items[item] = selectionMode ? 1 : 0;
+            }
+        }
+
+        onChange(value);
     };
 
     const elements = [];
@@ -190,9 +191,9 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
                 <TimeItem
                     key={i * column + j}
                     style={{ gridColumn: j + 1, gridRow: i + 1 }}
-                    value={data[j].items[i]}
-                    disabled={disabledRanges.includes(j)}
-                    readOnly={readOnly}
+                    value={value[j]?.items[i]}
+                    disabled={j >= maxIndex}
+                    showCheck={showCheck}
                 />
             );
         }
@@ -217,10 +218,6 @@ const TimeTableContent = ({ column, row, disabledRanges, readOnly }) => {
             {elements}
         </Container>
     );
-};
-
-TimeTableContent.defaultProps = {
-    disabledRanges: [],
 };
 
 export default TimeTableContent;
