@@ -1,0 +1,32 @@
+[
+    {
+      "id": 1,
+      "eventName": "이츠타임 회식",
+      "date": "2024-03-20",
+      "time": "14:00",
+      "place": "서울특별시 강남구 코엑스",
+      "host": "김경재",
+      "participants": [
+        "김남기",
+        "김현아",
+        "문성욱",
+        "박지환",
+        "유지희"
+      ],
+      "userRole": "host"
+    },
+    {
+      "id": 2,
+      "eventName": "구름톤 회의",
+      "date": "2024-02-02",
+      "time": "18:00",
+      "place": "잠실역 투썸플레이스",
+      "host": "김현아",
+      "participants": [
+        "김경재",
+        "유지희"
+      ],
+      "userRole": "participant"
+    }
+  ]
+  

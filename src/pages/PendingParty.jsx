@@ -7,6 +7,8 @@ import ContentHeader from '../components/ContentHeader.jsx';
 import { BsCalendarPlusFill, BsFillCalendarCheckFill } from 'react-icons/bs';
 import Dropdown from '../components/Dropdown.jsx';
 import BlockButton from '../components/BlockButton.jsx';
+import TextInput from '../components/TextInput.jsx';
+import DateInput from '../components/DateInput.jsx';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -50,6 +52,11 @@ const PendingParty = ({}) => {
                 disabledRanges={[5, 6, 7]}
                 readOnly={false}
             />
+            <ContentHeader
+                icon={<BsCalendarPlusFill />}
+                text="확정된 시간 입력"
+            />
+            <DateInput placeholder="123" />
             <Button
                 text={
                     <ButtonContent>

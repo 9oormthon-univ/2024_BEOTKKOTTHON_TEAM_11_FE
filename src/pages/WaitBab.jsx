@@ -1,15 +1,17 @@
 import React from 'react'
 import BabNavbar from '../components/BabNavbar'
+import dummy from '../db/waitdata.json'
+import WaitBox from '../components/WaitBox'
 
-
-function WaitBab() {
+function ConfirmBab() {
   return (
     <div>
         <BabNavbar />
-        <div>대기중 밥약</div>
-        
+        {dummy.map(event => (
+            <WaitBox key={event.id} event={event} />
+        ))}
     </div>
   )
 }
 
-export default WaitBab
+export default ConfirmBab

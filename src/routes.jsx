@@ -9,6 +9,10 @@ import ConfirmBab from './pages/ConfirmBab.jsx';
 import WaitBab from './pages/WaitBab.jsx';
 import PendingParty from './pages/PendingParty.jsx';
 import CreateParty from './pages/CreateParty.jsx';
+import SuccessRegister from './pages/SuccessRegister.jsx';
+import ShareBab from './pages/ShareBab.jsx';
+import Payment from './pages/Payment.jsx';
+import ScheduledEvent from './pages/ScheduledEvent.jsx';
 
 const routes = [
     {
@@ -34,6 +38,12 @@ const routes = [
         name: '대기중인 밥약',
     },
     {
+        path: '/party/scheduled',
+        element: <ScheduledEvent />,
+        footer: true,
+        name: '확정된 밥약',
+    },
+    {
         path: '/party/create',
         element: <CreateParty />,
         footer: true,
@@ -56,6 +66,24 @@ const routes = [
         element: <FinishBab />,
         footer: true,
         name: '종료된 밥약 목록',
+    },
+    {
+        path: '/successregister',
+        element: <SuccessRegister />,
+        logo: false,
+        name: '회원가입 완료',
+    },
+    {
+        path: '/sharebab',
+        element: <ShareBab />,
+        footer: true,
+        name: '밥약 생성_링크 공유하기',
+    },
+    {
+        path: '/payment',
+        element: <Payment />,
+        footer: true,
+        name: '송금 및 보은하기',
     },
 ];
 

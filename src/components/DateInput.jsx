@@ -27,28 +27,17 @@ const Input = styled.input`
     }
 `;
 
-const Item = styled.div``;
-
-const TextInput = ({
-    placeholder,
-    onInput,
-    value,
-    textHidden,
-    additionalItem,
-    ...props
-}) => {
-    const inputType = textHidden ? 'password' : 'text';
+const DateInput = ({ placeholder, onInput, value }) => {
     return (
-        <Container {...props}>
+        <Container>
             <Input
-                type={inputType}
+                type="datetime-local"
                 placeholder={placeholder}
                 onInput={onInput}
                 value={value}
             />
-            <Item>{additionalItem}</Item>
         </Container>
     );
 };
 
-export default TextInput;
+export default DateInput;

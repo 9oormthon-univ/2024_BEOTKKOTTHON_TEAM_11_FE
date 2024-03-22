@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import dummy from '../db/confirmdata.json'
-import { IoIosCalendar, IoMdPin, IoMdPeople } from "react-icons/io";
+import { IoIosCalendar, IoMdPin, IoMdPeople, IoMdDoneAll } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
 
 const BabDiv = styled.div`
@@ -13,30 +13,20 @@ const BabDiv = styled.div`
     padding: 12px 19px 0 19px;
     box-shadow: 0px 4px 4px rgba(214, 73, 73, 0.15);
 `;
-//디데이+이름, 마크
+//체크마크+이름, 파티원/장 구분마크
 const DNMContainer = styled.div`
     display: flex; //자식 요소들을 한 줄에 나열합니다.
     align-items: center;
     justify-content: space-between;
 `;
-//디데이+이름
-const DdayNameContainer = styled.div`
+//체크마크+이름
+const StyledIoMdDoneAll = styled(IoMdDoneAll)`
+    color: #FE5858;
+    margin-right: 8px;
+`
+const CheckMNameContainer = styled.div`
     display: flex; //자식 요소들을 한 줄에 나열합니다.
     align-items: center;
-`;
-//디데이
-const DDday = styled.p`
-    color: #FFF6F6;
-    background-color: #FE5858;
-    width: 62px;
-    height: 24px;
-    border-radius: 8px;
-    display: flex;            // flex 컨테이너 설정
-    justify-content: center;  // 수평 중앙 정렬
-    align-items: center;      // 수직 중앙 정렬
-    font-weight: 600;
-    font-size: 16px;
-    margin-right: 10px;
 `;
 
 //파티장인지 파티원인지 구분마크, 밥약 이름
@@ -116,32 +106,15 @@ const ConfirmPeople = styled.p`
     margin-left: 6px;
 `;
 
-function ConfirmBox(props) {
+function FinishBox(props) {
     const { eventName, date, time, place, host, participants, userRole } = props.event;
-
-    // D-Day 계산
-    const calculateDDay = (eventDate) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // 오늘 날짜를 자정으로 설정
-    
-        const eventDay = new Date(eventDate);
-        eventDay.setHours(0, 0, 0, 0); // 이벤트 날짜를 자정으로 설정
-    
-        const timeDiff = eventDay - today;
-        const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
-    
-        return Math.ceil(dayDiff); // 오늘을 포함하려면 올림을 사용
-    };
-
-    const dDay = calculateDDay(date);
   return (
     <BabDiv>
         <DNMContainer>
-            <DdayNameContainer>
-                {/* D-Day 표시 추가 */}
-                <DDday>{dDay === 0 ? 'D-Day' : `D-${dDay}`}</DDday>
+            <CheckMNameContainer>
+                <StyledIoMdDoneAll size={24}/>
                 <BabName>{eventName}</BabName>
-            </DdayNameContainer>
+            </CheckMNameContainer>
             
             <MarkContainer>
                 {userRole === 'host' ? (
@@ -171,7 +144,7 @@ function ConfirmBox(props) {
   )
 }
 
-export default ConfirmBox;
+export default FinishBox;
 
 
 
