@@ -12,8 +12,6 @@ import {
 import BlockButton from '../components/BlockButton.jsx';
 import _TextInput from '../components/TextInput.jsx';
 import { IoMdPeople, IoMdPin } from 'react-icons/io';
-import CheckBox from '../components/CheckBox.jsx';
-import Accordion from '../components/Accordion.jsx';
 import PaymentAccordion from '../components/PaymentAccordion.jsx';
 
 const Container = styled.div`
