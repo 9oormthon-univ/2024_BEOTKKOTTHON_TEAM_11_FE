@@ -17,6 +17,7 @@ import PaymentAccordion from '../components/PaymentAccordion.jsx';
 import { getEvent, postFinishEvent } from '../api/event.js';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
 
 const Container = styled.div`
     padding: 0 24px;
@@ -128,6 +129,10 @@ const MemberContainer = styled.div`
 
 const Button = styled(BlockButton)`
     margin-top: 24px;
+
+    &.hidden {
+        display: none;
+    }
 `;
 
 const TextInput = styled(_TextInput)`
@@ -273,6 +278,7 @@ const ScheduledEvent = ({}) => {
                     icon={<BsQuestionCircleFill />}
                     text="송금 정보를 제공할까요?"
                     value={showPayment}
+                    hidden={userRole === 'member'}
                     onChange={(value) => setShowPayment(value)}
                 >
                     <ContentHeader icon={<BsTagsFill />} text="송금 메모" />
@@ -300,7 +306,11 @@ const ScheduledEvent = ({}) => {
                         onInput={onInput(setAccountNumber)}
                     />
                 </PaymentAccordion>
-                <Button text="밥약 종료" onClick={onSubmit} />
+                <Button
+                    text="밥약 종료"
+                    onClick={onSubmit}
+                    className={classNames({ hidden: userRole === 'member' })}
+                />
             </Wrapper>
         </Container>
     );
