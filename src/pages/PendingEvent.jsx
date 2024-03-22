@@ -9,6 +9,7 @@ import Dropdown from '../components/Dropdown.jsx';
 import BlockButton from '../components/BlockButton.jsx';
 import TextInput from '../components/TextInput.jsx';
 import DateInput from '../components/DateInput.jsx';
+import SwitchButton from '../components/SwitchButton.jsx';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -25,11 +26,19 @@ const Button = styled(BlockButton)`
     margin-top: 24px;
 `;
 
-const PendingParty = ({}) => {
+const PendingEvent = ({}) => {
     const [selected, setSelected] = useState(1);
+
+    const items = [
+        { value: 'edit', text: '나의 시간대 입력' },
+        { value: 'view', text: '밥약 정보' },
+    ];
+
+    const [value, setValue] = useState('edit');
 
     return (
         <Container>
+            <SwitchButton items={items} value={value} onChange={setValue} />
             <Callout text="총 5명 중  2명 응답 완료!" />
 
             <Dropdown
@@ -68,4 +77,4 @@ const PendingParty = ({}) => {
     );
 };
 
-export default PendingParty;
+export default PendingEvent;
