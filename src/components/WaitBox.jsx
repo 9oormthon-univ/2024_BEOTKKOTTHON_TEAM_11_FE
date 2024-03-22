@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { IoIosCalendar, IoMdPin, IoMdPeople, IoIosArrowForward } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
@@ -159,6 +160,8 @@ const Button = styled.button`
 function WaitBox(props) {
     const { name, isLeader, dateStatus, date, place, confirmedPeopleCount, allResponded } = props.event;
     const [hover, setHover] = useState(false); // 호버 상태를 추적하는 state 추가
+    const navigate = useNavigate(); // useNavigate 훅 사용
+
     return (
       <BabDiv hover={hover} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
           <NMContainer>
@@ -186,7 +189,7 @@ function WaitBox(props) {
                     : `현재 ${confirmedPeopleCount}명이 응답 완료했어요!`}
               </AnswerPeople>
             </PeopleContainer>
-            <Button hover={hover}>
+            <Button onClick={() => navigate('/party/pending')} hover={hover}>
                   <IoIosArrowForward/>
             </Button>
           </PeopleArrowContainer>

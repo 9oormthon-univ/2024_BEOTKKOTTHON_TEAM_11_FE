@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoIosCalendar, IoMdPin, IoMdPeople, IoIosArrowForward } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
@@ -153,6 +154,7 @@ const PeopleArrowContainer = styled.div`
 function ConfirmBox(props) {
     const { eventName, date, time, place, host, participants, userRole } = props.event;
     const [hover, setHover] = useState(false);
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
     const calculateDDay = (eventDate) => {
         const today = new Date();
@@ -202,7 +204,7 @@ function ConfirmBox(props) {
                 <ConfirmPeople hover={hover}>{participants.join(', ')}</ConfirmPeople>
                 
             </PeopleContainer>
-            <Button hover={hover} className={userRole !== 'host' ? 'disabled' : ''}>
+            <Button onClick={() => navigate('/party/scheduled')} hover={hover} className={userRole !== 'host' ? 'disabled' : ''}>
                 <IoIosArrowForward />
             </Button>
         </PeopleArrowContainer>

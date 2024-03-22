@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoIosCalendar, IoMdPin, IoMdPeople, IoMdDoneAll, IoIosArrowForward } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
@@ -147,6 +148,7 @@ const PeopleArrowContainer = styled.div`
 function FinishBox(props) {
     const { eventName, date, time, place, host, participants, userRole } = props.event;
     const [hover, setHover] = useState(false);
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
   return (
     <BabDiv onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} hover={hover}>
@@ -182,7 +184,7 @@ function FinishBox(props) {
                 <ConfirmPeople hover={hover}>{participants.join(', ')}</ConfirmPeople>
                 
             </PeopleContainer>
-            <Button hover={hover}>
+            <Button onClick={() => navigate('/payment')} hover={hover}>
                     <IoIosArrowForward/>
             </Button>
         </PeopleArrowContainer>
