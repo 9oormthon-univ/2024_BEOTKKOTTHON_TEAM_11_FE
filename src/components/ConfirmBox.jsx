@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import dummy from '../db/confirmdata.json'
-import { IoIosCalendar, IoMdPin, IoMdPeople } from "react-icons/io";
+import { IoIosCalendar, IoMdPin, IoMdPeople, IoIosArrowForward } from "react-icons/io";
 import { BsFillBookmarkStarFill, BsFillBookmarkPlusFill  } from "react-icons/bs";
 
 const BabDiv = styled.div`
@@ -58,6 +58,7 @@ const DateContainer = styled.div`
     display: flex;
     align-items: center; // Flex 아이템들을 수직 중앙 정렬
     margin-left: 8px; // 아이콘과 날짜의 좌측 여백
+    margin-top: 2px;
 `;
 const StyledCalendarIcon = styled(IoIosCalendar)`
     color: #FE5858;
@@ -94,7 +95,7 @@ const PeopleContainer = styled.div`
     display: flex;
     align-items: center; // Flex 아이템들을 수직 중앙 정렬
     margin-left: 8px; // 아이콘과 날짜의 좌측 여백
-    margin-top: 12px;
+    
 `;
 const StyledPeopleIcon = styled(IoMdPeople)`
     color: #FE5858;
@@ -115,6 +116,43 @@ const ConfirmPeople = styled.p`
     color: #FE5858;
     margin-left: 6px;
 `;
+
+
+// arrowm button
+const Button = styled.button`
+  padding: 4px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  &:hover {
+      background-color: #0000001f;
+  }
+
+  & > svg {
+      width: 24px;
+      height: 24px;
+      color: #FE5858;
+  }
+
+  &.disabled {
+      color: rgba(245, 223, 223, 1);
+      pointer-events: none;
+  }
+`;
+//인원+화살표 버튼
+const PeopleArrowContainer = styled.div`
+  display: flex; //자식 요소들을 한 줄에 나열합니다.
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+`;
+
 
 function ConfirmBox(props) {
     const { eventName, date, time, place, host, participants, userRole } = props.event;
@@ -162,11 +200,17 @@ function ConfirmBox(props) {
             <StyledPinIcon /><ConfirmPlace>{place}</ConfirmPlace>
         </PlaceContainer>
 
-        <PeopleContainer>
-            <StyledPeopleIcon />
-            <ConfirmPerson>{host}</ConfirmPerson>
-            <ConfirmPeople>{participants.join(', ')}</ConfirmPeople>
-        </PeopleContainer>
+        <PeopleArrowContainer>
+            <PeopleContainer>
+                <StyledPeopleIcon />
+                <ConfirmPerson>{host}</ConfirmPerson>
+                <ConfirmPeople>{participants.join(', ')}</ConfirmPeople>
+                
+            </PeopleContainer>
+            <Button>
+                <IoIosArrowForward/>
+            </Button>
+        </PeopleArrowContainer>
     </BabDiv>
   )
 }
