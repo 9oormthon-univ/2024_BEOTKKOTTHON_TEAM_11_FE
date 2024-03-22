@@ -21,6 +21,10 @@ const Container = styled.div`
     &:hover {
         background-color: #0000000f;
     }
+
+    &.hidden {
+        display: none;
+    }
 `;
 
 const Icon = styled.div`
@@ -90,6 +94,7 @@ const PaymentAccordion = ({
     children,
     value,
     onChange,
+    hidden,
     ...props
 }) => {
     const [isTransition, setIsTransition] = useState(false);
@@ -129,7 +134,11 @@ const PaymentAccordion = ({
 
     return (
         <>
-            <Container onClick={onClick} {...props}>
+            <Container
+                onClick={onClick}
+                {...props}
+                className={classNames({ hidden })}
+            >
                 <Icon>{icon}</Icon>
                 <Text>{text}</Text>
                 <Input>

@@ -95,7 +95,7 @@ export async function getEvent(request) {
                 id: 10,
             },
         ],
-        userRole: 'member',
+        userRole: 'owner',
     };
 }
 

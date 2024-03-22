@@ -1,32 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 export const userSlice = createSlice({
     name: 'user',
 
     initialState: {
-        access_token: null,
-        refresh_token: null,
-        name: null,
+        accessToken: null,
+        id: null,
     },
 
     reducers: {
         login: (state, action) => {
-            state.access_token = action.payload.access_token;
-            state.refresh_token = action.payload.refresh_token;
-            state.name = action.payload.name;
+            state.accessToken = action.payload.accessToken;
+            state.id = action.payload.id;
+
+            Cookies.set('accessToken', action.payload.accessToken, {
+                expires: 1,
+            });
+            Cookies.set('id', action.payload.id, {
+                expires: 1,
+            });
         },
         logout: (state) => {
-            state.access_token = null;
-            state.refresh_token = null;
-            state.name = null;
+            state.accessToken = null;
+            state.id = null;
+
+            Cookies.remove('accessToken');
+            Cookies.remove('id');
         },
     },
 });
 
 export const { login, logout } = userSlice.actions;
 
-export const selectName = (state) => state.user.name;
-export const selectIsLoggedIn = (state) => state.user.access_token !== null;
-export const selectToken = (state) => state.user.access_token;
+export const selectId = (state) => state.user.id;
+export const selectIsLoggedIn = (state) => state.user.accessToken !== null;
+export const selectToken = (state) => state.user.accessToken;
 
 export default userSlice.reducer;
