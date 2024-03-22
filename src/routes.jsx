@@ -1,6 +1,3 @@
-import { Route } from 'react-router-dom';
-
-import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Sitemap from './pages/Sitemap.jsx';
@@ -13,6 +10,7 @@ import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
 import Payment from './pages/Payment.jsx';
 import ScheduledEvent from './pages/ScheduledEvent.jsx';
+import Logout from './pages/Logout.jsx';
 
 const routes = [
     {
@@ -25,6 +23,13 @@ const routes = [
         element: <Login />,
         logo: false,
         name: '로그인',
+    },
+    {
+        path: '/logout',
+        element: <Logout />,
+        logo: false,
+        previous: false,
+        name: '로그아웃',
     },
     {
         path: '/register',

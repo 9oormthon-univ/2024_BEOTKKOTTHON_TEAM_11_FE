@@ -17,6 +17,7 @@ const Sitemap = ({}) => {
         .filter((route) => route.name)
         .map((route) => (
             <BlockButton
+                key={route.path}
                 text={route.name}
                 onClick={() => {
                     navigate(route.path);
