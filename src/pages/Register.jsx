@@ -117,6 +117,11 @@ const Register = ({}) => {
             return false;
         }
 
+        if (organization === '') {
+            alert('대학교 이름을 입력하세요.');
+            return false;
+        }
+
         if (!email) {
             alert('이메일을 입력하세요.');
             return false;
@@ -151,8 +156,7 @@ const Register = ({}) => {
         try {
             response = await postRegister({
                 name,
-                email,
-                emailCode,
+                id: email,
                 password,
             });
         } catch (e) {
@@ -182,7 +186,7 @@ const Register = ({}) => {
         let response;
 
         try {
-            await postEmailVerification({ email, organization });
+            response = await postEmailVerification({ email, organization });
         } catch (e) {
             alert('인증 메일 전송에 실패했습니다.');
             return;
