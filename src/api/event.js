@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { getAxiosInstance } from './axios.js';
 
 export async function createEvent(request) {
@@ -156,7 +157,7 @@ export async function postConfirmEvent(request) {
         confirmedTime: request.time,
     };
 
-    const response = await axios.post(
+    const response = await axios.patch(
         `/api/v1/promises/${request.eventId}/confirmation`,
         bodyData
     );
@@ -177,7 +178,7 @@ export async function postFinishEvent(request) {
         bankAccount: request.accountNumber,
     };
 
-    const response = await axios.post(
+    const response = await axios.patch(
         `/api/v1/promises/${request.eventId}/termination`,
         bodyData
     );
