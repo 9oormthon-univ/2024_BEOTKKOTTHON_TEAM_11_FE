@@ -7,7 +7,7 @@ import ProcessTitle from '../components/ProcessTitle';
 import ImageSliding from '../components/ImgSliding';
 
 import ClockLogoImg from '../assets/images/clock_logo.svg';
-import TextLogoImg from '../assets/images/textLogo.svg';
+import TextLogoImg from '../assets/images/textLogo.png';
 import img1 from '../assets/images/Intro/1_1.svg';
 import img2 from '../assets/images/Intro/1_2.svg';
 import img3 from '../assets/images/Intro/2_waiting_component.svg';
@@ -193,7 +193,11 @@ function Intro() {
                 <Text1>모두의 밥약을 하나로 모으다</Text1>
 
                 <TextLogoContainer>
-                    <img src={TextLogoImg} alt="TextLogoImg" />
+                    <img
+                        src={TextLogoImg}
+                        alt="TextLogoImg"
+                        style={{ width: '135px' }}
+                    />
                 </TextLogoContainer>
 
                 {/* <Text2>
