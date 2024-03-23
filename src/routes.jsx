@@ -8,7 +8,7 @@ import PendingEvent from './pages/PendingEvent.jsx';
 import CreateEvent from './pages/CreateEvent.jsx';
 import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
-import Payment from './pages/Payment.jsx';
+import Payment from './pages/FinishedEvent.jsx';
 import ScheduledEvent from './pages/ScheduledEvent.jsx';
 import Logout from './pages/Logout.jsx';
 import Intro from './pages/Intro.jsx';
