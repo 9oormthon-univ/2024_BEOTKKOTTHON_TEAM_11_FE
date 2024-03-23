@@ -183,7 +183,7 @@ const MobileWrapper = ({}) => {
             </Content>
             <Footer className={classNames({ hidden: !showFooter })}>
                 <FooterButton to="/">이츠타임?</FooterButton>
-                <FooterRiceButton to="/">
+                <FooterRiceButton to="/event/create">
                     <ButtonImage src={RiceBalloonButton} />
                 </FooterRiceButton>
                 <FooterButton to="/logout">로그아웃</FooterButton>
