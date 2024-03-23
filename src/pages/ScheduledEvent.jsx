@@ -226,7 +226,7 @@ const ScheduledEvent = ({}) => {
 
         alert('밥약이 종료되었습니다.');
 
-        navigate('/');
+        navigate('/events/scheduled');
     };
 
     const BadgeIcon =

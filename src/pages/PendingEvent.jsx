@@ -266,7 +266,7 @@ const PendingEvent = ({}) => {
 
         alert('밥약이 확정되었습니다.');
 
-        navigate('/');
+        navigate('/events/scheduled');
     };
 
     const onTimeTableSubmit = async (event) => {
