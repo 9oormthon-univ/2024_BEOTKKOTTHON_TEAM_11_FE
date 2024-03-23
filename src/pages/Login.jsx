@@ -9,7 +9,7 @@ import BlockButton from '../components/BlockButton.jsx';
 import { useEffect, useState } from 'react';
 import PasswordEyeButton from '../components/PasswordEyeButton.jsx';
 import InputErrorText from '../components/InputErrorText.jsx';
-import { postLogin } from '../api/user.js';
+import { getMemberWithEmail, postLogin } from '../api/user.js';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -102,12 +102,25 @@ const Login = ({}) => {
             response = await postLogin({ id, password });
         } catch (e) {
             setErrorText('비밀번호가 틀렸습니다');
+            console.error(e);
+            return;
+        }
+
+        const token = response.accessToken;
+
+        try {
+            response = await getMemberWithEmail({
+                token,
+                email: id,
+            });
+        } catch (e) {
+            alert('로그인에 실패했습니다.');
             return;
         }
 
         dispatch(
             login({
-                accessToken: response.accessToken,
+                accessToken: token,
                 id: response.userId,
                 email: response.email,
             })
