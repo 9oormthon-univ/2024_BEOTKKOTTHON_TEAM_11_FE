@@ -14,6 +14,8 @@ import ServiceLogoCompactImage from './assets/images/rice_balloon_no_tail.svg';
 import RiceBalloonButton from './assets/images/rice_balloon_button.svg';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { selectTitle } from './redux/appSlice.js';
 
 const Container = styled.div`
     display: flex;
@@ -139,6 +141,8 @@ const MobileWrapper = ({}) => {
     const [headerTitle, setHeaderTitle] = useState(HEADER_TITLE_DEFAULT);
     const [backwardUrl, setBackwardUrl] = useState(BACKWARD_DEFAULT);
 
+    const title = useSelector(selectTitle);
+
     useEffect(() => {
         const result = matchRoutes(routes, location.pathname);
 
@@ -160,6 +164,20 @@ const MobileWrapper = ({}) => {
             setBackwardUrl(BACKWARD_DEFAULT);
         }
     }, [location]);
+
+    useEffect(() => {
+        const result = matchRoutes(routes, location.pathname);
+
+        if (result.length < 1) {
+            return;
+        }
+
+        const { route } = result[0];
+
+        if (route.customTitle) {
+            setHeaderTitle(title ?? route.title ?? HEADER_TITLE_DEFAULT);
+        }
+    }, [location, title]);
 
     const onBackButtonClick = (event) => {
         navigate(backwardUrl);

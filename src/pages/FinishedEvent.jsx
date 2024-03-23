@@ -10,8 +10,9 @@ import {
 } from 'react-icons/bs';
 import { BiSmile, BiSolidBowlRice } from 'react-icons/bi';
 import { getPaymentInfo } from '../api/event.js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectToken } from '../redux/userSlice.js';
+import { setTitle } from '../redux/appSlice.js';
 
 const Container = styled.div`
     overflow-y: auto; // 세로 방향으로 스크롤 가능

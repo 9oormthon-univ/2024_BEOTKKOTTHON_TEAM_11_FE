@@ -54,6 +54,8 @@ const routes = [
 
         name: '대기중인 밥약',
         samplePath: '/event/1/pending',
+
+        customTitle: true,
     },
     {
         path: '/event/:eventId/scheduled',
@@ -64,6 +66,8 @@ const routes = [
 
         name: '확정된 밥약',
         samplePath: '/event/1/scheduled',
+
+        customTitle: true,
     },
     {
         path: '/event/create',

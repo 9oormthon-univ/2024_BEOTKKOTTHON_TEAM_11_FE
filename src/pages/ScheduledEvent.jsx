@@ -18,8 +18,9 @@ import { getEvent, postFinishEvent } from '../api/event.js';
 import dayjs from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectId, selectToken } from '../redux/userSlice.js';
+import { setTitle } from '../redux/appSlice.js';
 
 const Container = styled.div`
     padding: 0 24px;
@@ -146,6 +147,7 @@ const TextInput = styled(_TextInput)`
 `;
 
 const ScheduledEvent = ({}) => {
+    const dispatch = useDispatch();
     const token = useSelector(selectToken);
     const { eventId } = useParams();
     const userId = useSelector(selectId);
@@ -180,6 +182,8 @@ const ScheduledEvent = ({}) => {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;
             }
+
+            dispatch(setTitle(response.name));
 
             setName(response.name);
             setRemainingDays(dayjs(response.confirmDate).diff(dayjs(), 'days'));

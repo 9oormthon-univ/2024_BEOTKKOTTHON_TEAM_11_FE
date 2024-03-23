@@ -18,8 +18,9 @@ import {
     postTimeTable,
 } from '../api/timetable.js';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectId, selectToken } from '../redux/userSlice.js';
+import { setTitle } from '../redux/appSlice.js';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -155,6 +156,7 @@ async function buildViewTimeTable(
 
 const PendingEvent = ({}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { eventId } = useParams();
     const userId = useSelector(selectId);
     const token = useSelector(selectToken);
@@ -200,6 +202,8 @@ const PendingEvent = ({}) => {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;
             }
+
+            dispatch(setTitle(response.name));
 
             setUserRole(response.userRole);
             setStartDate(dayjs(response.startDate));
