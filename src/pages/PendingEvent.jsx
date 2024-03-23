@@ -13,7 +13,9 @@ import SwitchButton from '../components/SwitchButton.jsx';
 import classNames from 'classnames';
 import { getEvent, postConfirmEvent } from '../api/event.js';
 import { getTimeTable, postTimeTable } from '../api/timetable.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectId, selectToken } from '../redux/userSlice.js';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -60,7 +62,13 @@ const DateInput = styled(_DateInput)`
 const COLUMN = 4;
 const ROW = 24;
 
-async function buildEditTimeTable(startDate, setTimeTable) {
+async function buildEditTimeTable(
+    startDate,
+    setTimeTable,
+    token,
+    eventId,
+    userId
+) {
     const data = Array(COLUMN * 2)
         .fill(null)
         .map((item, index) => ({
@@ -71,9 +79,9 @@ async function buildEditTimeTable(startDate, setTimeTable) {
     let response;
     try {
         response = await getTimeTable({
-            token: '',
-            eventId: 1,
-            userId: 1,
+            token,
+            eventId,
+            userId,
         });
     } catch (e) {
         alert('시간표 정보를 불러오는데 실패했습니다.');
@@ -89,7 +97,14 @@ async function buildEditTimeTable(startDate, setTimeTable) {
     setTimeTable(data);
 }
 
-async function buildViewTimeTable(list, id, startDate, setTimeTable) {
+async function buildViewTimeTable(
+    list,
+    id,
+    startDate,
+    setTimeTable,
+    token,
+    eventId
+) {
     const data = Array(COLUMN * 2)
         .fill(null)
         .map((item, index) => ({
@@ -107,8 +122,8 @@ async function buildViewTimeTable(list, id, startDate, setTimeTable) {
         count++;
         try {
             response = await getTimeTable({
-                token: '',
-                eventId: 1,
+                token,
+                eventId,
                 userId: participant.id,
             });
         } catch (e) {
@@ -135,6 +150,9 @@ async function buildViewTimeTable(list, id, startDate, setTimeTable) {
 
 const PendingEvent = ({}) => {
     const navigate = useNavigate();
+    const { eventId } = useParams();
+    const userId = useSelector(selectId) || 1;
+    const token = useSelector(selectToken);
     const [selectedParticipant, setSelectedParticipant] = useState(0);
     const [userRole, setUserRole] = useState('member');
     const [participants, setParticipants] = useState([]);
@@ -162,7 +180,11 @@ const PendingEvent = ({}) => {
             let response;
 
             try {
-                response = await getEvent({ token: '', id: 1 });
+                response = await getEvent({
+                    token,
+                    userId,
+                    eventId,
+                });
             } catch (e) {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;
@@ -180,13 +202,15 @@ const PendingEvent = ({}) => {
 
     useEffect(() => {
         if (value === 'edit') {
-            buildEditTimeTable(startDate, setTimeTable);
+            buildEditTimeTable(startDate, setTimeTable, token, eventId, userId);
         } else {
             buildViewTimeTable(
                 participants,
                 selectedParticipant,
                 startDate,
-                setTimeTable
+                setTimeTable,
+                token,
+                eventId
             );
         }
     }, [participants, value, selectedParticipant, startDate]);
@@ -204,8 +228,8 @@ const PendingEvent = ({}) => {
 
         try {
             response = await postConfirmEvent({
-                token: '',
-                eventId: 1,
+                token,
+                eventId,
                 date: preferredTime.format('YYYY-MM-DD'),
                 time: preferredTime.format('HH:mm'),
             });
@@ -230,9 +254,9 @@ const PendingEvent = ({}) => {
 
         try {
             response = await postTimeTable({
-                token: '',
-                userId: 1,
-                eventId: 1,
+                token,
+                userId,
+                eventId,
                 list,
             });
         } catch (e) {

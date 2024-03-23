@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextboxMini from '../components/TextboxMini.jsx';
 import LinkBox from '../components/LinkBox.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     BsTagsFill,
     BsCreditCard2BackFill,
@@ -10,6 +10,8 @@ import {
 } from 'react-icons/bs';
 import { BiSmile, BiSolidBowlRice } from 'react-icons/bi';
 import { getPaymentInfo } from '../api/event.js';
+import { useSelector } from 'react-redux';
+import { selectToken } from '../redux/userSlice.js';
 
 const Container = styled.div`
     overflow-y: auto; // 세로 방향으로 스크롤 가능
@@ -90,6 +92,8 @@ const RepaymentButton = styled.div`
 
 function FinishedEvent() {
     const navigate = useNavigate();
+    const token = useSelector(selectToken);
+    const { eventId } = useParams();
 
     const [paymentMemo, setPaymentMemo] = useState('');
     const [paymentLink, setPaymentLink] = useState('');
@@ -100,7 +104,7 @@ function FinishedEvent() {
             let response;
 
             try {
-                response = await getPaymentInfo({ token: '', eventId: 1 });
+                response = await getPaymentInfo({ token, eventId });
             } catch (e) {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;

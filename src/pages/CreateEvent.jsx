@@ -11,6 +11,8 @@ import BlockButton from '../components/BlockButton.jsx';
 import dayjs from 'dayjs';
 import { createEvent, createEventUrl } from '../api/event.js';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectId } from '../redux/userSlice.js';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -34,6 +36,8 @@ const CreateEvent = ({}) => {
 
     const [location, setLocation] = useState('');
     const [memo, setMemo] = useState('');
+
+    const userId = useSelector(selectId) || 1;
 
     const onInput = (dispatch) => (event) => dispatch(event.target.value);
 
@@ -62,6 +66,8 @@ const CreateEvent = ({}) => {
                 startDate: startDate.format('YYYY-MM-DD'),
                 endDate: endDate.format('YYYY-MM-DD'),
                 location,
+                address: '',
+                userId,
                 memo,
             });
         } catch (e) {

@@ -16,8 +16,10 @@ import { IoMdPeople, IoMdPin } from 'react-icons/io';
 import PaymentAccordion from '../components/PaymentAccordion.jsx';
 import { getEvent, postFinishEvent } from '../api/event.js';
 import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { selectId, selectToken } from '../redux/userSlice.js';
 
 const Container = styled.div`
     padding: 0 24px;
@@ -144,6 +146,10 @@ const TextInput = styled(_TextInput)`
 `;
 
 const ScheduledEvent = ({}) => {
+    const token = useSelector(selectToken);
+    const { eventId } = useParams();
+    const userId = useSelector(selectId);
+
     const [name, setName] = useState('');
     const [remainingDays, setRemainingDays] = useState('');
     const [confirmDate, setConfirmDate] = useState(null);
@@ -165,7 +171,7 @@ const ScheduledEvent = ({}) => {
             let response;
 
             try {
-                response = await getEvent({ token: '', id: 1 });
+                response = await getEvent({ token, eventId, userId });
             } catch (e) {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;
