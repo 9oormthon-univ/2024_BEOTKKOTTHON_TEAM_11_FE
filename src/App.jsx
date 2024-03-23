@@ -8,8 +8,14 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { login } from './redux/userSlice.js';
 
+import BackgroundImage from './assets/background.png';
+
 const Container = styled.div`
     height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-image: url(${BackgroundImage});
+    background-attachment: fixed; // Add this line to make the background fixed
 `;
 
 function App() {

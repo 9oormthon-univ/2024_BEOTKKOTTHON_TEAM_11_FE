@@ -37,6 +37,7 @@ const Content = styled.div`
     min-height: 100vh;
     overflow: auto;
     box-shadow: 0px 0px 32px #0000002f;
+    background-color: #ffffff;
 `;
 
 const BackButton = styled.button`
@@ -206,6 +207,7 @@ const MobileWrapper = ({}) => {
                             hidden: !showLogo,
                             compact: headerTitle !== null,
                         })}
+                        onClick={() => navigate('/events/scheduled')}
                     />
                 </Header>
                 <Outlet />
