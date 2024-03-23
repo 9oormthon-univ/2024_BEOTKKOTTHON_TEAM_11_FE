@@ -12,8 +12,15 @@ import _DateInput from '../components/DateInput.jsx';
 import SwitchButton from '../components/SwitchButton.jsx';
 import classNames from 'classnames';
 import { getEvent, postConfirmEvent } from '../api/event.js';
-import { getTimeTable, postTimeTable } from '../api/timetable.js';
-import { useNavigate } from 'react-router-dom';
+import {
+    getTimeTable,
+    modifyTimeTable,
+    postTimeTable,
+} from '../api/timetable.js';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectId, selectToken } from '../redux/userSlice.js';
+import { setTitle } from '../redux/appSlice.js';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -60,7 +67,13 @@ const DateInput = styled(_DateInput)`
 const COLUMN = 4;
 const ROW = 24;
 
-async function buildEditTimeTable(startDate, setTimeTable) {
+async function buildEditTimeTable(
+    startDate,
+    setTimeTable,
+    token,
+    eventId,
+    userId
+) {
     const data = Array(COLUMN * 2)
         .fill(null)
         .map((item, index) => ({
@@ -71,14 +84,14 @@ async function buildEditTimeTable(startDate, setTimeTable) {
     let response;
     try {
         response = await getTimeTable({
-            token: '',
-            eventId: 1,
-            userId: 1,
+            token,
+            eventId,
+            userId,
         });
     } catch (e) {
-        alert('시간표 정보를 불러오는데 실패했습니다.');
+        // 아직 시간표를 등록하지 않음
         setTimeTable(data);
-        return;
+        return false;
     }
 
     for (const { date, items } of response) {
@@ -87,9 +100,18 @@ async function buildEditTimeTable(startDate, setTimeTable) {
     }
 
     setTimeTable(data);
+
+    return true;
 }
 
-async function buildViewTimeTable(list, id, startDate, setTimeTable) {
+async function buildViewTimeTable(
+    list,
+    id,
+    startDate,
+    setTimeTable,
+    token,
+    eventId
+) {
     const data = Array(COLUMN * 2)
         .fill(null)
         .map((item, index) => ({
@@ -107,14 +129,13 @@ async function buildViewTimeTable(list, id, startDate, setTimeTable) {
         count++;
         try {
             response = await getTimeTable({
-                token: '',
-                eventId: 1,
+                token,
+                eventId,
                 userId: participant.id,
             });
         } catch (e) {
-            alert('시간표 정보를 불러오는데 실패했습니다.');
-            setTimeTable(data);
-            return;
+            // 아직 시간표를 등록하지 않음
+            continue;
         }
 
         for (const { date, items } of response) {
@@ -135,6 +156,10 @@ async function buildViewTimeTable(list, id, startDate, setTimeTable) {
 
 const PendingEvent = ({}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { eventId } = useParams();
+    const userId = useSelector(selectId);
+    const token = useSelector(selectToken);
     const [selectedParticipant, setSelectedParticipant] = useState(0);
     const [userRole, setUserRole] = useState('member');
     const [participants, setParticipants] = useState([]);
@@ -150,6 +175,8 @@ const PendingEvent = ({}) => {
         dayjs().add(1, 'day').startOf('day')
     );
 
+    const [timetableStatus, setTimetableStatus] = useState(false);
+
     const items = [
         { value: 'edit', text: '나의 시간대 입력' },
         { value: 'view', text: '밥약 정보' },
@@ -161,34 +188,60 @@ const PendingEvent = ({}) => {
         (async () => {
             let response;
 
+            if (!token || !userId || !eventId) {
+                return;
+            }
+
             try {
-                response = await getEvent({ token: '', id: 1 });
+                response = await getEvent({
+                    token,
+                    userId,
+                    eventId,
+                });
             } catch (e) {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;
             }
 
+            dispatch(setTitle(response.name));
+
             setUserRole(response.userRole);
             setStartDate(dayjs(response.startDate));
             setEndDate(dayjs(response.endDate));
-            setResponseCount(response.responseCount);
+            setResponseCount(response.confirmCount);
             setParticipants(response.participants);
 
             // buildEditTimeTable(dayjs(response.startDate), setTimeTable);
         })();
-    }, []);
+    }, [token, userId, eventId]);
 
     useEffect(() => {
-        if (value === 'edit') {
-            buildEditTimeTable(startDate, setTimeTable);
-        } else {
-            buildViewTimeTable(
-                participants,
-                selectedParticipant,
-                startDate,
-                setTimeTable
-            );
-        }
+        (async () => {
+            if (!token || !userId || !eventId) {
+                return;
+            }
+
+            if (value === 'edit') {
+                setTimetableStatus(
+                    await buildEditTimeTable(
+                        startDate,
+                        setTimeTable,
+                        token,
+                        eventId,
+                        userId
+                    )
+                );
+            } else {
+                buildViewTimeTable(
+                    participants,
+                    selectedParticipant,
+                    startDate,
+                    setTimeTable,
+                    token,
+                    eventId
+                );
+            }
+        })();
     }, [participants, value, selectedParticipant, startDate]);
 
     const participantList = [
@@ -204,8 +257,8 @@ const PendingEvent = ({}) => {
 
         try {
             response = await postConfirmEvent({
-                token: '',
-                eventId: 1,
+                token,
+                eventId,
                 date: preferredTime.format('YYYY-MM-DD'),
                 time: preferredTime.format('HH:mm'),
             });
@@ -217,7 +270,7 @@ const PendingEvent = ({}) => {
 
         alert('밥약이 확정되었습니다.');
 
-        navigate('/');
+        navigate('/events/scheduled');
     };
 
     const onTimeTableSubmit = async (event) => {
@@ -229,19 +282,28 @@ const PendingEvent = ({}) => {
         }));
 
         try {
-            response = await postTimeTable({
-                token: '',
-                userId: 1,
-                eventId: 1,
-                list,
-            });
+            if (timetableStatus) {
+                response = await modifyTimeTable({
+                    token,
+                    userId,
+                    eventId,
+                    list,
+                });
+            } else {
+                response = await postTimeTable({
+                    token,
+                    userId,
+                    eventId,
+                    list,
+                });
+            }
         } catch (e) {
-            alert('시간대를 저장하는데 실패했습니다.');
+            alert('시간표를 저장하는데 실패했습니다.');
             console.error(e);
             return;
         }
 
-        alert('시간대가 저장되었습니다.');
+        alert('시간표가 저장되었습니다.');
 
         setValue('view');
     };

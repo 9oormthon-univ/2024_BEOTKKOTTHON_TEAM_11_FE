@@ -11,8 +11,4 @@ import './date-picker-theme.css';
 import 'dayjs/locale/ko';
 dayjs.locale('ko'); // use locale globally
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);

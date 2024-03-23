@@ -11,6 +11,8 @@ import BlockButton from '../components/BlockButton.jsx';
 import dayjs from 'dayjs';
 import { createEvent, createEventUrl } from '../api/event.js';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectId, selectToken } from '../redux/userSlice.js';
 
 const Container = styled.div`
     padding: 0 31px;
@@ -23,7 +25,7 @@ const Button = styled(BlockButton)`
 
 const CreateEvent = ({}) => {
     const navigate = useNavigate();
-
+    const token = useSelector(selectToken);
     const [name, setName] = useState('');
     const [startDate, setStartDate] = useState(
         dayjs().add(1, 'day').startOf('day')
@@ -34,6 +36,8 @@ const CreateEvent = ({}) => {
 
     const [location, setLocation] = useState('');
     const [memo, setMemo] = useState('');
+
+    const userId = useSelector(selectId);
 
     const onInput = (dispatch) => (event) => dispatch(event.target.value);
 
@@ -57,11 +61,13 @@ const CreateEvent = ({}) => {
 
         try {
             response = await createEvent({
-                // userId: 1, // TODO -> 이 부분 redux에서 받아올 것
                 name,
                 startDate: startDate.format('YYYY-MM-DD'),
                 endDate: endDate.format('YYYY-MM-DD'),
                 location,
+                address: '',
+                userId,
+                token,
                 memo,
             });
         } catch (e) {
@@ -71,7 +77,7 @@ const CreateEvent = ({}) => {
 
         try {
             response = await createEventUrl({
-                token: '',
+                token,
                 eventId: response.eventId,
             });
         } catch (e) {

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectId, selectIsLoggedIn } from '../redux/userSlice.js';
+import { selectId, selectIsLoggedIn, selectToken } from '../redux/userSlice.js';
 import { postEnterEvent } from '../api/event.js';
 
 const JoinEvent = ({}) => {
     const navigate = useNavigate();
     const { uuid } = useParams();
     const location = useLocation();
+    const token = useSelector(selectToken);
 
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const userId = useSelector(selectId);
@@ -21,7 +22,7 @@ const JoinEvent = ({}) => {
 
                 try {
                     response = await postEnterEvent({
-                        token: '',
+                        token,
                         uuid,
                         userId,
                     });
@@ -33,7 +34,7 @@ const JoinEvent = ({}) => {
                 navigate(`/event/${response.eventId}/pending`);
             })();
         }
-    });
+    }, [token, uuid, userId]);
 
     return <></>;
 };

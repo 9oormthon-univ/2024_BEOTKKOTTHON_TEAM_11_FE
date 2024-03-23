@@ -1,4 +1,10 @@
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import {
+    Link,
+    Outlet,
+    matchRoutes,
+    useLocation,
+    useNavigate,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import routes from './routes.jsx';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -8,6 +14,8 @@ import ServiceLogoCompactImage from './assets/images/rice_balloon_no_tail.svg';
 import RiceBalloonButton from './assets/images/rice_balloon_button.svg';
 import { useState, useEffect } from 'react';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import { selectTitle } from './redux/appSlice.js';
 
 const Container = styled.div`
     display: flex;
@@ -29,6 +37,7 @@ const Content = styled.div`
     min-height: 100vh;
     overflow: auto;
     box-shadow: 0px 0px 32px #0000002f;
+    background-color: #ffffff;
 `;
 
 const BackButton = styled.button`
@@ -126,22 +135,29 @@ const BACKWARD_DEFAULT = '/';
 
 const MobileWrapper = ({}) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [showLogo, setLogo] = useState(LOGO_DEFAULT);
     const [showFooter, setFooter] = useState(FOOTER_DEFAULT);
     const [headerTitle, setHeaderTitle] = useState(HEADER_TITLE_DEFAULT);
     const [backwardUrl, setBackwardUrl] = useState(BACKWARD_DEFAULT);
 
-    const location = useLocation();
+    const title = useSelector(selectTitle);
 
     useEffect(() => {
-        const find = routes.find((item) => item.path === location.pathname);
+        const result = matchRoutes(routes, location.pathname);
 
-        if (find) {
-            setLogo(find.logo ?? LOGO_DEFAULT);
-            setFooter(find.footer ?? FOOTER_DEFAULT);
-            setHeaderTitle(find.title ?? HEADER_TITLE_DEFAULT);
-            setBackwardUrl(find.previous ?? BACKWARD_DEFAULT);
+        if (result.length < 1) {
+            return;
+        }
+
+        const { route } = result[0];
+
+        if (route) {
+            setLogo(route.logo ?? LOGO_DEFAULT);
+            setFooter(route.footer ?? FOOTER_DEFAULT);
+            setHeaderTitle(route.title ?? HEADER_TITLE_DEFAULT);
+            setBackwardUrl(route.previous ?? BACKWARD_DEFAULT);
         } else {
             setLogo(LOGO_DEFAULT);
             setFooter(FOOTER_DEFAULT);
@@ -149,6 +165,20 @@ const MobileWrapper = ({}) => {
             setBackwardUrl(BACKWARD_DEFAULT);
         }
     }, [location]);
+
+    useEffect(() => {
+        const result = matchRoutes(routes, location.pathname);
+
+        if (result.length < 1) {
+            return;
+        }
+
+        const { route } = result[0];
+
+        if (route.customTitle) {
+            setHeaderTitle(title ?? route.title ?? HEADER_TITLE_DEFAULT);
+        }
+    }, [location, title]);
 
     const onBackButtonClick = (event) => {
         navigate(backwardUrl);
@@ -177,6 +207,7 @@ const MobileWrapper = ({}) => {
                             hidden: !showLogo,
                             compact: headerTitle !== null,
                         })}
+                        onClick={() => navigate('/events/scheduled')}
                     />
                 </Header>
                 <Outlet />

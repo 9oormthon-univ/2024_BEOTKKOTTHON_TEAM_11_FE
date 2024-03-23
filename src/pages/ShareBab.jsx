@@ -37,7 +37,7 @@ function ShareBab({}) {
 
     useEffect(() => {
         if (!searchParams.get('uuid')) {
-            navigate('/');
+            navigate('/events/scheduled');
         }
     }, [link]);
 

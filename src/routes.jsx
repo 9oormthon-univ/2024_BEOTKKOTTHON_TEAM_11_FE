@@ -15,13 +15,15 @@ import Intro from './pages/Intro.jsx';
 import JoinEvent from './pages/JoinEvent.jsx';
 const routes = [
     {
-        path: '/intro',
+        path: '/',
         element: <Intro />,
         logo: false,
+        previous: false,
+        footer: false,
         name: '소개페이지',
     },
     {
-        path: '/',
+        path: '/sitemap',
         element: <Sitemap />,
         previous: false,
     },
@@ -48,24 +50,31 @@ const routes = [
         element: <PendingEvent />,
         footer: true,
         title: '대기중인 밥약',
+        previous: '/events/scheduled',
 
         name: '대기중인 밥약',
         samplePath: '/event/1/pending',
+
+        customTitle: true,
     },
     {
         path: '/event/:eventId/scheduled',
         element: <ScheduledEvent />,
         footer: true,
         title: '확정된 밥약',
+        previous: '/events/scheduled',
 
         name: '확정된 밥약',
         samplePath: '/event/1/scheduled',
+
+        customTitle: true,
     },
     {
         path: '/event/create',
         element: <CreateEvent />,
         footer: true,
         title: '밥약 만들기',
+        previous: '/events/scheduled',
 
         name: '밥약 생성하기',
     },
@@ -74,27 +83,31 @@ const routes = [
         element: <JoinEvent />,
         footer: true,
         title: '밥약 만들기',
+        previous: '/events/scheduled',
 
         name: '밥약 참가하기',
         samplePath: '/invite/85e61cd0-59e2-44e6-b89c-79ddc248ae9c',
     },
     {
-        path: '/confirmbab',
+        path: '/events/scheduled',
         element: <ConfirmBab />,
         footer: true,
         name: '확정된 밥약 목록',
+        previous: false,
     },
     {
-        path: '/waitbab',
+        path: '/events/pending',
         element: <WaitBab />,
         footer: true,
         name: '대기중인 밥약 목록',
+        previous: false,
     },
     {
-        path: '/finishbab',
+        path: '/events/result',
         element: <FinishBab />,
         footer: true,
         name: '종료된 밥약 목록',
+        previous: false,
     },
     {
         path: '/register/success',
@@ -107,6 +120,7 @@ const routes = [
         path: '/event/create/result',
         element: <ShareBab />,
         footer: true,
+        previous: '/events/scheduled',
         title: '밥약 만들기',
 
         name: '밥약 생성 결과',
@@ -118,6 +132,7 @@ const routes = [
         element: <Payment />,
         footer: true,
         title: '송금 및 보은하기',
+        previous: '/events/scheduled',
 
         name: '종료된 밥약',
         samplePath: '/event/1/result',

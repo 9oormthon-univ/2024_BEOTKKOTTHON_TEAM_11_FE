@@ -16,8 +16,11 @@ import { IoMdPeople, IoMdPin } from 'react-icons/io';
 import PaymentAccordion from '../components/PaymentAccordion.jsx';
 import { getEvent, postFinishEvent } from '../api/event.js';
 import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectId, selectToken } from '../redux/userSlice.js';
+import { setTitle } from '../redux/appSlice.js';
 
 const Container = styled.div`
     padding: 0 24px;
@@ -144,6 +147,11 @@ const TextInput = styled(_TextInput)`
 `;
 
 const ScheduledEvent = ({}) => {
+    const dispatch = useDispatch();
+    const token = useSelector(selectToken);
+    const { eventId } = useParams();
+    const userId = useSelector(selectId);
+
     const [name, setName] = useState('');
     const [remainingDays, setRemainingDays] = useState('');
     const [confirmDate, setConfirmDate] = useState(null);
@@ -164,15 +172,21 @@ const ScheduledEvent = ({}) => {
         (async () => {
             let response;
 
+            if (!token || !eventId || !userId) {
+                return;
+            }
+
             try {
-                response = await getEvent({ token: '', id: 1 });
+                response = await getEvent({ token, eventId, userId });
             } catch (e) {
                 alert('밥약 정보를 불러오는데 실패했습니다.');
                 return;
             }
 
+            dispatch(setTitle(response.name));
+
             setName(response.name);
-            setRemainingDays(response.remainingDays);
+            setRemainingDays(dayjs(response.confirmDate).diff(dayjs(), 'days'));
             setConfirmDate(response.confirmDate);
             setLocation(response.location);
             setMemo(response.memo);
@@ -180,7 +194,7 @@ const ScheduledEvent = ({}) => {
             setUserRole(response.userRole);
             setOwnerId(response.ownerId);
         })();
-    }, []);
+    }, [token, eventId, userId]);
 
     const onInput = (dispatch) => (event) => dispatch(event.target.value);
     const onSubmit = async (event) => {
@@ -203,8 +217,8 @@ const ScheduledEvent = ({}) => {
 
         try {
             response = await postFinishEvent({
-                id: '',
-                token: '',
+                eventId,
+                token,
                 paymentMemo,
                 paymentLink,
                 accountNumber,
@@ -216,7 +230,7 @@ const ScheduledEvent = ({}) => {
 
         alert('밥약이 종료되었습니다.');
 
-        navigate('/');
+        navigate('/events/scheduled');
     };
 
     const BadgeIcon =
