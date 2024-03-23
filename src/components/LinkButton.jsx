@@ -27,12 +27,18 @@ const Input = styled.input`
     white-space: pre;
     text-overflow: ellipsis;
 
+    cursor: pointer;
+
     background-color: #fff6f6;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const Item = styled.div``;
 
-const TextButton = ({ value, onClick, additionalItem, ...props }) => {
+const LinkButton = ({ value, onClick, additionalItem, ...props }) => {
     return (
         <Container {...props}>
             <Input onClick={onClick} value={value} />
@@ -41,4 +47,4 @@ const TextButton = ({ value, onClick, additionalItem, ...props }) => {
     );
 };
 
-export default TextButton;
+export default LinkButton;
