@@ -164,12 +164,7 @@ const Register = ({}) => {
             return;
         }
 
-        alert(
-            `name: ${name}\neamil: ${email}\nemail code:${emailCode}\npassword:${password}\npassword check: ${passwordCheck}`
-        );
-
-        alert(`축하드립니다!! 회원가입이 완료되었어요.`);
-        navigate('/');
+        navigate('/register/success');
     };
 
     const onEmailVerifyButtonClick = async (event) => {

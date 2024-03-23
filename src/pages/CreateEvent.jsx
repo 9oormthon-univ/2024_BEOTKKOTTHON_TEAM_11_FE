@@ -79,7 +79,7 @@ const CreateEvent = ({}) => {
             return;
         }
 
-        navigate(`/sharebab?uuid=${response.uuid}`);
+        navigate(`/event/create/result?uuid=${response.uuid}`);
     };
 
     return (

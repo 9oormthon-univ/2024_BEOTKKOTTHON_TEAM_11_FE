@@ -30,7 +30,7 @@ const JoinEvent = ({}) => {
                     return;
                 }
 
-                navigate(`/party/${response.eventId}/pending`);
+                navigate(`/event/${response.eventId}/pending`);
             })();
         }
     });
