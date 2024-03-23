@@ -19,6 +19,7 @@ const routes = [
         element: <Intro />,
         logo: false,
         previous: false,
+        footer: false,
         name: '소개페이지',
     },
     {
