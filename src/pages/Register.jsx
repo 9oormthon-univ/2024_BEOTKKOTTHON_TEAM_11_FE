@@ -187,15 +187,18 @@ const Register = ({}) => {
             return;
         }
 
-        if (
-            response.code === 400 &&
-            response.message === '이미 완료된 요청입니다.'
-        ) {
-            alert('이미 인증된 이메일입니다. 다음으로 넘어갑니다.');
-            setEmailVerified(true);
-            setEmailSent(true);
-            onNextPageClick();
-            return;
+        if (response.code === 400) {
+            if (response.message === '이미 완료된 요청입니다.') {
+                alert(
+                    '이미 인증된 이메일입니다. 회원가입 버튼을 클릭해서 계속하세요.'
+                );
+                setEmailVerified(true);
+                setEmailSent(true);
+                return;
+            } else {
+                alert(response.message);
+                return;
+            }
         }
 
         setEmailSent(true);
@@ -208,6 +211,11 @@ const Register = ({}) => {
     const onEmailConfirmButtonClick = async (event) => {
         if (!emailSent) {
             alert('인증 메일을 먼저 전송하세요.');
+            return;
+        }
+
+        if (emailVerified) {
+            alert('이미 인증되셨습니다. 회원가입 버튼을 클릭해서 계속하세요.');
             return;
         }
 
