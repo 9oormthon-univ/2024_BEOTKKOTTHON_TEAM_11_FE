@@ -15,13 +15,14 @@ import Intro from './pages/Intro.jsx';
 import JoinEvent from './pages/JoinEvent.jsx';
 const routes = [
     {
-        path: '/intro',
+        path: '/',
         element: <Intro />,
         logo: false,
+        previous: false,
         name: '소개페이지',
     },
     {
-        path: '/',
+        path: '/sitemap',
         element: <Sitemap />,
         previous: false,
     },
