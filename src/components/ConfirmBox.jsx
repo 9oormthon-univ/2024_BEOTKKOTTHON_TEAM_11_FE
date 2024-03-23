@@ -144,11 +144,6 @@ const Button = styled.button`
         height: 24px;
         color: ${(props) => (props.hover ? '#FFF6F6' : '#FE5858')};
     }
-
-    &.disabled {
-        color: rgba(245, 223, 223, 1);
-        pointer-events: none;
-    }
 `;
 
 const PeopleArrowContainer = styled.div`
@@ -241,7 +236,6 @@ function ConfirmBox(props) {
                 <Button
                     onClick={() => navigate(`/event/${id}/scheduled`)}
                     hover={hover}
-                    className={userRole !== 'host' ? 'disabled' : ''}
                 >
                     <IoIosArrowForward />
                 </Button>
