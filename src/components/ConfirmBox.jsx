@@ -31,6 +31,7 @@ const DNMContainer = styled.div`
 `;
 
 const DdayNameContainer = styled.div`
+    max-width: 280px;
     display: flex;
     align-items: center;
 `;
@@ -56,6 +57,10 @@ const MarkContainer = styled.div`
     height: 24px;
 `;
 const BabName = styled.p`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    flex-shrink: 1;
     font-weight: 600;
     font-size: 24px;
     color: ${(props) => (props.hover ? '#FFF6F6' : '#FE5858')};

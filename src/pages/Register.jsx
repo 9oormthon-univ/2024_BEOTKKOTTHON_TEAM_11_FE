@@ -235,6 +235,11 @@ const Register = ({}) => {
                 code: emailCode,
             });
         } catch (e) {
+            alert('인증 코드 확인에 실패했습니다.');
+            return;
+        }
+
+        if (response.message === '일치하지 않는 인증코드입니다.') {
             alert('인증 코드가 틀렸습니다.');
             return;
         }

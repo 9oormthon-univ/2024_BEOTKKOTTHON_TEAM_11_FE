@@ -33,6 +33,12 @@ const Wrapper = styled.div`
     background-color: #fff6f6;
 
     box-shadow: 0px 4px 4px 0px #d6494926;
+
+    display: none;
+
+    &.active {
+        display: block;
+    }
 `;
 
 const Header = styled.p`
@@ -245,7 +251,7 @@ const ScheduledEvent = ({}) => {
 
     return (
         <Container>
-            <Wrapper>
+            <Wrapper className={classNames({ active: name !== '' })}>
                 <Header>{name}</Header>
                 <BadgeContainer>
                     <Badge>D - {remainingDays}</Badge>

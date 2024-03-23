@@ -105,6 +105,7 @@ const PaymentAccordion = ({
     const onClick = (event) => {
         if (!ref) return;
 
+        setHeight(ref.current.scrollHeight);
         onChange(!value);
     };
 

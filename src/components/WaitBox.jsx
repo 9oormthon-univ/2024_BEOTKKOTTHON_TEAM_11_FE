@@ -41,12 +41,17 @@ const BabDiv = styled.div`
 
 //밥약이름+파티원/장 구분마크
 const NMContainer = styled.div`
+    max-width: 280px;
     display: flex; //자식 요소들을 한 줄에 나열합니다.
     align-items: center;
     justify-content: space-between;
 `;
 //밥약 이름
 const BabName = styled.p`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    flex-shrink: 1;
     font-weight: 600;
     font-size: 24px;
     color: ${(props) => (props.hover ? '#FFF6F6' : '#FE5858')};

@@ -42,6 +42,7 @@ const StyledIoMdDoneAll = styled(IoMdDoneAll)`
     ${({ hover }) => iconStyle(hover)}
 `;
 const CheckMNameContainer = styled.div`
+    max-width: 280px;
     display: flex; //자식 요소들을 한 줄에 나열합니다.
     align-items: center;
 `;
@@ -53,6 +54,10 @@ const MarkContainer = styled.div`
     height: 24px;
 `;
 const BabName = styled.p`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre;
+    flex-shrink: 1;
     font-weight: 600;
     font-size: 24px;
     color: ${(props) => (props.hover ? '#FFF6F6' : '#FE5858')};
