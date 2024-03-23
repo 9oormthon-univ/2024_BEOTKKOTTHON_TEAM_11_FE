@@ -178,7 +178,7 @@ const ScheduledEvent = ({}) => {
             }
 
             setName(response.name);
-            setRemainingDays(response.remainingDays);
+            setRemainingDays(dayjs(response.confirmDate).diff(dayjs(), 'days'));
             setConfirmDate(response.confirmDate);
             setLocation(response.location);
             setMemo(response.memo);
@@ -209,8 +209,8 @@ const ScheduledEvent = ({}) => {
 
         try {
             response = await postFinishEvent({
-                id: '',
-                token: '',
+                eventId,
+                token,
                 paymentMemo,
                 paymentLink,
                 accountNumber,

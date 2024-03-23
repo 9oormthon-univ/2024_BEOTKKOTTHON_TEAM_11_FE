@@ -84,7 +84,7 @@ async function buildEditTimeTable(
             userId,
         });
     } catch (e) {
-        alert('시간표 정보를 불러오는데 실패했습니다.');
+        // 아직 시간표를 등록하지 않음
         setTimeTable(data);
         return;
     }
@@ -127,9 +127,8 @@ async function buildViewTimeTable(
                 userId: participant.id,
             });
         } catch (e) {
-            alert('시간표 정보를 불러오는데 실패했습니다.');
-            setTimeTable(data);
-            return;
+            // 아직 시간표를 등록하지 않음
+            continue;
         }
 
         for (const { date, items } of response) {
@@ -151,7 +150,7 @@ async function buildViewTimeTable(
 const PendingEvent = ({}) => {
     const navigate = useNavigate();
     const { eventId } = useParams();
-    const userId = useSelector(selectId) || 1;
+    const userId = useSelector(selectId);
     const token = useSelector(selectToken);
     const [selectedParticipant, setSelectedParticipant] = useState(0);
     const [userRole, setUserRole] = useState('member');
@@ -193,7 +192,7 @@ const PendingEvent = ({}) => {
             setUserRole(response.userRole);
             setStartDate(dayjs(response.startDate));
             setEndDate(dayjs(response.endDate));
-            setResponseCount(response.responseCount);
+            setResponseCount(response.confirmCount);
             setParticipants(response.participants);
 
             // buildEditTimeTable(dayjs(response.startDate), setTimeTable);
