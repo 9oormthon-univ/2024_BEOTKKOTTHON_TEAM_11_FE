@@ -187,6 +187,17 @@ const Register = ({}) => {
             return;
         }
 
+        if (
+            response.code === 400 &&
+            response.message === '이미 완료된 요청입니다.'
+        ) {
+            alert('이미 인증된 이메일입니다. 다음으로 넘어갑니다.');
+            setEmailVerified(true);
+            setEmailSent(true);
+            onNextPageClick();
+            return;
+        }
+
         setEmailSent(true);
 
         alert(
