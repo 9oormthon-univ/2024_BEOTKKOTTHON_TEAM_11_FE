@@ -1,3 +1,5 @@
+import { getAxiosInstance } from './axios.js';
+
 export async function createEvent(request) {
     // const axios = getAxiosInstance();
 
@@ -12,10 +14,29 @@ export async function createEvent(request) {
     // };
 
     // const response = await axios.post('/api/v1/promises', bodyData);
-    // return response.data;
+
+    // const data = {
+    //     eventId: response.data,
+    // };
+
+    // return data;
 
     return {
-        url: 'https://example.com',
+        eventId: 100,
+    };
+}
+
+export async function createEventUrl(request) {
+    // const axios = getAxiosInstance(request.token);
+
+    // const response = await axios.post(
+    //     `/api/v1/promises/${request.eventId}/link`
+    // );
+
+    // return { uuid: response.data.uuid };
+
+    return {
+        uuid: '85e61cd0-59e2-44e6-b89c-79ddc248ae9c',
     };
 }
 
@@ -40,10 +61,9 @@ export async function getEvent(request) {
     //         name: item.memberName,
     //         id: item.memberId,
     //     })),
+    //     memo: response.data.memo,
     //     userRole: response.data.userRole,
     // };
-
-    // 메모 누락
 
     // return data;
 
@@ -77,6 +97,49 @@ export async function getEvent(request) {
             },
         ],
         userRole: 'owner',
+    };
+}
+
+export async function getPaymentInfo(request) {
+    // const axios = getAxiosInstance(request.token);
+
+    // const response = await axios.get(
+    //     `/api/v1/promises/${request.eventId}/payment`
+    // );
+
+    // const data = {
+    //     paymentMemo: response.data.payMemo,
+    //     paymentLink: response.data.kakaopayLink,
+    //     accountNumber: response.data.bankAccount,
+    // };
+
+    // 백엔드 미구현 상태
+
+    // return data;
+
+    return {
+        paymentMemo:
+            '테스트님 10000원 테스트2님 50000원 테스트3님 100000000원 테스트4님 0원 부탁드립니다',
+        paymentLink: 'https://example.com/kakaopay/1234567890',
+        accountNumber: '신한은행 110-000000-000000 김경재',
+    };
+}
+
+export async function postEnterEvent(request) {
+    // const axios = getAxiosInstance(request.token);
+
+    // const response = await axios.post(
+    //     `/api/v1/members/${request.userId}/promises/${request.uuid}`
+    // );
+
+    // const data = {
+    //     eventId: response.data,
+    // };
+
+    // return data;
+
+    return {
+        eventId: 100,
     };
 }
 
