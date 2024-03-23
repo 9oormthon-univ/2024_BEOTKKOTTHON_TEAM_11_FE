@@ -13,10 +13,14 @@ import { getPaymentInfo } from '../api/event.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectToken } from '../redux/userSlice.js';
 import { setTitle } from '../redux/appSlice.js';
+import TextButton from '../components/TextButton.jsx';
+import LinkButton from '../components/LinkButton.jsx';
+import ContentHeader from '../components/ContentHeader.jsx';
+import MiniButton from '../components/MiniButton.jsx';
+import classNames from 'classnames';
 
 const Container = styled.div`
-    overflow-y: auto; // 세로 방향으로 스크롤 가능
-    height: 100vh; // 뷰포트 높이의 100%로 설정
+    padding: 0 31px;
 `;
 
 const SmileIcon = styled.div`
@@ -31,12 +35,15 @@ const TextDiv = styled.div`
 
 const LinkContainer = styled.div`
     margin-top: 30px;
+
+    &.disabled {
+        display: none;
+    }
 `;
 
 const TitleContainer = styled.div`
     display: flex;
     align-items: center;
-    margin-left: 40px;
     margin-top: 30px;
     margin-bottom: 10px;
     color: #fe5858;
@@ -100,6 +107,12 @@ function FinishedEvent() {
     const [paymentLink, setPaymentLink] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
 
+    const onCopyClick = (value) => {
+        navigator.clipboard.writeText(value).then(() => {
+            alert('복사되었습니다!');
+        });
+    };
+
     useEffect(() => {
         (async () => {
             let response;
@@ -122,41 +135,57 @@ function FinishedEvent() {
     }, [token, eventId]);
 
     return (
-        <>
-            <Container>
-                <SmileIcon>
-                    <BiSmile size="135px" />
-                </SmileIcon>
-                <TextDiv>
-                    <TextboxMini text="즐거운 밥약을 보내셨나요?"></TextboxMini>
-                    <TextboxMini text="링크를 통해 파티장에게 오늘의 비용을 송금하고,"></TextboxMini>
-                    <TextboxMini text="보은하기를 통해 새로운 밥약을 만들어봐요!!"></TextboxMini>
-                </TextDiv>
-                <TitleContainer>
-                    <BsTagsFill size="24px" />
-                    <Title>송금 메모</Title>
-                </TitleContainer>
-                <Memo>{paymentMemo}</Memo>
-                <LinkContainer>
-                    <LinkBox
-                        icon={BsCreditCard2BackFill}
-                        text="송금 링크"
-                        link={paymentLink}
-                    ></LinkBox>
-                </LinkContainer>
-                <LinkContainer>
-                    <LinkBox
-                        icon={BsInfoCircleFill}
-                        text="계좌 번호"
-                        link={accountNumber}
-                    ></LinkBox>
-                </LinkContainer>
-                <RepaymentButton onClick={() => navigate('/event/create')}>
-                    <BiSolidBowlRice size="30px" />
-                    보은하기
-                </RepaymentButton>
-            </Container>
-        </>
+        <Container>
+            <SmileIcon>
+                <BiSmile size="135px" />
+            </SmileIcon>
+            <TextDiv>
+                <TextboxMini text="즐거운 밥약을 보내셨나요?"></TextboxMini>
+                <TextboxMini text="링크를 통해 파티장에게 오늘의 비용을 송금하고,"></TextboxMini>
+                <TextboxMini text="보은하기를 통해 새로운 밥약을 만들어봐요!!"></TextboxMini>
+            </TextDiv>
+            <TitleContainer>
+                <BsTagsFill size="24px" />
+                <Title>송금 메모</Title>
+            </TitleContainer>
+            <Memo>{paymentMemo || '송금 정보가 없습니다.'}</Memo>
+            <LinkContainer
+                className={classNames({ disabled: paymentLink === '' })}
+            >
+                <ContentHeader
+                    icon={<BsCreditCard2BackFill />}
+                    text="송금 링크"
+                />
+                <LinkButton
+                    value={paymentLink}
+                    onClick={() => window.open(paymentLink)}
+                    additionalItem={
+                        <MiniButton
+                            text="복사"
+                            onClick={() => onCopyClick(paymentLink)}
+                        />
+                    }
+                />
+            </LinkContainer>
+            <LinkContainer
+                className={classNames({ disabled: accountNumber === '' })}
+            >
+                <ContentHeader icon={<BsInfoCircleFill />} text="계좌 번호" />
+                <TextButton
+                    value={accountNumber}
+                    additionalItem={
+                        <MiniButton
+                            text="복사"
+                            onClick={() => onCopyClick(accountNumber)}
+                        />
+                    }
+                />
+            </LinkContainer>
+            <RepaymentButton onClick={() => navigate('/event/create')}>
+                <BiSolidBowlRice size="30px" />
+                보은하기
+            </RepaymentButton>
+        </Container>
     );
 }
 
