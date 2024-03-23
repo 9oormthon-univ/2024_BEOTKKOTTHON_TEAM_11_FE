@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom'; 
+
 import RiceBalloon from '../assets/images/rice_balloon.svg';
 import ProcessTitle from '../components/ProcessTitle'
 import ImageSliding from '../components/ImgSliding';
@@ -159,11 +161,20 @@ font-weight: 700;
 display: flex;
 justify-content: center;
 align-items: center;
+
+transition: background-color 0.1s;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #cf3d3d;
+    }
 `;
 
 function Intro() {
   const images1 = [img1, img2];
   const images2 = [img3, img4, img5];
+  const navigate = useNavigate();
 
   return (
     <Scroll>
@@ -223,7 +234,7 @@ function Intro() {
       <Text4>로그인 후 무료로 이용이 가능합니다!!</Text4>
       <Text5>즐거운 이츠타임을 만들러 가볼까요??</Text5>
       <Buttondiv>
-        <CreateButton>
+        <CreateButton onClick={() => navigate('/party/create')}>
           <BsEmojiLaughingFill size="24px" style={{ marginRight: '10px' }}/>밥약 만들러 가기!!
         </CreateButton>
       </Buttondiv>

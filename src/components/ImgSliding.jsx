@@ -4,22 +4,22 @@ import styled, { keyframes } from 'styled-components';
 // Keyframes for the animations
 const slideIn = keyframes`
   from {
-    transform: translateX(-100%);
+    transform: translateX(100%); // 오른쪽에서 시작
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(0); // 중앙으로
     opacity: 1;
   }
 `;
 
 const slideOut = keyframes`
   from {
-    transform: translateX(0);
+    transform: translateX(0); // 중앙에서 시작
     opacity: 1;
   }
   to {
-    transform: translateX(100%);
+    transform: translateX(-100%); // 왼쪽으로
     opacity: 0;
   }
 `;
