@@ -11,8 +11,14 @@ import ShareBab from './pages/ShareBab.jsx';
 import Payment from './pages/Payment.jsx';
 import ScheduledEvent from './pages/ScheduledEvent.jsx';
 import Logout from './pages/Logout.jsx';
-
+import Intro from './pages/Intro.jsx'
 const routes = [
+    {
+        path: '/intro',
+        element: <Intro/>,
+        logo: false,
+        name: '소개페이지',
+    },
     {
         path: '/',
         element: <Sitemap />,
