@@ -20,7 +20,9 @@ export async function postLogin(request) {
 export async function getMemberWithEmail(request) {
     const axios = getAxiosInstance(request.token);
 
-    const response = await axios.get(`/api/v1/members/${request.email}`);
+    const response = await axios.get(
+        `/api/v1/memberByUsername/${request.email}`
+    );
 
     const data = {
         userId: response.data.id,
