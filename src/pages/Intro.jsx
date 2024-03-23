@@ -17,6 +17,8 @@ import img6 from '../assets/images/Intro/3_share.svg';
 import img7 from '../assets/images/Intro/4_return.svg';
 
 import { BsEmojiLaughingFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
+import { selectIsLoggedIn } from '../redux/userSlice.js';
 
 const Scroll = styled.div``;
 
@@ -179,6 +181,8 @@ function Intro() {
     const images2 = [img3, img4, img5];
     const navigate = useNavigate();
 
+    const isLoggedIn = useSelector(selectIsLoggedIn);
+
     return (
         <Scroll>
             <LogoContainer>
@@ -249,7 +253,11 @@ function Intro() {
             <Text4>로그인 후 무료로 이용이 가능합니다!!</Text4>
             <Text5>즐거운 이츠타임을 만들러 가볼까요??</Text5>
             <Buttondiv>
-                <CreateButton onClick={() => navigate('/login')}>
+                <CreateButton
+                    onClick={() =>
+                        navigate(isLoggedIn ? '/events/scheduled' : '/login')
+                    }
+                >
                     <BsEmojiLaughingFill
                         size="24px"
                         style={{ marginRight: '10px' }}
