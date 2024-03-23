@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/userSlice.js';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import RiceBalloonNoTailImage from '../assets/images/rice_balloon_no_tail.svg';
 import TextInput from '../components/TextInput.jsx';
@@ -78,6 +78,7 @@ const RegisterText = styled.p`
 const Login = ({}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [fieldHidden, setFieldHidden] = useState(true);
     const [errorText, setErrorText] = useState('');
 
@@ -112,7 +113,12 @@ const Login = ({}) => {
         );
 
         alert(`${id}님 환영합니다!`);
-        navigate('/');
+
+        if (searchParams.get('redirect')) {
+            navigate(searchParams.get('redirect'));
+        } else {
+            navigate('/');
+        }
     }
 
     return (
