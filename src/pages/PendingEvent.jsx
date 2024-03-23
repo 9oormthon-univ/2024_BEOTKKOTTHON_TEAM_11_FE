@@ -12,7 +12,11 @@ import _DateInput from '../components/DateInput.jsx';
 import SwitchButton from '../components/SwitchButton.jsx';
 import classNames from 'classnames';
 import { getEvent, postConfirmEvent } from '../api/event.js';
-import { getTimeTable, postTimeTable } from '../api/timetable.js';
+import {
+    getTimeTable,
+    modifyTimeTable,
+    postTimeTable,
+} from '../api/timetable.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectId, selectToken } from '../redux/userSlice.js';
@@ -86,7 +90,7 @@ async function buildEditTimeTable(
     } catch (e) {
         // 아직 시간표를 등록하지 않음
         setTimeTable(data);
-        return;
+        return false;
     }
 
     for (const { date, items } of response) {
@@ -95,6 +99,8 @@ async function buildEditTimeTable(
     }
 
     setTimeTable(data);
+
+    return true;
 }
 
 async function buildViewTimeTable(
@@ -167,6 +173,8 @@ const PendingEvent = ({}) => {
         dayjs().add(1, 'day').startOf('day')
     );
 
+    const [timetableStatus, setTimetableStatus] = useState(false);
+
     const items = [
         { value: 'edit', text: '나의 시간대 입력' },
         { value: 'view', text: '밥약 정보' },
@@ -177,6 +185,10 @@ const PendingEvent = ({}) => {
     useEffect(() => {
         (async () => {
             let response;
+
+            if (!token || !userId || !eventId) {
+                return;
+            }
 
             try {
                 response = await getEvent({
@@ -197,21 +209,35 @@ const PendingEvent = ({}) => {
 
             // buildEditTimeTable(dayjs(response.startDate), setTimeTable);
         })();
-    }, []);
+    }, [token, userId, eventId]);
 
     useEffect(() => {
-        if (value === 'edit') {
-            buildEditTimeTable(startDate, setTimeTable, token, eventId, userId);
-        } else {
-            buildViewTimeTable(
-                participants,
-                selectedParticipant,
-                startDate,
-                setTimeTable,
-                token,
-                eventId
-            );
-        }
+        (async () => {
+            if (!token || !userId || !eventId) {
+                return;
+            }
+
+            if (value === 'edit') {
+                setTimetableStatus(
+                    await buildEditTimeTable(
+                        startDate,
+                        setTimeTable,
+                        token,
+                        eventId,
+                        userId
+                    )
+                );
+            } else {
+                buildViewTimeTable(
+                    participants,
+                    selectedParticipant,
+                    startDate,
+                    setTimeTable,
+                    token,
+                    eventId
+                );
+            }
+        })();
     }, [participants, value, selectedParticipant, startDate]);
 
     const participantList = [
@@ -252,19 +278,28 @@ const PendingEvent = ({}) => {
         }));
 
         try {
-            response = await postTimeTable({
-                token,
-                userId,
-                eventId,
-                list,
-            });
+            if (timetableStatus) {
+                response = await modifyTimeTable({
+                    token,
+                    userId,
+                    eventId,
+                    list,
+                });
+            } else {
+                response = await postTimeTable({
+                    token,
+                    userId,
+                    eventId,
+                    list,
+                });
+            }
         } catch (e) {
-            alert('시간대를 저장하는데 실패했습니다.');
+            alert('시간표를 저장하는데 실패했습니다.');
             console.error(e);
             return;
         }
 
-        alert('시간대가 저장되었습니다.');
+        alert('시간표가 저장되었습니다.');
 
         setValue('view');
     };

@@ -34,7 +34,7 @@ const JoinEvent = ({}) => {
                 navigate(`/event/${response.eventId}/pending`);
             })();
         }
-    });
+    }, [token, uuid, userId]);
 
     return <></>;
 };

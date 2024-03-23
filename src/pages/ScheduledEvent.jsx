@@ -170,6 +170,10 @@ const ScheduledEvent = ({}) => {
         (async () => {
             let response;
 
+            if (!token || !eventId || !userId) {
+                return;
+            }
+
             try {
                 response = await getEvent({ token, eventId, userId });
             } catch (e) {
@@ -186,7 +190,7 @@ const ScheduledEvent = ({}) => {
             setUserRole(response.userRole);
             setOwnerId(response.ownerId);
         })();
-    }, []);
+    }, [token, eventId, userId]);
 
     const onInput = (dispatch) => (event) => dispatch(event.target.value);
     const onSubmit = async (event) => {

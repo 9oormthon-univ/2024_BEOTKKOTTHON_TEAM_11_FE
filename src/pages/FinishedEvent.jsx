@@ -103,6 +103,10 @@ function FinishedEvent() {
         (async () => {
             let response;
 
+            if (!token || !eventId) {
+                return;
+            }
+
             try {
                 response = await getPaymentInfo({ token, eventId });
             } catch (e) {
@@ -114,7 +118,7 @@ function FinishedEvent() {
             setPaymentLink(response.paymentLink);
             setAccountNumber(response.accountNumber);
         })();
-    }, []);
+    }, [token, eventId]);
 
     return (
         <>

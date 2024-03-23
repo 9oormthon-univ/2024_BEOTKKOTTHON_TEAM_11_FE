@@ -131,7 +131,7 @@ const Login = ({}) => {
         if (searchParams.get('redirect')) {
             navigate(searchParams.get('redirect'));
         } else {
-            navigate('/');
+            navigate('/events/scheduled');
         }
     }
 
