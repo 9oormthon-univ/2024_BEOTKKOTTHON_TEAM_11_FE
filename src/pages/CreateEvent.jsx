@@ -9,7 +9,7 @@ import { IoMdCreate, IoMdPin } from 'react-icons/io';
 import TextInput from '../components/TextInput.jsx';
 import BlockButton from '../components/BlockButton.jsx';
 import dayjs from 'dayjs';
-import { createEvent } from '../api/event.js';
+import { createEvent, createEventUrl } from '../api/event.js';
 import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
@@ -65,11 +65,21 @@ const CreateEvent = ({}) => {
                 memo,
             });
         } catch (e) {
-            alert('밥약 만들기에 실패했습니다');
+            alert('밥약 만들기에 실패했습니다.');
             return;
         }
 
-        navigate(`/sharebab?url=${response.url}`);
+        try {
+            response = await createEventUrl({
+                token: '',
+                eventId: response.eventId,
+            });
+        } catch (e) {
+            alert('밥약 링크 만들기에 실패했습니다.');
+            return;
+        }
+
+        navigate(`/event/create/result?uuid=${response.uuid}`);
     };
 
     return (

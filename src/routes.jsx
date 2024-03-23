@@ -8,14 +8,15 @@ import PendingEvent from './pages/PendingEvent.jsx';
 import CreateEvent from './pages/CreateEvent.jsx';
 import SuccessRegister from './pages/SuccessRegister.jsx';
 import ShareBab from './pages/ShareBab.jsx';
-import Payment from './pages/Payment.jsx';
+import Payment from './pages/FinishedEvent.jsx';
 import ScheduledEvent from './pages/ScheduledEvent.jsx';
 import Logout from './pages/Logout.jsx';
-import Intro from './pages/Intro.jsx'
+import Intro from './pages/Intro.jsx';
+import JoinEvent from './pages/JoinEvent.jsx';
 const routes = [
     {
         path: '/intro',
-        element: <Intro/>,
+        element: <Intro />,
         logo: false,
         name: '소개페이지',
     },
@@ -43,25 +44,39 @@ const routes = [
         name: '회원가입',
     },
     {
-        path: '/party/pending',
+        path: '/event/:eventId/pending',
         element: <PendingEvent />,
         footer: true,
-        name: '대기중인 밥약',
         title: '대기중인 밥약',
+
+        name: '대기중인 밥약',
+        samplePath: '/event/1/pending',
     },
     {
-        path: '/party/scheduled',
+        path: '/event/:eventId/scheduled',
         element: <ScheduledEvent />,
         footer: true,
-        name: '확정된 밥약',
         title: '확정된 밥약',
+
+        name: '확정된 밥약',
+        samplePath: '/event/1/scheduled',
     },
     {
-        path: '/party/create',
+        path: '/event/create',
         element: <CreateEvent />,
         footer: true,
-        name: '밥약 생성하기',
         title: '밥약 만들기',
+
+        name: '밥약 생성하기',
+    },
+    {
+        path: '/invite/:uuid',
+        element: <JoinEvent />,
+        footer: true,
+        title: '밥약 만들기',
+
+        name: '밥약 참가하기',
+        samplePath: '/invite/85e61cd0-59e2-44e6-b89c-79ddc248ae9c',
     },
     {
         path: '/confirmbab',
@@ -82,25 +97,30 @@ const routes = [
         name: '종료된 밥약 목록',
     },
     {
-        path: '/successregister',
+        path: '/register/success',
         element: <SuccessRegister />,
         logo: false,
         previous: false,
         name: '회원가입 완료',
     },
     {
-        path: '/sharebab',
+        path: '/event/create/result',
         element: <ShareBab />,
         footer: true,
-        name: '밥약 생성_링크 공유하기',
         title: '밥약 만들기',
+
+        name: '밥약 생성 결과',
+        samplePath:
+            '/event/create/result?uuid=85e61cd0-59e2-44e6-b89c-79ddc248ae9c',
     },
     {
-        path: '/payment',
+        path: '/event/:eventId/result',
         element: <Payment />,
         footer: true,
-        name: '송금 및 보은하기',
         title: '송금 및 보은하기',
+
+        name: '종료된 밥약',
+        samplePath: '/event/1/result',
     },
 ];
 

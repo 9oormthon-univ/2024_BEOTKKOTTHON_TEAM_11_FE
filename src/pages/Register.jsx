@@ -117,6 +117,11 @@ const Register = ({}) => {
             return false;
         }
 
+        if (organization === '') {
+            alert('대학교 이름을 입력하세요.');
+            return false;
+        }
+
         if (!email) {
             alert('이메일을 입력하세요.');
             return false;
@@ -151,8 +156,7 @@ const Register = ({}) => {
         try {
             response = await postRegister({
                 name,
-                email,
-                emailCode,
+                id: email,
                 password,
             });
         } catch (e) {
@@ -160,12 +164,7 @@ const Register = ({}) => {
             return;
         }
 
-        alert(
-            `name: ${name}\neamil: ${email}\nemail code:${emailCode}\npassword:${password}\npassword check: ${passwordCheck}`
-        );
-
-        alert(`축하드립니다!! 회원가입이 완료되었어요.`);
-        navigate('/');
+        navigate('/register/success');
     };
 
     const onEmailVerifyButtonClick = async (event) => {
@@ -182,10 +181,24 @@ const Register = ({}) => {
         let response;
 
         try {
-            await postEmailVerification({ email, organization });
+            response = await postEmailVerification({ email, organization });
         } catch (e) {
             alert('인증 메일 전송에 실패했습니다.');
             return;
+        }
+
+        if (response.code === 400) {
+            if (response.message === '이미 완료된 요청입니다.') {
+                alert(
+                    '이미 인증된 이메일입니다. 회원가입 버튼을 클릭해서 계속하세요.'
+                );
+                setEmailVerified(true);
+                setEmailSent(true);
+                return;
+            } else {
+                alert(response.message);
+                return;
+            }
         }
 
         setEmailSent(true);
@@ -198,6 +211,11 @@ const Register = ({}) => {
     const onEmailConfirmButtonClick = async (event) => {
         if (!emailSent) {
             alert('인증 메일을 먼저 전송하세요.');
+            return;
+        }
+
+        if (emailVerified) {
+            alert('이미 인증되셨습니다. 회원가입 버튼을 클릭해서 계속하세요.');
             return;
         }
 

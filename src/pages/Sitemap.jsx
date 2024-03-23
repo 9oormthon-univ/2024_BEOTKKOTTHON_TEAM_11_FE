@@ -20,7 +20,7 @@ const Sitemap = ({}) => {
                 key={route.path}
                 text={route.name}
                 onClick={() => {
-                    navigate(route.path);
+                    navigate(route.samplePath || route.path);
                 }}
             />
         ));
