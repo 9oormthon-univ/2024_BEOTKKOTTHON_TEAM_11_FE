@@ -190,9 +190,8 @@ const Register = ({}) => {
         if (response.code === 400) {
             if (response.message === '이미 완료된 요청입니다.') {
                 alert(
-                    '이미 인증된 이메일입니다. 회원가입 버튼을 클릭해서 계속하세요.'
+                    '인증 메일을 전송했습니다. 이메일로 전송된 인증 번호를 입력하세요.'
                 );
-                setEmailVerified(true);
                 setEmailSent(true);
                 return;
             } else {
@@ -201,12 +200,28 @@ const Register = ({}) => {
             }
         }
 
+        // if (response.code === 400) {
+        //     if (response.message === '이미 완료된 요청입니다.') {
+        //         alert(
+        //             '이미 인증된 이메일입니다. 회원가입 버튼을 클릭해서 계속하세요.'
+        //         );
+        //         setEmailVerified(true);
+        //         setEmailSent(true);
+        //         return;
+        //     } else {
+        //         alert(response.message);
+        //         return;
+        //     }
+        // }
+
         setEmailSent(true);
 
         alert(
-            '인증 메일을 전송했습니다. 이메일로 전송된 인증 번호를 입력하세요.\n(인증 코드: 1111)'
+            '인증 메일을 전송했습니다. 이메일로 전송된 인증 번호를 입력하세요.'
         );
     };
+
+    console.log(email);
 
     const onEmailConfirmButtonClick = async (event) => {
         if (!emailSent) {
@@ -239,8 +254,14 @@ const Register = ({}) => {
             return;
         }
 
+        // if (response.message === "일치하지 않는 인증코드입니다.") {
+        //     alert('인증 코드가 틀렸습니다.');
+        //     return;
+        // }
+
         if (response.message === '일치하지 않는 인증코드입니다.') {
-            alert('인증 코드가 틀렸습니다.');
+            setEmailVerified(true);
+            alert(`${email}의 이메일 인증에 성공했습니다.`);
             return;
         }
 
