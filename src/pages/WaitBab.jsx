@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import BabNavbar from '../components/BabNavbar'
 import dummy from '../db/waitdata.json'
 import WaitBox from '../components/WaitBox'
 
 function ConfirmBab() {
+
+
+
   return (
     <div>
         <BabNavbar />

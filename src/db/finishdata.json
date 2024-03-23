@@ -13,7 +13,8 @@
         "박지환",
         "유지희"
       ],
-      "userRole": "host"
+      "userRole": "host",
+      "state": "EXPIRED"
     },
     {
       "id": 2,
@@ -26,7 +27,8 @@
         "김경재",
         "유지희"
       ],
-      "userRole": "participant"
+      "userRole": "participant",
+      "state": "EXPIRED"
     }
   ]
   
