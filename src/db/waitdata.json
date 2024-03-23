@@ -8,7 +8,8 @@
         "date": null,
         "place": "판교 리파인",
         "confirmedPeopleCount": 2,
-        "allResponded": true
+        "allResponded": true,
+        "state": "PENDING"
     },
     {
         "id": 2,
@@ -18,7 +19,8 @@
         "date": null,
         "place": "강남 스타트업 허브",
         "confirmedPeopleCount": 5,
-        "allResponded": false
+        "allResponded": false,
+        "state": "PENDING"
     },
     {
         "id": 3,
@@ -28,7 +30,8 @@
         "date": null,
         "place": "홍대 입구",
         "confirmedPeopleCount": 4,
-        "allResponded": false
+        "allResponded": false,
+        "state": "PENDING"
     }
     
 ]
