@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import routes from './routes.jsx';
 import { IoIosArrowBack } from 'react-icons/io';
 
-import ServiceLogoImage from './assets/images/service_logo.svg';
+import ServiceLogoImage from './assets/images/service_logo.png';
 import ServiceLogoCompactImage from './assets/images/rice_balloon_no_tail.svg';
 import RiceBalloonButton from './assets/images/rice_balloon_button.svg';
 import { useState, useEffect } from 'react';
