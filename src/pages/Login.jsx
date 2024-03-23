@@ -108,11 +108,12 @@ const Login = ({}) => {
         dispatch(
             login({
                 accessToken: response.accessToken,
-                id,
+                id: response.userId,
+                email: response.email,
             })
         );
 
-        alert(`${id}님 환영합니다!`);
+        alert(`${response.name}님 환영합니다!`);
 
         if (searchParams.get('redirect')) {
             navigate(searchParams.get('redirect'));
@@ -127,7 +128,7 @@ const Login = ({}) => {
                 <RiceBalloon src={RiceBalloonNoTailImage} />
                 <TextContainer>
                     <Subtitle>지금 무슨시간?</Subtitle>
-                    <Title>잇츠타임!!</Title>
+                    <Title>이츠타임!</Title>
                 </TextContainer>
             </PageHeader>
             <Form>

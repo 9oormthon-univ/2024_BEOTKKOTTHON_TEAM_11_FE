@@ -9,10 +9,13 @@ export async function postLogin(request) {
     //     password: request.password,
     // };
 
-    // const response = await axios.post('/login', bodyData);
+    // const response = await axios.post('/api/v1/login', bodyData);
 
     // const data = {
     //     accessToken: response.headers.getAuthorization().split(' ')[1],
+    //     userId: response.data.id,
+    //     email: response.data.username,
+    //     name: response.data.nickname,
     // };
 
     // return data;
@@ -27,6 +30,29 @@ export async function postLogin(request) {
 
     return {
         accessToken: '1111',
+        userId: 1,
+        email: 'test@example.com',
+        name: '테스트',
+    };
+}
+
+export async function getMember(request) {
+    // const axios = getAxiosInstance(request.token);
+
+    // const response = await axios.get('/api/v1/members/{member_id}');
+
+    // const data = {
+    //     userId: response.data.id,
+    //     email: response.data.username,
+    //     name: response.data.nickname,
+    // };
+
+    // return data;
+
+    return {
+        userId: 1,
+        email: 'test@example.com',
+        name: '테스트',
     };
 }
 
@@ -93,8 +119,8 @@ export async function postEmailConfirmation(request) {
 
     return {
         success: true,
-        certified_email: request.email,
-        univName: '서울대학교',
-        certified_date: '2023-01-03T09:30:22',
+        email: request.email,
+        organization: request.organization,
+        date: '2023-01-03T09:30:22',
     };
 }
