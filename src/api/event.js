@@ -1,7 +1,7 @@
 import { getAxiosInstance } from './axios.js';
 
 export async function createEvent(request) {
-    const axios = getAxiosInstance();
+    const axios = getAxiosInstance(request.token);
 
     const bodyData = {
         ownerId: request.userId,
