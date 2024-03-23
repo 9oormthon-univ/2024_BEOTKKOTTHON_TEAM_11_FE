@@ -14,7 +14,8 @@
         "박지환",
         "유지희"
       ],
-      "userRole": "host"
+      "userRole": "host",
+      "state": "CONFIRMED"
     },
     {
       "id": 2,
@@ -28,7 +29,8 @@
         "김경재",
         "유지희"
       ],
-      "userRole": "participant"
+      "userRole": "participant",
+      "state": "CONFIRMED"
     },
     {
       "id": 3,
@@ -43,7 +45,8 @@
         "이미르",
         "최사랑"
       ],
-      "userRole": "participant"
+      "userRole": "participant",
+      "state": "CONFIRMED"
     },
     {
         "id": 4,
@@ -59,7 +62,8 @@
           "문성욱",
           "박지환"
         ],
-        "userRole": "host"
+        "userRole": "host",
+        "state": "CONFIRMED"
       }
   ]
   

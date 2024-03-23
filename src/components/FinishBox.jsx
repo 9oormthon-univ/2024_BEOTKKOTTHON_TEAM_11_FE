@@ -146,9 +146,13 @@ const PeopleArrowContainer = styled.div`
 `;
 
 function FinishBox(props) {
-    const { eventName, date, time, place, host, participants, userRole } = props.event;
+    const { eventName, date, time, place, host, participants, userRole, state } = props.event;
     const [hover, setHover] = useState(false);
     const navigate = useNavigate(); // useNavigate 훅 사용
+
+    if (state !== "EXPIRED") {
+        return null;
+    }
 
   return (
     <BabDiv onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} hover={hover}>

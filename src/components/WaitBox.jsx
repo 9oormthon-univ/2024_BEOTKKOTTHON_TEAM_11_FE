@@ -158,9 +158,14 @@ const Button = styled.button`
 `;
 
 function WaitBox(props) {
-    const { name, isLeader, dateStatus, date, place, confirmedPeopleCount, allResponded } = props.event;
+    const { name, isLeader, dateStatus, date, place, confirmedPeopleCount, allResponded, state } = props.event;
     const [hover, setHover] = useState(false); // 호버 상태를 추적하는 state 추가
     const navigate = useNavigate(); // useNavigate 훅 사용
+
+    // "PENDING" 상태가 아닌 경우, 아무것도 렌더링하지 않습니다.
+    if (state !== "PENDING") {
+      return null;
+    }
 
     return (
       <BabDiv hover={hover} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
@@ -172,9 +177,7 @@ function WaitBox(props) {
           </NMContainer>
           <DateContainer>
               <StyledCalendarIcon hover={hover}  />
-              <WaitDate  hover={hover}>
-                {dateStatus ? `${date}` : "약속 정하는 중"}
-              </WaitDate>
+              <WaitDate  hover={hover}>약속 정하는 중</WaitDate>
           </DateContainer>
   
           <PlaceContainer>

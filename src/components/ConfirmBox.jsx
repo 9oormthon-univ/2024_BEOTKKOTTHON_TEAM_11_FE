@@ -152,9 +152,13 @@ const PeopleArrowContainer = styled.div`
 
 
 function ConfirmBox(props) {
-    const { eventName, date, time, place, host, participants, userRole } = props.event;
+    const { eventName, date, time, place, host, participants, userRole, state } = props.event;
     const [hover, setHover] = useState(false);
     const navigate = useNavigate(); // useNavigate 훅 사용
+
+    if (state !== "CONFIRMED") {
+        return null;
+    }
 
     const calculateDDay = (eventDate) => {
         const today = new Date();
