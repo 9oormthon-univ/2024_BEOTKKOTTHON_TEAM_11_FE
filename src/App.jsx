@@ -19,10 +19,11 @@ function App() {
 
     useEffect(() => {
         const accessToken = Cookies.get('accessToken');
+        const email = Cookies.get('email');
         const id = Cookies.get('id');
 
         if (accessToken && id) {
-            store.dispatch(login({ accessToken, id }));
+            store.dispatch(login({ accessToken, id, email }));
         }
     }, []);
 
