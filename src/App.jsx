@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { login } from './redux/userSlice.js';
 
-import BackgroundImage from './assets/background.png';
+import BackgroundImage from './assets/background.webp';
 
 const Container = styled.div`
     height: 100%;
